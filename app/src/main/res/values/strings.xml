@@ -2,7 +2,30 @@
     <string name="app_name">Nifty Second-Hand Shop</string>
     <string name="action_settings">Settings</string>
     <string name="sellButton">Sell something</string>
-    <string name="browseButton">Browse items</string>
+    <string name="buyButton">Buy</string>
+    <string name="cameraButton">Sell</string>
+    <string name="homeButton">Home</string>
+    <string name="settingsButton">Settings</string>
     <string name="welcomeText">Grab the deals while they last!</string>
+    <string name="ratingText">Rate this app:</string>
+    <string name="homeMenu">Home</string>
+    <string name="sellMenu">Sell your items</string>
+    <string name="browseMenu">Browse items for sale</string>
+    <string name="title_activity_browse">BrowseActivity</string>
+    <string name="title_activity_sell">SellActivity</string>
+    <string name="advertTitle">Title:</string>
+    <string name="advertPrice">Price:</string>
+    <string name="priceManualHint">Or enter manual price</string>
+    <string name="advertLocation">Location:</string>
+    <string name="advertDetails">Details:</string>
+    <string name="advertImage">productImage</string>
+    <string name="submitButton">Submit</string>
+    <string-array name="locations">
+        <item>Tramore</item>
+        <item>Waterford</item>
+        <item>Dunmore East</item>
+        <item>Fenor</item>
+    </string-array>
+
 
 </resources>
