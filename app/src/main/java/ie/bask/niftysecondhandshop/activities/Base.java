@@ -7,7 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ie.bask.niftysecondhandshop.R;
+import ie.bask.niftysecondhandshop.models.Advert;
 
 /**
  * Created by cecobask on 15-Feb-18.
@@ -15,6 +19,13 @@ import ie.bask.niftysecondhandshop.R;
 
 public class Base extends AppCompatActivity {
 
+    public static List<Advert> adverts = new ArrayList<>();
+
+
+    public void newAdvert(Advert advert) {
+        adverts.add(advert);
+        Toast.makeText(this, "You added a new Advert object!", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +82,7 @@ public class Base extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    public void settingsButtonPressed(View view) {
-        Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show();
+    public void browseButtonPressed(View view) {
+        startActivity(new Intent(this, BrowseActivity.class));
     }
 }

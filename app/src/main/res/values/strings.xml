@@ -5,7 +5,7 @@
     <string name="buyButton">Buy</string>
     <string name="cameraButton">Sell</string>
     <string name="homeButton">Home</string>
-    <string name="settingsButton">Settings</string>
+    <string name="browseButton">Browse</string>
     <string name="welcomeText">Grab the deals while they last!</string>
     <string name="ratingText">Rate this app:</string>
     <string name="homeMenu">Home</string>

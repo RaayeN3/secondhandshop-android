@@ -6,16 +6,15 @@
 
     <LinearLayout
         android:id="@+id/bottomMenu"
+        style="?android:attr/buttonStyle"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="252dp"
         android:background="@android:color/darker_gray"
         android:orientation="horizontal"
         android:weightSum="3"
-        style="?android:attr/buttonBarStyle"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,38 +25,38 @@
 
         <Button
             android:id="@+id/homeButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_home_black_24dp"
             android:gravity="center"
             android:onClick="homeButtonPressed"
-            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/homeButton"
             android:textSize="13sp" />
 
         <Button
             android:id="@+id/cameraButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_camera_alt_black_24dp"
             android:gravity="center"
             android:onClick="sellButtonPressed"
-            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/cameraButton"
             android:textSize="13sp" />
 
         <Button
-            android:id="@+id/settingsButton"
+            android:id="@+id/browseButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_settings_black_24dp"
+            android:drawableTop="@drawable/ic_folder_black_24dp"
             android:gravity="center"
-            android:onClick="settingsButtonPressed"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="@string/settingsButton"
+            android:onClick="browseButtonPressed"
+            android:text="@string/browseButton"
             android:textSize="13sp" />
     </LinearLayout>
 

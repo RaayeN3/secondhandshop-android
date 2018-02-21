@@ -10,9 +10,6 @@ import ie.bask.niftysecondhandshop.R;
 public class MainActivity extends Base {
 
     private Button sellButton;
-    private Button homeButton;
-    private Button cameraButton;
-    private Button settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +19,8 @@ public class MainActivity extends Base {
         setSupportActionBar(toolbar);
 
         sellButton = findViewById(R.id.sellButton);
-        homeButton = findViewById(R.id.homeButton);
-        cameraButton = findViewById(R.id.cameraButton);
-        settingsButton = findViewById(R.id.settingsButton);
         if (sellButton != null) {
-            Log.v("ShopMainActivity", "Sell button initialised!");
+            Log.v("MyLogs", "Sell button initialised!");
         }
     }
 
