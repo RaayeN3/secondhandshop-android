@@ -11,15 +11,18 @@
     <string name="homeMenu">Home</string>
     <string name="sellMenu">Sell your items</string>
     <string name="browseMenu">Browse items for sale</string>
-    <string name="title_activity_browse">BrowseActivity</string>
-    <string name="title_activity_sell">SellActivity</string>
+    <string name="title_activity_browse">Browse</string>
+    <string name="title_activity_sell">Sell</string>
     <string name="advertTitle">Title:</string>
-    <string name="advertPrice">Price:</string>
+    <string name="advertPrice">Price(€):</string>
     <string name="priceManualHint">Or enter manual price</string>
     <string name="advertLocation">Location:</string>
     <string name="advertDetails">Details:</string>
     <string name="advertImage">productImage</string>
     <string name="submitButton">Submit</string>
+    <string name="photoButton">Add Photo</string>
+    <string name="row_image_contentDesc">productImage</string>
+    <string name="browseEmptyDefaultText">No adverts yet.\nAdd new adverts by using SELL menu to see them displayed here!</string>
     <string-array name="locations">
         <item>Tramore</item>
         <item>Waterford</item>

@@ -6,10 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.Advert;
 
@@ -20,7 +18,6 @@ import ie.bask.niftysecondhandshop.models.Advert;
 public class Base extends AppCompatActivity {
 
     public static List<Advert> adverts = new ArrayList<>();
-
 
     public void newAdvert(Advert advert) {
         adverts.add(advert);
@@ -40,10 +37,10 @@ public class Base extends AppCompatActivity {
         MenuItem sell = menu.findItem(R.id.sellMenu);
         MenuItem browse = menu.findItem(R.id.browseMenu);
 
-//        if(donations.isEmpty())
-//            report.setEnabled(false);
-//        else
-//            report.setEnabled(true);
+        if (adverts.isEmpty()) {
+            browse.setEnabled(false);
+        } else
+            browse.setEnabled(true);
 
         if (this instanceof MainActivity) {
             home.setVisible(false);

@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ie.bask.niftysecondhandshop.R;
@@ -12,6 +13,7 @@ import ie.bask.niftysecondhandshop.R;
 public class BrowseActivity extends Base {
 
     ListView productsView;
+    TextView browseEmptyDefaultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,11 @@ public class BrowseActivity extends Base {
                         + adverts.get(position), Toast.LENGTH_LONG).show();
             }
         });
+
+        browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
+        if (!adverts.isEmpty()) {
+            browseEmptyDefaultText.setVisibility(View.GONE);
+        }
     }
 }
 

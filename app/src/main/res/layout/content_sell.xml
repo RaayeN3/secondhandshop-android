@@ -75,6 +75,7 @@
             android:inputType="text"
             android:labelFor="@id/productTitle"
             android:textSize="18sp"
+            android:maxLength="25"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.864"
@@ -124,7 +125,7 @@
             android:layout_margin="9dp"
             app:snp_buttonIconLeft="@drawable/ic_left"
             app:snp_buttonIconRight="@drawable/ic_right"
-            app:snp_maxValue="500"
+            app:snp_maxValue="999"
             app:snp_minValue="0"
             app:snp_orientation="horizontal"
             app:snp_stepSize="5"
@@ -143,6 +144,7 @@
             android:ems="10"
             android:hint="@string/priceManualHint"
             android:inputType="numberDecimal"
+            android:maxLength="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.84"
@@ -271,5 +273,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.774" />
+
+    <Button
+        android:id="@+id/photoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/photoButton"
+        android:onClick="photoButtonPressed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.102" />
+
 
 </android.support.constraint.ConstraintLayout>

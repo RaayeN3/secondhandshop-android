@@ -1,7 +1,6 @@
 package ie.bask.niftysecondhandshop.models;
 
-import android.media.Image;
-import android.widget.ImageView;
+import android.net.Uri;
 
 /**
  * Created by cecobask on 18-Feb-18.
@@ -11,16 +10,16 @@ public class Advert {
 
     private Long counter = (long) 1;
     private Long productID;
-    private ImageView productImage;
+    private Uri imageUri;
     private String productTitle;
     private double productPrice;
     private String productLocation;
     private String productDescription;
 
 
-    public Advert(ImageView productImage, String productTitle, double productPrice, String productLocation, String productDescription) {
+    public Advert(Uri imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
         this.productID = counter++;
-        this.productImage = productImage;
+        this.imageUri = imageUri;
         this.productTitle = productTitle;
         this.productPrice = productPrice;
         this.productLocation = productLocation;
@@ -33,14 +32,6 @@ public class Advert {
 
     public void setProductID(Long productID) {
         this.productID = productID;
-    }
-
-    public ImageView getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(ImageView productImage) {
-        this.productImage = productImage;
     }
 
     public String getProductTitle() {
@@ -73,6 +64,14 @@ public class Advert {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
 }
