@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "123746896624",
+    "firebase_url": "https://secondhandshop-e84eb.firebaseio.com",
+    "project_id": "secondhandshop-e84eb",
+    "storage_bucket": "secondhandshop-e84eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123746896624:android:567f553b2611fd49",
+        "android_client_info": {
+          "package_name": "ie.bask.niftysecondhandshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123746896624-hcgauaed4t1jgnf0qp35ur94p2dppof7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ie.bask.niftysecondhandshop",
+            "certificate_hash": "fcf17d8b9944c1d35587c3b79c7edd3ad2b8b433"
+          }
+        },
+        {
+          "client_id": "123746896624-5ptlk49kmnit4n9f4hb42dvg1265t3km.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmkOpUvQUZ42ZvPHp4xNwupMADRqeny8M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123746896624-5ptlk49kmnit4n9f4hb42dvg1265t3km.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

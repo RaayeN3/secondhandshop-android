@@ -9,15 +9,14 @@
         android:layout_marginEnd="5dp" />
 
     <TextView
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="35dp"
         android:id="@+id/row_title"
         android:layout_toEndOf="@id/row_image"
         android:layout_marginTop="5dp" />
 
-
     <TextView
-        android:layout_width="45dp"
+        android:layout_width="60dp"
         android:layout_height="35dp"
         android:id="@+id/row_price"
         android:layout_toEndOf="@id/row_title"
@@ -25,7 +24,7 @@
         android:layout_marginTop="5dp" />
 
     <TextView
-        android:layout_width="65dp"
+        android:layout_width="140dp"
         android:layout_height="35dp"
         android:id="@+id/row_location"
         android:layout_toEndOf="@id/row_price"
@@ -35,9 +34,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/row_details"
-        android:layout_toEndOf="@id/row_location"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp" />
+        android:id="@+id/row_type"
+        android:layout_below="@id/row_title"
+        android:layout_alignStart="@id/row_title"
+        android:layout_marginTop="10dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_size"
+        android:layout_below="@id/row_price"
+        android:layout_alignStart="@id/row_price"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/row_details"
+        android:layout_below="@id/row_location"
+        android:layout_alignStart="@id/row_location"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>

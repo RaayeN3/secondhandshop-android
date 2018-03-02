@@ -29,6 +29,22 @@
         <item>Dunmore East</item>
         <item>Fenor</item>
     </string-array>
+    <string-array name="clothingSizes">
+        <item>X-Small</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>X-Large</item>
+    </string-array>
+    <string name="title_activity_advert_clothing">Sell clothes</string>
+    <string name="title_activity_advert_fashion">AdvertFashionActivity</string>
+    <string name="advertType">Type:</string>
+    <string name="advertSize">Size:</string>
+    <string name="clothing_radioButton">Clothing</string>
+    <string name="shoes_radioButton">Shoes</string>
+    <string name="generalAd_radioB">General</string>
+    <string name="fashionAd_radioB">Fashion</string>
+    <string name="carAd_radioB">Car</string>
 
 
 </resources>

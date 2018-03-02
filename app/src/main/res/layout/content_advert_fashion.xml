@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ie.bask.niftysecondhandshop.activities.SellActivity"
-    tools:showIn="@layout/activity_sell">
+    tools:context="ie.bask.niftysecondhandshop.activities.AdvertFashionActivity"
+    tools:showIn="@layout/activity_advert_fashion">
 
     <include
         android:id="@+id/include"
@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/advertImage"
         android:layout_width="200dp"
-        android:layout_height="131dp"
+        android:layout_height="130dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -42,10 +42,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.321">
+        app:layout_constraintVertical_bias="0.284">
 
         <TextView
             android:id="@+id/advertTitle"
@@ -74,13 +74,13 @@
             android:layout_marginTop="8dp"
             android:inputType="text"
             android:labelFor="@id/productTitle"
-            android:textSize="18sp"
             android:maxLength="25"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.864"
-            app:layout_constraintStart_toEndOf="@+id/advertTitle"
-            app:layout_constraintTop_toBottomOf="@+id/advertImage"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.026" />
 
     </LinearLayout>
@@ -99,7 +99,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42">
+        app:layout_constraintVertical_bias="0.36">
 
         <TextView
             android:id="@+id/advertPrice"
@@ -111,11 +111,11 @@
             android:layout_marginTop="8dp"
             android:text="@string/advertPrice"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/advertLocation"
+            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.058"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/advertTitle"
+            app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.042" />
 
         <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
@@ -155,6 +155,134 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/typeRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.444">
+
+        <TextView
+            android:id="@+id/advertType"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/advertType"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.058"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.042" />
+
+        <RadioGroup
+            android:id="@+id/typeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@+id/clothing_radioButton"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioButton
+                android:id="@+id/clothing_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/clothing_radioButton"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/shoes_radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/shoes_radioButton"
+                android:textSize="18sp" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sizeRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.519">
+
+        <TextView
+            android:id="@+id/advertSize"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/advertSize"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.058"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.042" />
+
+        <Spinner
+            android:id="@+id/clothingSizeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:dropDownWidth="match_parent"
+            android:spinnerMode="dialog"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.477"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.556" />
+
+        <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+            android:id="@+id/snp_shoeSizes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="9dp"
+            app:snp_buttonIconLeft="@drawable/ic_left"
+            app:snp_buttonIconRight="@drawable/ic_right"
+            app:snp_maxValue="50"
+            app:snp_minValue="35"
+            app:snp_orientation="horizontal"
+            app:snp_stepSize="1"
+            app:snp_updateInterval="5"
+            app:snp_value="43"
+            app:snp_value_text_size="18dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/locationRow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -168,7 +296,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.527">
+        app:layout_constraintVertical_bias="0.599">
 
         <TextView
             android:id="@+id/advertLocation"
@@ -194,10 +322,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
             android:dropDownWidth="match_parent"
+            android:spinnerMode="dialog"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.477"
-            app:layout_constraintStart_toEndOf="@+id/advertLocation"
+            app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.556" />
 
@@ -217,7 +346,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.618">
+        app:layout_constraintVertical_bias="0.674">
 
         <TextView
             android:id="@+id/advertDetails"
@@ -250,7 +379,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.826"
-            app:layout_constraintStart_toEndOf="@+id/advertDetails"
+            app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.659" />
 
@@ -266,29 +395,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:elevation="0dp"
-        android:text="@string/submitButton"
         android:onClick="submitButtonPressed"
+        android:text="@string/submitButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.774" />
-
-    <Button
-        android:id="@+id/photoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/photoButton"
-        android:onClick="photoButtonPressed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102" />
-
+        app:layout_constraintVertical_bias="0.818" />
 
 </android.support.constraint.ConstraintLayout>
