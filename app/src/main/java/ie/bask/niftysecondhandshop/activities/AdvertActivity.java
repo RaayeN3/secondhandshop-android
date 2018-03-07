@@ -1,6 +1,5 @@
 package ie.bask.niftysecondhandshop.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -8,20 +7,20 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.Advert;
 
 
-public class AdvertGeneralActivity extends Base {
+public class AdvertActivity extends Base {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advert_general);
+        setContentView(R.layout.activity_advert);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        photoButton = findViewById(R.id.photoButton);
         advertImage = findViewById(R.id.advertImage);
 
         productTitle = findViewById(R.id.productTitle);
@@ -38,7 +37,7 @@ public class AdvertGeneralActivity extends Base {
 
         locationSpinner = findViewById(R.id.locationSpinner);
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertGeneralActivity.this,
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertActivity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.locations));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(myAdapter);
@@ -55,6 +54,11 @@ public class AdvertGeneralActivity extends Base {
         takePhoto();
     }
 
+    protected void onPause() {
+        super.onPause();
+        saveAdvertList();
+    }
+
     public void submitButtonPressed(View view) {
         String title = productTitle.getText().toString();
         double price;
@@ -68,18 +72,20 @@ public class AdvertGeneralActivity extends Base {
         }
 
 
-        Uri imageUri = getImageUri(bitmap);
+        String imageUri = getImageUri(bitmap);
+//        Uri imageUri = getImageUri(bitmap);
         Log.v("MyLogs", "Value of imageUri is " + imageUri);
 
 
         if (TextUtils.isEmpty(productTitle.getText())) {
             productTitle.setError("Product title is required!");
             productTitle.requestFocus();
-        } else if (title != null && TextUtils.isEmpty(productDetails.getText())) {
+        } else if (TextUtils.isEmpty(productDetails.getText())) {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();
         } else {
             newAdvert(new Advert(imageUri, title, price, location, details));
+            saveAdvertList();
         }
 
         Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Location: " + location + " (4) Details: " + details);

@@ -15,7 +15,8 @@
     <string name="title_activity_sell">Sell</string>
     <string name="advertTitle">Title:</string>
     <string name="advertPrice">Price(€):</string>
-    <string name="priceManualHint">Or enter manual price</string>
+    <string name="euroSign">€</string>
+    <string name="priceManualHint">Or enter manually</string>
     <string name="advertLocation">Location:</string>
     <string name="advertDetails">Details:</string>
     <string name="advertImage">productImage</string>
@@ -45,6 +46,42 @@
     <string name="generalAd_radioB">General</string>
     <string name="fashionAd_radioB">Fashion</string>
     <string name="carAd_radioB">Car</string>
+    <string name="title_activity_advert_car">Sell cars</string>
+    <string name="advertMake">Make:</string>
+    <string name="advertModel">Model:</string>
+    <string name="advertYear">Year:</string>
+    <string name="emptyAdvertsCategory">No adverts in this category.</string>
+    <string-array name="carMakes">
+        <item>Honda</item>
+        <item>Toyota</item>
+        <item>BMW</item>
+        <item>Mercedes-Benz</item>
+        <item>Volkswagen</item>
+        <item>Renault</item>
+        <item>Audi</item>
+        <item>Ford</item>
+        <item>Porsche</item>
+        <item>Volvo</item>
+        <item>Chrysler</item>
+        <item>Land Rover</item>
+        <item>Jeep</item>
+        <item>Jaguar</item>
+        <item>Mazda</item>
+        <item>Mitsubishi</item>
+        <item>Nissan</item>
+        <item>GMC</item>
+        <item>Chevrolet</item>
+        <item>Seat</item>
+        <item>Lotus</item>
+        <item>Lamborghini</item>
+        <item>Ferrari</item>
+        <item>Aston Martin</item>
+        <item>Dodge</item>
+        <item>Yamaha</item>
+        <item>Infiniti</item>
+        <item>Opel</item>
+        <item>Kia</item>
+    </string-array>
 
 
 </resources>

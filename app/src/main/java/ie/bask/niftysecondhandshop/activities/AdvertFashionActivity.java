@@ -1,6 +1,5 @@
 package ie.bask.niftysecondhandshop.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -21,7 +20,6 @@ public class AdvertFashionActivity extends Base {
     private RadioGroup productType;
     private Spinner clothingSizeSpinner;
     private ScrollableNumberPicker shoeSize;
-    ArrayAdapter<String> myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,6 @@ public class AdvertFashionActivity extends Base {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        photoButton = findViewById(R.id.photoButton);
         advertImage = findViewById(R.id.advertImage);
 
         productTitle = findViewById(R.id.productTitle);
@@ -62,7 +59,7 @@ public class AdvertFashionActivity extends Base {
         });
 
         clothingSizeSpinner = findViewById(R.id.clothingSizeSpinner);
-        myAdapter = new ArrayAdapter<>(AdvertFashionActivity.this,
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertFashionActivity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.clothingSizes));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         clothingSizeSpinner.setAdapter(myAdapter);
@@ -86,6 +83,11 @@ public class AdvertFashionActivity extends Base {
         permissionCheck();
 
         takePhoto();
+    }
+
+    protected void onPause() {
+        super.onPause();
+        saveAdvertFashionList();
     }
 
     public void submitButtonPressed(View view) {
@@ -116,13 +118,13 @@ public class AdvertFashionActivity extends Base {
         }
 
 
-        Uri imageUri = getImageUri(bitmap);
+        String imageUri = getImageUri(bitmap);
         Log.v("MyLogs", "Value of imageUri is " + imageUri);
 
         if (TextUtils.isEmpty(productTitle.getText())) {
             productTitle.setError("Product title is required!");
             productTitle.requestFocus();
-        } else if (title != null && TextUtils.isEmpty(productDetails.getText())) {
+        } else if (TextUtils.isEmpty(productDetails.getText())) {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();
         } else {

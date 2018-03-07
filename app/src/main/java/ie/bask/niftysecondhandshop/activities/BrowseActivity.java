@@ -1,5 +1,8 @@
 package ie.bask.niftysecondhandshop.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -7,16 +10,22 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import ie.bask.niftysecondhandshop.R;
+import ie.bask.niftysecondhandshop.adapters.AdvertAdapter;
+import ie.bask.niftysecondhandshop.adapters.AdvertCarAdapter;
+import ie.bask.niftysecondhandshop.adapters.AdvertFashionAdapter;
+import ie.bask.niftysecondhandshop.models.Advert;
+import ie.bask.niftysecondhandshop.models.AdvertCar;
+import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class BrowseActivity extends Base {
 
     ListView productsView;
     ListView fashionProductsView;
+    ListView carsView;
     TextView browseEmptyDefaultText;
     RadioGroup choice_radio_group;
+    TextView emptyAdvertCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,53 +34,178 @@ public class BrowseActivity extends Base {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        adverts = loadAdvertList();
+        fashionAdverts = loadAdvertFashionList();
+        carAdverts = loadAdvertCarList();
+
+        emptyAdvertCategory = findViewById(R.id.emptyAdvertCategory);
+        emptyAdvertCategory.setVisibility(View.GONE);
+
         productsView = findViewById(R.id.productsView);
-        AdvertAdapter adapter = new AdvertAdapter(this, adverts);
+        final AdvertAdapter adapter = new AdvertAdapter(this, adverts);
         productsView.setAdapter(adapter);
         productsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(BrowseActivity.this, "You Selected Row [" + position + "] For Advert Data "
-                        + adverts.get(position), Toast.LENGTH_LONG).show();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
+                alertDialogBuilder.setTitle("CRUD operations:");
+                String[] items = {"Create", "Update", "Delete product", "Delete all"};
+                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            startActivity(new Intent(getApplicationContext(), AdvertActivity.class));
+                        } else if (i == 1) {
+                            Intent AdvertIntent = new Intent(getApplicationContext(), AdvertActivity.class);
+                            startActivity(AdvertIntent);
+                            Advert temporary = adverts.get(adverts.size() - 1);
+                            adverts.set(position, temporary);
+                            adverts.remove(temporary);
+                            adapter.notifyDataSetChanged();
+                        } else if (i == 2) {
+                            adverts.remove(position);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            adverts.clear();
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
         productsView.setVisibility(View.GONE);
 
         fashionProductsView = findViewById(R.id.fashionProductsView);
-        AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
+        final AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
         fashionProductsView.setAdapter(adapterFashion);
         fashionProductsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(BrowseActivity.this, "You Selected Row [" + position + "] For AdvertFashion Data "
-                        + fashionAdverts.get(position), Toast.LENGTH_LONG).show();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
+                alertDialogBuilder.setTitle("CRUD operations:");
+                String[] items = {"Create", "Update", "Delete product", "Delete all"};
+                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            startActivity(new Intent(getApplicationContext(), AdvertFashionActivity.class));
+                        } else if (i == 1) {
+                            Intent AdvertFashionIntent = new Intent(getApplicationContext(), AdvertFashionActivity.class);
+                            startActivity(AdvertFashionIntent);
+                            AdvertFashion fashionTemporary = fashionAdverts.get(fashionAdverts.size() - 1);
+                            fashionAdverts.set(position, fashionTemporary);
+                            fashionAdverts.remove(fashionTemporary);
+                            adapterFashion.notifyDataSetChanged();
+                        } else if (i == 2) {
+                            fashionAdverts.remove(position);
+                            adapterFashion.notifyDataSetChanged();
+                        } else {
+                            fashionAdverts.clear();
+                            adapterFashion.notifyDataSetChanged();
+                        }
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
         fashionProductsView.setVisibility(View.GONE);
+
+        carsView = findViewById(R.id.carsView);
+        final AdvertCarAdapter adapterCar = new AdvertCarAdapter(this, carAdverts);
+        carsView.setAdapter(adapterCar);
+        carsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
+                alertDialogBuilder.setTitle("CRUD operations:");
+                String[] items = {"Create", "Update", "Delete car", "Delete all"};
+                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            startActivity(new Intent(getApplicationContext(), AdvertCarActivity.class));
+                        } else if (i == 1) {
+                            Intent AdvertCarIntent = new Intent(getApplicationContext(), AdvertCarActivity.class);
+                            startActivity(AdvertCarIntent);
+                            AdvertCar carTemporary = carAdverts.get(carAdverts.size() - 1);
+                            carAdverts.set(position, carTemporary);
+                            carAdverts.remove(carTemporary);
+                            adapterCar.notifyDataSetChanged();
+                        } else if (i == 2) {
+                            carAdverts.remove(position);
+                            adapterCar.notifyDataSetChanged();
+                        } else {
+                            carAdverts.clear();
+                            adapterCar.notifyDataSetChanged();
+                        }
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
+        carsView.setVisibility(View.GONE);
 
         choice_radio_group = findViewById(R.id.choice_radio_group);
         choice_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.advert_radioButton) {
-                    productsView.setVisibility(View.VISIBLE);
-                    fashionProductsView.setVisibility(View.GONE);
+                    if (adverts.isEmpty()) {
+                        emptyAdvertCategory.setVisibility(View.VISIBLE);
+                        productsView.setVisibility(View.GONE);
+                        fashionProductsView.setVisibility(View.GONE);
+                        carsView.setVisibility(View.GONE);
+                    } else {
+                        emptyAdvertCategory.setVisibility(View.GONE);
+                        productsView.setVisibility(View.VISIBLE);
+                        fashionProductsView.setVisibility(View.GONE);
+                        carsView.setVisibility(View.GONE);
+                    }
                 } else if (checkedId == R.id.fashionAd_radioButton) {
-                    productsView.setVisibility(View.GONE);
-                    fashionProductsView.setVisibility(View.VISIBLE);
+                    if (fashionAdverts.isEmpty()) {
+                        emptyAdvertCategory.setVisibility(View.VISIBLE);
+                        productsView.setVisibility(View.GONE);
+                        fashionProductsView.setVisibility(View.GONE);
+                        carsView.setVisibility(View.GONE);
+                    } else {
+                        emptyAdvertCategory.setVisibility(View.GONE);
+                        productsView.setVisibility(View.GONE);
+                        fashionProductsView.setVisibility(View.VISIBLE);
+                        carsView.setVisibility(View.GONE);
+                    }
+                } else if (checkedId == R.id.carAd_radioButton) {
+                    if (carAdverts.isEmpty()) {
+                        emptyAdvertCategory.setVisibility(View.VISIBLE);
+                        productsView.setVisibility(View.GONE);
+                        fashionProductsView.setVisibility(View.GONE);
+                        carsView.setVisibility(View.GONE);
+                    } else {
+                        emptyAdvertCategory.setVisibility(View.GONE);
+                        productsView.setVisibility(View.GONE);
+                        fashionProductsView.setVisibility(View.GONE);
+                        carsView.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
 
-
         browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
-        if (!adverts.isEmpty() || !fashionAdverts.isEmpty()) {
+        if (!adverts.isEmpty() || !fashionAdverts.isEmpty() || !carAdverts.isEmpty()) {
             browseEmptyDefaultText.setVisibility(View.GONE);
             choice_radio_group.setVisibility(View.VISIBLE);
         } else {
             choice_radio_group.setVisibility(View.GONE);
         }
     }
+
+    protected void onPause() {
+        super.onPause();
+        saveAdvertList();
+        saveAdvertFashionList();
+        saveAdvertCarList();
+    }
 }
-
-

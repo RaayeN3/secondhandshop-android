@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ie.bask.niftysecondhandshop.activities.AdvertGeneralActivity"
-    tools:showIn="@layout/activity_advert_general">
+    tools:context="ie.bask.niftysecondhandshop.activities.AdvertActivity"
+    tools:showIn="@layout/activity_advert">
 
     <include
         android:id="@+id/include"

@@ -1,7 +1,5 @@
 package ie.bask.niftysecondhandshop.models;
 
-import android.net.Uri;
-
 /**
  * Created by cecobask on 26-Feb-18.
  */
@@ -10,7 +8,7 @@ public class AdvertFashion {
 
     private Long counter = (long) 1;
     private Long productID;
-    private Uri imageUri;
+    private String imageUri;
     private String productTitle;
     private double productPrice;
     private String productType;
@@ -18,7 +16,7 @@ public class AdvertFashion {
     private String productLocation;
     private String productDescription;
 
-    public AdvertFashion(Uri imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
+    public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
         this.productID = counter++;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
@@ -37,11 +35,11 @@ public class AdvertFashion {
         this.productID = productID;
     }
 
-    public Uri getImageUri() {
+    public String getImageUri() {
         return imageUri;
     }
 
-    public void setImageUri(Uri imageUri) {
+    public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
 

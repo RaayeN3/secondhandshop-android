@@ -33,13 +33,17 @@
             android:label="@string/title_activity_browse"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.AdvertGeneralActivity"
+            android:name=".activities.AdvertActivity"
             android:label="@string/title_activity_sell"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AdvertFashionActivity"
             android:label="@string/title_activity_advert_fashion"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AdvertCarActivity"
+            android:label="@string/title_activity_advert_car"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

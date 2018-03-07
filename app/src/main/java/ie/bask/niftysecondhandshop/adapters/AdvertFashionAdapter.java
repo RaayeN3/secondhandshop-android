@@ -1,6 +1,7 @@
-package ie.bask.niftysecondhandshop.activities;
+package ie.bask.niftysecondhandshop.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,31 +10,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import ie.bask.niftysecondhandshop.R;
-import ie.bask.niftysecondhandshop.models.Advert;
+import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
-class AdvertAdapter extends ArrayAdapter<Advert> {
+/**
+ * Created by cecobask on 28-Feb-18.
+ */
+
+public class AdvertFashionAdapter extends ArrayAdapter<AdvertFashion> {
+
     private Context context;
-    private List<Advert> adverts;
+    private List<AdvertFashion> fashionAdverts;
     private ViewHolder v;
 
-
-    public AdvertAdapter(Context context, List<Advert> adverts) {
-        super(context, R.layout.row_advert, adverts);
+    public AdvertFashionAdapter(Context context, List<AdvertFashion> fashionAdverts) {
+        super(context, R.layout.row_advert_fashion, fashionAdverts);
         this.context = context;
-        this.adverts = adverts;
+        this.fashionAdverts = fashionAdverts;
     }
 
     static class ViewHolder {
         ImageView productImage;
         TextView productTitle;
         TextView productPrice;
+        TextView productType;
+        TextView productSize;
         TextView productLocation;
         TextView productDescription;
     }
 
     @Override
-    public Advert getItem(int position) {
-        return adverts.get(position);
+    public AdvertFashion getItem(int position) {
+        return fashionAdverts.get(position);
     }
 
     @Override
@@ -48,22 +55,26 @@ class AdvertAdapter extends ArrayAdapter<Advert> {
 
         if (view == null) {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = li.inflate(R.layout.row_advert, parent, false);
+            view = li.inflate(R.layout.row_advert_fashion, parent, false);
         } else {
             view = convertView;
         }
 
-        v = new ViewHolder();
+        v = new AdvertFashionAdapter.ViewHolder();
         v.productImage = view.findViewById(R.id.row_image);
         v.productTitle = view.findViewById(R.id.row_title);
         v.productPrice = view.findViewById(R.id.row_price);
+        v.productType = view.findViewById(R.id.row_type);
+        v.productSize = view.findViewById(R.id.row_size);
         v.productLocation = view.findViewById(R.id.row_location);
         v.productDescription = view.findViewById(R.id.row_details);
 
-        final Advert dataSet = adverts.get(position);
-        v.productImage.setImageURI(dataSet.getImageUri());
+        final AdvertFashion dataSet = fashionAdverts.get(position);
+        v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
         v.productTitle.setText(dataSet.getProductTitle());
         v.productPrice.setText("€" + dataSet.getProductPrice());
+        v.productType.setText(dataSet.getProductType());
+        v.productSize.setText(dataSet.getProductSize());
         v.productLocation.setText(dataSet.getProductLocation());
         v.productDescription.setText(dataSet.getProductDescription());
 
@@ -72,7 +83,6 @@ class AdvertAdapter extends ArrayAdapter<Advert> {
 
     @Override
     public int getCount() {
-        return adverts.size();
+        return fashionAdverts.size();
     }
-
 }

@@ -4,9 +4,10 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +20,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
-
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.Advert;
+import ie.bask.niftysecondhandshop.models.AdvertCar;
 import ie.bask.niftysecondhandshop.models.AdvertFashion;
 import pl.tajchert.nammu.Nammu;
 import pl.tajchert.nammu.PermissionCallback;
@@ -38,12 +42,12 @@ public class Base extends AppCompatActivity {
 
     public static List<Advert> adverts = new ArrayList<>();
     public static List<AdvertFashion> fashionAdverts = new ArrayList<>();
+    public static List<AdvertCar> carAdverts = new ArrayList<>();
     public EditText productTitle;
     public ScrollableNumberPicker snp_horizontal;
     public EditText priceManual;
     public Spinner locationSpinner;
     public ImageView advertImage;
-    public Button photoButton;
     public Bitmap bitmap;
     public static final int CAMERA_PIC_REQUEST = 1111;
     public Button submitButton;
@@ -59,6 +63,11 @@ public class Base extends AppCompatActivity {
         Toast.makeText(this, "You added a new Fashion Advert object!", Toast.LENGTH_SHORT).show();
     }
 
+    public void newAdvertCar(AdvertCar carAdvert) {
+        carAdverts.add(carAdvert);
+        Toast.makeText(this, "You added a new Car Advert object!", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -72,14 +81,14 @@ public class Base extends AppCompatActivity {
         MenuItem sell = menu.findItem(R.id.sellMenu);
         MenuItem browse = menu.findItem(R.id.browseMenu);
 
-        if (adverts.isEmpty()) {
+        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
             browse.setEnabled(false);
         } else
             browse.setEnabled(true);
 
         if (this instanceof MainActivity) {
             home.setVisible(false);
-        } else if (this instanceof AdvertGeneralActivity) {
+        } else if (this instanceof AdvertActivity || this instanceof AdvertFashionActivity || this instanceof AdvertCarActivity) {
             sell.setVisible(false);
         } else {
             browse.setVisible(false);
@@ -95,7 +104,7 @@ public class Base extends AppCompatActivity {
     }
 
     public void sell(MenuItem item) {
-        startActivity(new Intent(this, AdvertGeneralActivity.class));
+        startActivity(new Intent(this, AdvertActivity.class));
     }
 
     public void browse(MenuItem item) {
@@ -114,11 +123,11 @@ public class Base extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (i == 0) {
-                    startActivity(new Intent(getApplicationContext(), AdvertGeneralActivity.class));
+                    startActivity(new Intent(getApplicationContext(), AdvertActivity.class));
                 } else if (i == 1) {
                     startActivity(new Intent(getApplicationContext(), AdvertFashionActivity.class));
                 } else {
-                    startActivity(new Intent(getApplicationContext(), BrowseActivity.class));
+                    startActivity(new Intent(getApplicationContext(), AdvertCarActivity.class));
                 }
             }
         });
@@ -154,15 +163,14 @@ public class Base extends AppCompatActivity {
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_PIC_REQUEST);
-        photoButton.setVisibility(View.GONE);
     }
 
 
-    public Uri getImageUri(Bitmap inImage) {
+    public String getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+        return path;
     }
 
 
@@ -177,4 +185,59 @@ public class Base extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
     }
+
+    public void saveAdvertList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(adverts);
+        editor.putString("1", json);
+        editor.apply();
+    }
+
+    public List<Advert> loadAdvertList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String json = prefs.getString("1", null);
+        Type type = new TypeToken<List<Advert>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public void saveAdvertFashionList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(fashionAdverts);
+        editor.putString("2", json);
+        editor.apply();
+    }
+
+    public List<AdvertFashion> loadAdvertFashionList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String json = prefs.getString("2", null);
+        Type type = new TypeToken<List<AdvertFashion>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public void saveAdvertCarList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(carAdverts);
+        editor.putString("3", json);
+        editor.apply();
+    }
+
+    public List<AdvertCar> loadAdvertCarList() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String json = prefs.getString("3", null);
+        Type type = new TypeToken<List<AdvertCar>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
 }
