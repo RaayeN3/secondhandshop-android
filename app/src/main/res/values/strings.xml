@@ -51,6 +51,13 @@
     <string name="advertModel">Model:</string>
     <string name="advertYear">Year:</string>
     <string name="emptyAdvertsCategory">No adverts in this category.</string>
+    <string name="user_registration">User Registration</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="user_login">User Login</string>
+    <string name="button_login">Log in</string>
+    <string name="button_register">Register</string>
+    <string name="logout">Log out</string>
     <string-array name="carMakes">
         <item>Honda</item>
         <item>Toyota</item>

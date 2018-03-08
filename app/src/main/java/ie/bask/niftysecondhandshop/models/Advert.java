@@ -6,14 +6,13 @@ package ie.bask.niftysecondhandshop.models;
 
 public class Advert {
 
-    private Long counter = (long) 1;
+    private static Long counter = (long) 1;
     private Long productID;
     private String imageUri;
     private String productTitle;
     private double productPrice;
     private String productLocation;
     private String productDescription;
-
 
     public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
         this.productID = counter++;
@@ -72,11 +71,12 @@ public class Advert {
         this.imageUri = imageUri;
     }
 
+
     @Override
     public String toString() {
         return "Advert{" +
                 "productID=" + productID +
-                ", imageUri=" + imageUri +
+                ", imageUri='" + imageUri + '\'' +
                 ", productTitle='" + productTitle + '\'' +
                 ", productPrice=" + productPrice +
                 ", productLocation='" + productLocation + '\'' +

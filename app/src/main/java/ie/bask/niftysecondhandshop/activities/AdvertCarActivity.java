@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import ie.bask.niftysecondhandshop.R;
+import ie.bask.niftysecondhandshop.models.Advert;
 import ie.bask.niftysecondhandshop.models.AdvertCar;
 
 public class AdvertCarActivity extends Base {
@@ -27,6 +29,8 @@ public class AdvertCarActivity extends Base {
         setContentView(R.layout.activity_advert_car);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loadAdvertCarList();
 
         advertImage = findViewById(R.id.advertImage);
 
@@ -103,11 +107,20 @@ public class AdvertCarActivity extends Base {
             productDetails.setError("Details field is required!");
             productDetails.requestFocus();
         } else {
-            newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                int position = extras.getInt("pos");
+                carAdverts.set(position, new AdvertCar(imageUri, make, model, year, price, location, details));
+                saveAdvertCarList();
+                Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                Log.v("MyLogs", String.valueOf(position));
+            } else {
+                newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
+                saveAdvertCarList();
+                Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
+                        " (5) Location: " + location + " (6) Details: " + details);
+            }
         }
-
-        Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
-                " (5) Location: " + location + " (6) Details: " + details);
     }
 
 }

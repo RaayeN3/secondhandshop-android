@@ -6,7 +6,7 @@ package ie.bask.niftysecondhandshop.models;
 
 public class AdvertFashion {
 
-    private Long counter = (long) 1;
+    private static Long counter = (long) 1;
     private Long productID;
     private String imageUri;
     private String productTitle;
@@ -89,5 +89,19 @@ public class AdvertFashion {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "AdvertFashion{" +
+                "productID=" + productID +
+                ", imageUri='" + imageUri + '\'' +
+                ", productTitle='" + productTitle + '\'' +
+                ", productPrice=" + productPrice +
+                ", productType='" + productType + '\'' +
+                ", productSize='" + productSize + '\'' +
+                ", productLocation='" + productLocation + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                '}';
     }
 }

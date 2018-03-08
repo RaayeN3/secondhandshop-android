@@ -6,7 +6,7 @@ package ie.bask.niftysecondhandshop.models;
 
 public class AdvertCar {
 
-    private Long counter = (long) 1;
+    private static Long counter = (long) 1;
     private Long carID;
     private String imageUri;
     private String carMake;
@@ -89,5 +89,19 @@ public class AdvertCar {
 
     public void setCarDescription(String carDescription) {
         this.carDescription = carDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "AdvertCar{" +
+                "carID=" + carID +
+                ", imageUri='" + imageUri + '\'' +
+                ", carMake='" + carMake + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", carYear=" + carYear +
+                ", carPrice=" + carPrice +
+                ", carLocation='" + carLocation + '\'' +
+                ", carDescription='" + carDescription + '\'' +
+                '}';
     }
 }

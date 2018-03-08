@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.Advert;
@@ -84,11 +85,19 @@ public class AdvertActivity extends Base {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();
         } else {
-            newAdvert(new Advert(imageUri, title, price, location, details));
-            saveAdvertList();
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                int position = extras.getInt("pos");
+                adverts.set(position, new Advert(imageUri, title, price, location, details));
+                saveAdvertList();
+                Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                Log.v("MyLogs", "Updated position " + String.valueOf(position));
+            } else {
+                newAdvert(new Advert(imageUri, title, price, location, details));
+                saveAdvertList();
+                Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Location: " + location + " (4) Details: " + details);
+            }
         }
-
-        Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Location: " + location + " (4) Details: " + details);
     }
 
 }

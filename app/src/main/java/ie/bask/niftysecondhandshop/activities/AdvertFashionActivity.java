@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import ie.bask.niftysecondhandshop.R;
+import ie.bask.niftysecondhandshop.models.Advert;
 import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class AdvertFashionActivity extends Base {
@@ -128,10 +130,20 @@ public class AdvertFashionActivity extends Base {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();
         } else {
-            newAdvertFashion(new AdvertFashion(imageUri, title, price, type, size, location, details));
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                int position = extras.getInt("pos");
+                fashionAdverts.set(position, new AdvertFashion(imageUri, title, price, type, size, location, details));
+                saveAdvertFashionList();
+                Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                Log.v("MyLogs", "Updated position " + String.valueOf(position));
+            } else {
+                newAdvertFashion(new AdvertFashion(imageUri, title, price, type, size, location, details));
+                saveAdvertFashionList();
+                Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
+                        " (5) Location: " + location + " (6) Details: " + details);
+            }
         }
-
-        Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
-                " (5) Location: " + location + " (6) Details: " + details);
     }
+
 }

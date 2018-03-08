@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.adapters.AdvertAdapter;
 import ie.bask.niftysecondhandshop.adapters.AdvertCarAdapter;
@@ -38,6 +39,7 @@ public class BrowseActivity extends Base {
         fashionAdverts = loadAdvertFashionList();
         carAdverts = loadAdvertCarList();
 
+
         emptyAdvertCategory = findViewById(R.id.emptyAdvertCategory);
         emptyAdvertCategory.setVisibility(View.GONE);
 
@@ -57,16 +59,16 @@ public class BrowseActivity extends Base {
                             startActivity(new Intent(getApplicationContext(), AdvertActivity.class));
                         } else if (i == 1) {
                             Intent AdvertIntent = new Intent(getApplicationContext(), AdvertActivity.class);
-                            startActivity(AdvertIntent);
-                            Advert temporary = adverts.get(adverts.size() - 1);
-                            adverts.set(position, temporary);
-                            adverts.remove(temporary);
+                            AdvertIntent.putExtra("pos", position);
+                            startActivityForResult(AdvertIntent, 0);
                             adapter.notifyDataSetChanged();
                         } else if (i == 2) {
                             adverts.remove(position);
+                            saveAdvertList();
                             adapter.notifyDataSetChanged();
                         } else {
                             adverts.clear();
+                            saveAdvertList();
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -93,16 +95,16 @@ public class BrowseActivity extends Base {
                             startActivity(new Intent(getApplicationContext(), AdvertFashionActivity.class));
                         } else if (i == 1) {
                             Intent AdvertFashionIntent = new Intent(getApplicationContext(), AdvertFashionActivity.class);
-                            startActivity(AdvertFashionIntent);
-                            AdvertFashion fashionTemporary = fashionAdverts.get(fashionAdverts.size() - 1);
-                            fashionAdverts.set(position, fashionTemporary);
-                            fashionAdverts.remove(fashionTemporary);
+                            AdvertFashionIntent.putExtra("pos", position);
+                            startActivityForResult(AdvertFashionIntent, 0);
                             adapterFashion.notifyDataSetChanged();
                         } else if (i == 2) {
                             fashionAdverts.remove(position);
+                            saveAdvertFashionList();
                             adapterFashion.notifyDataSetChanged();
                         } else {
                             fashionAdverts.clear();
+                            saveAdvertFashionList();
                             adapterFashion.notifyDataSetChanged();
                         }
                     }
@@ -129,16 +131,16 @@ public class BrowseActivity extends Base {
                             startActivity(new Intent(getApplicationContext(), AdvertCarActivity.class));
                         } else if (i == 1) {
                             Intent AdvertCarIntent = new Intent(getApplicationContext(), AdvertCarActivity.class);
-                            startActivity(AdvertCarIntent);
-                            AdvertCar carTemporary = carAdverts.get(carAdverts.size() - 1);
-                            carAdverts.set(position, carTemporary);
-                            carAdverts.remove(carTemporary);
+                            AdvertCarIntent.putExtra("pos", position);
+                            startActivityForResult(AdvertCarIntent, 0);
                             adapterCar.notifyDataSetChanged();
                         } else if (i == 2) {
                             carAdverts.remove(position);
+                            saveAdvertCarList();
                             adapterCar.notifyDataSetChanged();
                         } else {
                             carAdverts.clear();
+                            saveAdvertCarList();
                             adapterCar.notifyDataSetChanged();
                         }
                     }
