@@ -23,10 +23,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.Advert;
 import ie.bask.niftysecondhandshop.models.AdvertCar;
@@ -104,7 +106,23 @@ public class Base extends AppCompatActivity {
     }
 
     public void sell(MenuItem item) {
-        startActivity(new Intent(this, AdvertActivity.class));
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Choose type of Advert");
+        String[] items = {"General advert", "Fashion advert", "Car advert"};
+        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == 0) {
+                    startActivity(new Intent(getApplicationContext(), AdvertActivity.class));
+                } else if (i == 1) {
+                    startActivity(new Intent(getApplicationContext(), AdvertFashionActivity.class));
+                } else {
+                    startActivity(new Intent(getApplicationContext(), AdvertCarActivity.class));
+                }
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     public void browse(MenuItem item) {
@@ -136,11 +154,19 @@ public class Base extends AppCompatActivity {
     }
 
     public void homeButtonPressed(View view) {
-        startActivity(new Intent(this, MainActivity.class));
+        if (this instanceof MainActivity) {
+            view.setEnabled(false);
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 
     public void browseButtonPressed(View view) {
-        startActivity(new Intent(this, BrowseActivity.class));
+        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
+            view.setEnabled(false);
+        } else {
+            startActivity(new Intent(this, BrowseActivity.class));
+        }
     }
 
     public void permissionCheck() {
@@ -201,7 +227,8 @@ public class Base extends AppCompatActivity {
         String json = prefs.getString("1", null);
         Type type = new TypeToken<List<Advert>>() {
         }.getType();
-        return gson.fromJson(json, type);
+        adverts = gson.fromJson(json, type);
+        return adverts;
     }
 
     public void saveAdvertFashionList() {
@@ -219,7 +246,8 @@ public class Base extends AppCompatActivity {
         String json = prefs.getString("2", null);
         Type type = new TypeToken<List<AdvertFashion>>() {
         }.getType();
-        return gson.fromJson(json, type);
+        fashionAdverts = gson.fromJson(json, type);
+        return fashionAdverts;
     }
 
     public void saveAdvertCarList() {
@@ -237,7 +265,8 @@ public class Base extends AppCompatActivity {
         String json = prefs.getString("3", null);
         Type type = new TypeToken<List<AdvertCar>>() {
         }.getType();
-        return gson.fromJson(json, type);
+        carAdverts = gson.fromJson(json, type);
+        return carAdverts;
     }
 
 }

@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.List;
+
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
@@ -70,9 +72,14 @@ public class AdvertFashionAdapter extends ArrayAdapter<AdvertFashion> {
         v.productDescription = view.findViewById(R.id.row_details);
 
         final AdvertFashion dataSet = fashionAdverts.get(position);
-        v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
+        if (dataSet.getImageUri().equals("default")) {
+            v.productImage.setImageResource(R.drawable.ic_shoes);
+        } else {
+            v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
+        }
         v.productTitle.setText(dataSet.getProductTitle());
-        v.productPrice.setText("€" + dataSet.getProductPrice());
+        String productPrice = "€" + dataSet.getProductPrice();
+        v.productPrice.setText(productPrice);
         v.productType.setText(dataSet.getProductType());
         v.productSize.setText(dataSet.getProductSize());
         v.productLocation.setText(dataSet.getProductLocation());

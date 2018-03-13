@@ -15,9 +15,6 @@ import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.adapters.AdvertAdapter;
 import ie.bask.niftysecondhandshop.adapters.AdvertCarAdapter;
 import ie.bask.niftysecondhandshop.adapters.AdvertFashionAdapter;
-import ie.bask.niftysecondhandshop.models.Advert;
-import ie.bask.niftysecondhandshop.models.AdvertCar;
-import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class BrowseActivity extends Base {
 
@@ -34,11 +31,6 @@ public class BrowseActivity extends Base {
         setContentView(R.layout.activity_browse);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        adverts = loadAdvertList();
-        fashionAdverts = loadAdvertFashionList();
-        carAdverts = loadAdvertCarList();
-
 
         emptyAdvertCategory = findViewById(R.id.emptyAdvertCategory);
         emptyAdvertCategory.setVisibility(View.GONE);
@@ -64,11 +56,9 @@ public class BrowseActivity extends Base {
                             adapter.notifyDataSetChanged();
                         } else if (i == 2) {
                             adverts.remove(position);
-                            saveAdvertList();
                             adapter.notifyDataSetChanged();
                         } else {
                             adverts.clear();
-                            saveAdvertList();
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -100,11 +90,9 @@ public class BrowseActivity extends Base {
                             adapterFashion.notifyDataSetChanged();
                         } else if (i == 2) {
                             fashionAdverts.remove(position);
-                            saveAdvertFashionList();
                             adapterFashion.notifyDataSetChanged();
                         } else {
                             fashionAdverts.clear();
-                            saveAdvertFashionList();
                             adapterFashion.notifyDataSetChanged();
                         }
                     }
@@ -136,11 +124,9 @@ public class BrowseActivity extends Base {
                             adapterCar.notifyDataSetChanged();
                         } else if (i == 2) {
                             carAdverts.remove(position);
-                            saveAdvertCarList();
                             adapterCar.notifyDataSetChanged();
                         } else {
                             carAdverts.clear();
-                            saveAdvertCarList();
                             adapterCar.notifyDataSetChanged();
                         }
                     }
@@ -204,6 +190,7 @@ public class BrowseActivity extends Base {
         }
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
         saveAdvertList();

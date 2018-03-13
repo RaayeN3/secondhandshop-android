@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import ie.bask.niftysecondhandshop.R;
-import ie.bask.niftysecondhandshop.models.Advert;
 import ie.bask.niftysecondhandshop.models.AdvertCar;
 
 public class AdvertCarActivity extends Base {
@@ -75,6 +74,7 @@ public class AdvertCarActivity extends Base {
         takePhoto();
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
         saveAdvertCarList();
@@ -111,12 +111,10 @@ public class AdvertCarActivity extends Base {
             if (extras != null) {
                 int position = extras.getInt("pos");
                 carAdverts.set(position, new AdvertCar(imageUri, make, model, year, price, location, details));
-                saveAdvertCarList();
                 Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
                 Log.v("MyLogs", String.valueOf(position));
             } else {
                 newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
-                saveAdvertCarList();
                 Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
                         " (5) Location: " + location + " (6) Details: " + details);
             }

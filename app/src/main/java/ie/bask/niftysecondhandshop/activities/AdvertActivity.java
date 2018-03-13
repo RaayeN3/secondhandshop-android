@@ -55,6 +55,7 @@ public class AdvertActivity extends Base {
         takePhoto();
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
         saveAdvertList();
@@ -74,7 +75,6 @@ public class AdvertActivity extends Base {
 
 
         String imageUri = getImageUri(bitmap);
-//        Uri imageUri = getImageUri(bitmap);
         Log.v("MyLogs", "Value of imageUri is " + imageUri);
 
 
@@ -89,12 +89,10 @@ public class AdvertActivity extends Base {
             if (extras != null) {
                 int position = extras.getInt("pos");
                 adverts.set(position, new Advert(imageUri, title, price, location, details));
-                saveAdvertList();
                 Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
                 Log.v("MyLogs", "Updated position " + String.valueOf(position));
             } else {
                 newAdvert(new Advert(imageUri, title, price, location, details));
-                saveAdvertList();
                 Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Location: " + location + " (4) Details: " + details);
             }
         }

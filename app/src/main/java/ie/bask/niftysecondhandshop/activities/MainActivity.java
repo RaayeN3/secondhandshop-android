@@ -1,6 +1,7 @@
 package ie.bask.niftysecondhandshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,10 +12,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import ie.bask.niftysecondhandshop.R;
+import ie.bask.niftysecondhandshop.models.Advert;
+import ie.bask.niftysecondhandshop.models.AdvertCar;
+import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class MainActivity extends Base implements View.OnClickListener {
-
-    private Button sellButton;
 
     //firebase auth object
     private FirebaseAuth firebaseAuth;
@@ -22,6 +24,8 @@ public class MainActivity extends Base implements View.OnClickListener {
     //view objects
     private TextView textViewUserEmail;
     private Button buttonLogout;
+    private Button sellButton;
+    private SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,18 @@ public class MainActivity extends Base implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+        if (prefs.getBoolean("firstRun", true)) {
+            fashionAdverts.add(new AdvertFashion("default", "Adidas Superstar", 70, "Shoes", "43", "Dunmore East", "Got them as a present, but they didn't fit me..."));
+            adverts.add(new Advert("default", "iPhone 7", 600, "Tramore", "Perfect condition. Looks like new! :)"));
+            carAdverts.add(new AdvertCar("default", "Toyota", "Prius", 2012, 5000, "Waterford", "Car is well-kept. Mileage is only 50,000!"));
+            prefs.edit().putBoolean("firstRun", false).apply();
+        } else {
+            adverts = loadAdvertList();
+            fashionAdverts = loadAdvertFashionList();
+            carAdverts = loadAdvertCarList();
+        }
 
         sellButton = findViewById(R.id.sellButton);
         sellButton.setOnClickListener(this);
@@ -47,16 +63,24 @@ public class MainActivity extends Base implements View.OnClickListener {
         }
 
         //initializing views
-        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        textViewUserEmail = findViewById(R.id.textViewUserEmail);
+        buttonLogout = findViewById(R.id.buttonLogout);
 
         //displaying logged in user name
-        textViewUserEmail.setText("Welcome " + user.getEmail());
+        String welcomeUser = "Welcome " + user.getEmail();
+        textViewUserEmail.setText(welcomeUser);
 
         //adding listener to button
         buttonLogout.setOnClickListener(this);
-        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveAdvertList();
+        saveAdvertFashionList();
+        saveAdvertCarList();
+    }
 
     @Override
     public void onClick(View v) {
