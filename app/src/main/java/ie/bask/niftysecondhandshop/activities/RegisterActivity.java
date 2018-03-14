@@ -20,14 +20,14 @@ import ie.bask.niftysecondhandshop.R;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Widgets
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonRegister;
     private Button buttonLogin;
     private ProgressDialog progressDialog;
 
-
-    //defining firebaseauth object
+    // Defining Firebaseauth object
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -35,32 +35,34 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //initializing firebase auth object
+        // Initialising firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
-            //that means user is already logged in
+            // That means user is already logged in
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        // Initialising widgets
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonRegister = findViewById(R.id.buttonRegister);
-
         progressDialog = new ProgressDialog(this);
 
+        // Set onClick listeners for the buttons
         buttonRegister.setOnClickListener(this);
         buttonLogin.setOnClickListener(this);
     }
 
     private void registerUser() {
 
+        // Get input values from widgets
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        //checking if email and passwords are empty
+        // Checking if email and passwords are empty
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
@@ -73,18 +75,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        //if the email and password are not empty
-        //displaying a progress dialog
+        // If the email and password are not empty
+        // display a progress dialog
 
         progressDialog.setMessage("Registering, please wait...");
         progressDialog.show();
 
-        //creating a new user
+        // Creating a new user
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        //checking if success
+                        // Checking if successful
                         if (task.isSuccessful()) {
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -96,6 +98,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 });
     }
 
+
+    /**
+     * Handle onClick events
+     */
     @Override
     public void onClick(View view) {
 
@@ -104,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (view == buttonLogin) {
-            //open login activity when user taps on the already registered textview
+            // Open login activity when user clicks on Login button
             startActivity(new Intent(this, LoginActivity.class));
         }
 

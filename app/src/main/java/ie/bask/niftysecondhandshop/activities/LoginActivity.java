@@ -20,13 +20,14 @@ import ie.bask.niftysecondhandshop.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Widgets
     private Button buttonLogin;
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private ProgressDialog progressDialog;
 
-    //firebase auth object
+    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
 
@@ -35,16 +36,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //getting firebase auth object
+        // Getting firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
-            //means user is already logged in
+            // Means user is already logged in
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
-        //initializing views
+        // Initialising widgets
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
@@ -52,17 +53,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressDialog = new ProgressDialog(this);
 
+        // Set onClick listeners to buttons
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
     }
 
+
     private void userLogin() {
 
+        // Get values from widgets
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
 
-        //checking if email and passwords are empty
+        // Checking if email and passwords are empty
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
@@ -75,13 +79,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        //if the email and password are not empty
-        //displaying a progress dialog
-
+        // If the email and password are not empty
+        // displaying a progress dialog
         progressDialog.setMessage("Logging in, please wait...");
         progressDialog.show();
 
-        //logging in the user
+        // Logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -97,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    /**
+     * Handle onClick events
+     */
     @Override
     public void onClick(View view) {
         if (view == buttonLogin) {

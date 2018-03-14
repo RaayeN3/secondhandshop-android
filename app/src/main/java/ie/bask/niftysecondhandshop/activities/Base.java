@@ -42,19 +42,29 @@ import pl.tajchert.nammu.PermissionCallback;
 
 public class Base extends AppCompatActivity {
 
+    // ArrayLists storing objects of type Advert, AdvertFashion and AdvertCar
     public static List<Advert> adverts = new ArrayList<>();
     public static List<AdvertFashion> fashionAdverts = new ArrayList<>();
     public static List<AdvertCar> carAdverts = new ArrayList<>();
+
+    // Widgets shared across multiple Activities
     public EditText productTitle;
     public ScrollableNumberPicker snp_horizontal;
     public EditText priceManual;
     public Spinner locationSpinner;
     public ImageView advertImage;
-    public Bitmap bitmap;
-    public static final int CAMERA_PIC_REQUEST = 1111;
     public Button submitButton;
     public EditText productDetails;
 
+    // Bitmap to temporary store image captured with the camera
+    public Bitmap bitmap;
+    public static final int CAMERA_PIC_REQUEST = 1111;
+
+
+    /**
+     * Adding new object to the ArrayList
+     * of the respective type (Advert/AdvertFashion/AdvertCar)
+     */
     public void newAdvert(Advert advert) {
         adverts.add(advert);
         Toast.makeText(this, "You added a new Advert object!", Toast.LENGTH_SHORT).show();
@@ -70,12 +80,20 @@ public class Base extends AppCompatActivity {
         Toast.makeText(this, "You added a new Car Advert object!", Toast.LENGTH_SHORT).show();
     }
 
+
+    /**
+     * Inflate the menu across every Activity
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+
+    /**
+     * Conditional Menu navigation
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -101,6 +119,9 @@ public class Base extends AppCompatActivity {
         return true;
     }
 
+
+    /** Methods used by side menu
+     */
     public void home(MenuItem item) {
         startActivity(new Intent(this, MainActivity.class));
     }
@@ -112,11 +133,16 @@ public class Base extends AppCompatActivity {
         alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                // if General Advert
                 if (i == 0) {
                     startActivity(new Intent(getApplicationContext(), AdvertActivity.class));
-                } else if (i == 1) {
+                }
+                // if Fashion Advert
+                else if (i == 1) {
                     startActivity(new Intent(getApplicationContext(), AdvertFashionActivity.class));
-                } else {
+                }
+                // if Car Advert
+                else {
                     startActivity(new Intent(getApplicationContext(), AdvertCarActivity.class));
                 }
             }
@@ -133,6 +159,9 @@ public class Base extends AppCompatActivity {
         Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show();
     }
 
+
+    /** Methods used by bottom_menu onClick
+     */
     public void sellButtonPressed(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Choose type of Advert");
@@ -162,13 +191,18 @@ public class Base extends AppCompatActivity {
     }
 
     public void browseButtonPressed(View view) {
+        // Check if ArrayLists are empty
         if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
+            // if empty disable browse button
             view.setEnabled(false);
         } else {
             startActivity(new Intent(this, BrowseActivity.class));
         }
     }
 
+
+    /** Request permission for writing on External Storage of device
+     */
     public void permissionCheck() {
         int permissionCheckExtStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheckExtStorage != PackageManager.PERMISSION_GRANTED) {
@@ -186,12 +220,17 @@ public class Base extends AppCompatActivity {
         }
     }
 
+
+    /** Start the camera
+     */
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_PIC_REQUEST);
     }
 
 
+    /** Get the URI path of passed Bitmap image
+     */
     public String getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -200,6 +239,8 @@ public class Base extends AppCompatActivity {
     }
 
 
+    /** Receive captured image from camera and store it as Bitmap
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -212,6 +253,8 @@ public class Base extends AppCompatActivity {
         }
     }
 
+    /** Converting ArrayList into JSON file and storing in SharedPreferences
+     */
     public void saveAdvertList() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = prefs.edit();
@@ -221,6 +264,8 @@ public class Base extends AppCompatActivity {
         editor.apply();
     }
 
+    /** Retrieving data from SharedPreferences and storing back into the ArrayList
+     */
     public List<Advert> loadAdvertList() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();

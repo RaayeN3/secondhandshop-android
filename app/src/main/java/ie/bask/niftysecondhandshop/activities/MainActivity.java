@@ -18,14 +18,16 @@ import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class MainActivity extends Base implements View.OnClickListener {
 
-    //firebase auth object
+    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
-    //view objects
+    // Declaring SharedPreferences
+    private SharedPreferences prefs = null;
+
+    // Widgets
     private TextView textViewUserEmail;
     private Button buttonLogout;
     private Button sellButton;
-    private SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,46 +36,55 @@ public class MainActivity extends Base implements View.OnClickListener {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Initialising SharedPreferences
         prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+
+        // Check if this is the first time the app is running
         if (prefs.getBoolean("firstRun", true)) {
             fashionAdverts.add(new AdvertFashion("default", "Adidas Superstar", 70, "Shoes", "43", "Dunmore East", "Got them as a present, but they didn't fit me..."));
             adverts.add(new Advert("default", "iPhone 7", 600, "Tramore", "Perfect condition. Looks like new! :)"));
             carAdverts.add(new AdvertCar("default", "Toyota", "Prius", 2012, 5000, "Waterford", "Car is well-kept. Mileage is only 50,000!"));
+            // Set firstRun to false
             prefs.edit().putBoolean("firstRun", false).apply();
-        } else {
+        }
+        // If this isn't the first time the app is running, load data from SharedPreferences
+        else {
             adverts = loadAdvertList();
             fashionAdverts = loadAdvertFashionList();
             carAdverts = loadAdvertCarList();
         }
 
+        // Initialising widgets
+        textViewUserEmail = findViewById(R.id.textViewUserEmail);
+        buttonLogout = findViewById(R.id.buttonLogout);
         sellButton = findViewById(R.id.sellButton);
         sellButton.setOnClickListener(this);
 
-        //initializing firebase authentication object
+        // Initialising Firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //getting current user
+        // Getting current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        //if the user is not logged in
-        //that means current user will return null
+        // If the user is not logged in
+        // that means current user will return null
         if (user == null) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        //initializing views
-        textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        buttonLogout = findViewById(R.id.buttonLogout);
-
-        //displaying logged in user name
+        // Displaying logged in user name
         String welcomeUser = "Welcome " + user.getEmail();
         textViewUserEmail.setText(welcomeUser);
 
-        //adding listener to button
+        // Adding listener to button
         buttonLogout.setOnClickListener(this);
     }
 
+
+    /**
+     * Save adverts to SharedPreferences when onPause state is triggered
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -82,6 +93,10 @@ public class MainActivity extends Base implements View.OnClickListener {
         saveAdvertCarList();
     }
 
+
+    /**
+     * Handle onClick events
+     */
     @Override
     public void onClick(View v) {
         if (v == buttonLogout) {
@@ -94,5 +109,6 @@ public class MainActivity extends Base implements View.OnClickListener {
             sellButtonPressed(v);
         }
     }
+
 }
 
