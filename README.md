@@ -22,6 +22,26 @@ time, it will load data from SharedPreferences. When onPause state is triggered,
 - [Firebase](https://firebase.google.com/)
 - [JUnit](https://junit.org/junit4/)
 
+## UX / DX approach adopted
+User experience was enhanced through the use of bottom menu and app bar menu for easy navigation between the activities. Fields, like 
+price, are set up as Scrollable Number Pickers, plus an extra EditText for quicker input. Location fields are setup as Spinners, as
+in that way the user doesn't need to type in what their location is, they can simply select from the Spinner items, which also prevents
+false input. Each field's length is limited to different size, to prevent the input of too many symbols, that are not needed. For example, price field only needs a length of 3-5, as this app is intended to sell only general, fashion and car items (second hand).
+In Browse activity, there are 3 ListViews and there is only 1 displayed at a time, depending on the selected radio button (advert type).
+
+On developer experience side, I made sure everything is neatly organised and easy to follow. I utilised MVC (Model/View/Controller)
+design pattern. They are all separated into their own packages. Code is thoroughly commented and formatted. Base class is used to keep
+all the methods and features shared across different activities.
+
+## Git approach adopted
+I regurarly commited changes to GitHub. I did not follow a pattern with my commits. Commits were done whenever I fix a problem or 
+introduce new features. The way I commited was through the Android Studio UI - VCS.
+
+## Author
+**Tsvetoslav Dimov**  
+*Waterford Institute of Technology*  
+[LinkedIn](https://www.linkedin.com/in/cecobask/)
+
 ## References
 - (https://stackoverflow.com/questions/34311601/how-to-add-a-bottom-menu-to-android-activity)
 - (https://stackoverflow.com/questions/10266595/how-to-make-a-round-button)
