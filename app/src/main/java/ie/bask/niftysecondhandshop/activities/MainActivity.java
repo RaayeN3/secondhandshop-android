@@ -2,10 +2,12 @@ package ie.bask.niftysecondhandshop.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,16 +20,14 @@ import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class MainActivity extends Base implements View.OnClickListener {
 
-    // Firebase auth object
-    private FirebaseAuth firebaseAuth;
 
     // Declaring SharedPreferences
     private SharedPreferences prefs = null;
 
     // Widgets
     private TextView textViewUserEmail;
-    private Button buttonLogout;
     private Button sellButton;
+    private ImageButton githubButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,9 @@ public class MainActivity extends Base implements View.OnClickListener {
 
         // Initialising widgets
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
-        buttonLogout = findViewById(R.id.buttonLogout);
         sellButton = findViewById(R.id.sellButton);
+        githubButton = findViewById(R.id.githubButton);
+        githubButton.setOnClickListener(this);
         sellButton.setOnClickListener(this);
 
         // Initialising Firebase authentication object
@@ -74,11 +75,8 @@ public class MainActivity extends Base implements View.OnClickListener {
         }
 
         // Displaying logged in user name
-        String welcomeUser = "Welcome " + user.getEmail();
+        String welcomeUser = "Welcome, " + user.getEmail() + "!";
         textViewUserEmail.setText(welcomeUser);
-
-        // Adding listener to button
-        buttonLogout.setOnClickListener(this);
     }
 
 
@@ -99,14 +97,11 @@ public class MainActivity extends Base implements View.OnClickListener {
      */
     @Override
     public void onClick(View v) {
-        if (v == buttonLogout) {
-            //logging out the user
-            firebaseAuth.signOut();
-            //closing activity
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        } else if (v == sellButton) {
+        if (v == sellButton) {
             sellButtonPressed(v);
+        } else {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/cecobask"));
+            startActivity(browserIntent);
         }
     }
 

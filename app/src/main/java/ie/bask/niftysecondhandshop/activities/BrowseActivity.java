@@ -162,7 +162,6 @@ public class BrowseActivity extends Base {
         });
         carsView.setVisibility(View.GONE);
 
-
         // Manage which ListView is visible depending on selected radio button
         choice_radio_group = findViewById(R.id.choice_radio_group);
         choice_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

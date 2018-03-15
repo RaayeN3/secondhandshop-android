@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
@@ -59,6 +60,9 @@ public class Base extends AppCompatActivity {
     // Bitmap to temporary store image captured with the camera
     public Bitmap bitmap;
     public static final int CAMERA_PIC_REQUEST = 1111;
+
+    // Firebase auth object
+    public static FirebaseAuth firebaseAuth;
 
 
     /**
@@ -117,6 +121,22 @@ public class Base extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            //logging out the user
+            firebaseAuth.signOut();
+            //closing activity
+            finishAffinity();
+            Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+            backToLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(backToLogin);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -260,7 +280,7 @@ public class Base extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(adverts);
-        editor.putString("1", json);
+        editor.putString("general", json);
         editor.apply();
     }
 
@@ -269,7 +289,7 @@ public class Base extends AppCompatActivity {
     public List<Advert> loadAdvertList() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String json = prefs.getString("1", null);
+        String json = prefs.getString("general", null);
         Type type = new TypeToken<List<Advert>>() {
         }.getType();
         adverts = gson.fromJson(json, type);
@@ -281,14 +301,14 @@ public class Base extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(fashionAdverts);
-        editor.putString("2", json);
+        editor.putString("fashion", json);
         editor.apply();
     }
 
     public List<AdvertFashion> loadAdvertFashionList() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String json = prefs.getString("2", null);
+        String json = prefs.getString("fashion", null);
         Type type = new TypeToken<List<AdvertFashion>>() {
         }.getType();
         fashionAdverts = gson.fromJson(json, type);
@@ -300,14 +320,14 @@ public class Base extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(carAdverts);
-        editor.putString("3", json);
+        editor.putString("car", json);
         editor.apply();
     }
 
     public List<AdvertCar> loadAdvertCarList() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gson = new Gson();
-        String json = prefs.getString("3", null);
+        String json = prefs.getString("car", null);
         Type type = new TypeToken<List<AdvertCar>>() {
         }.getType();
         carAdverts = gson.fromJson(json, type);
