@@ -90,19 +90,30 @@ public class AdvertFashionActivity extends Base {
 
         submitButton = findViewById(R.id.submitButton);
 
+        // Populate fields with values from selected position from ListView for update
+        // Passed values with Bundle from BrowseActivity
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            productTitle.setText(bundle.getString("title"));
+            priceManual.setText(bundle.getString("price"));
+            String size = bundle.getString("size");
+            String type = bundle.getString("type");
+            if (type.equals("Clothing")) {
+                productType.check(R.id.clothing_radioButton);
+                int spinnerPosition = myAdapter.getPosition(size);
+                clothingSizeSpinner.setSelection(spinnerPosition);
+            } else {
+                productType.check(R.id.shoes_radioButton);
+                shoeSize.setValue(Integer.valueOf(size));
+            }
+            String location = bundle.getString("location");
+            int spinnerPosition = myAdapter.getPosition(location);
+            locationSpinner.setSelection(spinnerPosition);
+            productDetails.setText(bundle.getString("description"));
+        }
+
         permissionCheck();
-
         takePhoto();
-    }
-
-
-    /**
-     * Save adverts to SharedPreferences when onPause state is triggered
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveAdvertFashionList();
     }
 
 
@@ -153,13 +164,16 @@ public class AdvertFashionActivity extends Base {
         }
         // if none of the fields are empty
         else {
-            // Getting the position of clicked element from ListView in BrowseActivity
-            Bundle extras = getIntent().getExtras();
-
+            Bundle bundle = getIntent().getExtras();
             // Used for updating objects if Bundle has extras
-            if (extras != null) {
-                int position = extras.getInt("pos");
-                fashionAdverts.set(position, new AdvertFashion(imageUri, title, price, type, size, location, details));
+            if (bundle != null) {
+                // Get extras from Bundle
+                int position = bundle.getInt("pos");
+                String id = bundle.getString("id");
+                AdvertFashion ad = new AdvertFashion(id, imageUri, title, price, type, size, location, details);
+                databaseFashionAds.child(id).setValue(ad);
+                fashionAdverts.set(position, ad);
+
                 Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
                 Log.v("MyLogs", "Updated position " + String.valueOf(position));
             }

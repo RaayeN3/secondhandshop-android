@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +42,14 @@ import pl.tajchert.nammu.PermissionCallback;
  */
 
 public class Base extends AppCompatActivity {
+
+    // Our database reference objects
+    public static DatabaseReference databaseAds;
+    public static DatabaseReference databaseFashionAds;
+    public static DatabaseReference databaseCarAds;
+
+    // Firebase auth object
+    public static FirebaseAuth firebaseAuth;
 
     // ArrayLists storing objects of type Advert, AdvertFashion and AdvertCar
     public static List<Advert> adverts = new ArrayList<>();
@@ -61,26 +69,26 @@ public class Base extends AppCompatActivity {
     public Bitmap bitmap;
     public static final int CAMERA_PIC_REQUEST = 1111;
 
-    // Firebase auth object
-    public static FirebaseAuth firebaseAuth;
-
 
     /**
      * Adding new object to the ArrayList
      * of the respective type (Advert/AdvertFashion/AdvertCar)
      */
     public void newAdvert(Advert advert) {
-        adverts.add(advert);
+        // Adding the advert to Firebase Database
+        databaseAds.child(advert.getProductID()).setValue(advert);
         Toast.makeText(this, "You added a new Advert object!", Toast.LENGTH_SHORT).show();
     }
 
     public void newAdvertFashion(AdvertFashion fashionAdvert) {
-        fashionAdverts.add(fashionAdvert);
+        // Adding the advert to Firebase Database
+        databaseFashionAds.child(fashionAdvert.getProductID()).setValue(fashionAdvert);
         Toast.makeText(this, "You added a new Fashion Advert object!", Toast.LENGTH_SHORT).show();
     }
 
     public void newAdvertCar(AdvertCar carAdvert) {
-        carAdverts.add(carAdvert);
+        // Adding the advert to Firebase Database
+        databaseCarAds.child(carAdvert.getCarID()).setValue(carAdvert);
         Toast.makeText(this, "You added a new Car Advert object!", Toast.LENGTH_SHORT).show();
     }
 
@@ -104,11 +112,16 @@ public class Base extends AppCompatActivity {
         MenuItem home = menu.findItem(R.id.homeMenu);
         MenuItem sell = menu.findItem(R.id.sellMenu);
         MenuItem browse = menu.findItem(R.id.browseMenu);
+        MenuItem reset = menu.findItem(R.id.reset);
 
         if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
             browse.setEnabled(false);
-        } else
+            reset.setEnabled(false);
+        } else {
             browse.setEnabled(true);
+            reset.setEnabled(true);
+        }
+
 
         if (this instanceof MainActivity) {
             home.setVisible(false);
@@ -122,6 +135,7 @@ public class Base extends AppCompatActivity {
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,8 +189,11 @@ public class Base extends AppCompatActivity {
         startActivity(new Intent(this, BrowseActivity.class));
     }
 
-    public void settings(MenuItem item) {
-        Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show();
+    public void reset(MenuItem item) {
+        databaseAds.removeValue();
+        databaseFashionAds.removeValue();
+        databaseCarAds.removeValue();
+        Toast.makeText(this, "All adverts deleted", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -267,71 +284,88 @@ public class Base extends AppCompatActivity {
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
             bitmap = (Bitmap) data.getExtras().get("data");
             advertImage.setImageBitmap(bitmap);
-            getImageUri(bitmap);
         } else {
             startActivity(new Intent(this, MainActivity.class));
         }
     }
 
-    /** Converting ArrayList into JSON file and storing in SharedPreferences
+
+    /**
+     * Firebase Database loading methods
      */
-    public void saveAdvertList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(adverts);
-        editor.putString("general", json);
-        editor.apply();
+    public void loadAdverts() {
+        // Getting the reference of Adverts node
+        databaseAds = FirebaseDatabase.getInstance().getReference("ads");
+        // Attaching value event listener
+        databaseAds.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Clearing the previous Adverts list
+                adverts.clear();
+
+                // Iterating through all the nodes
+                for (DataSnapshot advertSnapshot : dataSnapshot.getChildren()) {
+                    // Getting Advert
+                    Advert advert = advertSnapshot.getValue(Advert.class);
+                    // Adding Advert to the list
+                    adverts.add(advert);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    /** Retrieving data from SharedPreferences and storing back into the ArrayList
-     */
-    public List<Advert> loadAdvertList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Gson gson = new Gson();
-        String json = prefs.getString("general", null);
-        Type type = new TypeToken<List<Advert>>() {
-        }.getType();
-        adverts = gson.fromJson(json, type);
-        return adverts;
+    public void loadFashionAdverts() {
+        // Getting the reference of Adverts node
+        databaseFashionAds = FirebaseDatabase.getInstance().getReference("fashionAds");
+        // Attaching value event listener
+        databaseFashionAds.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Clearing the previous Adverts list
+                fashionAdverts.clear();
+
+                for (DataSnapshot fashionAdsSnapshot : dataSnapshot.getChildren()) {
+                    AdvertFashion fAdvert = fashionAdsSnapshot.getValue(AdvertFashion.class);
+                    fashionAdverts.add(fAdvert);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    public void saveAdvertFashionList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(fashionAdverts);
-        editor.putString("fashion", json);
-        editor.apply();
-    }
+    public void loadCarAdverts() {
+        // Getting the reference of Adverts node
+        databaseCarAds = FirebaseDatabase.getInstance().getReference("carAds");
+        // Attaching value event listener
+        databaseCarAds.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-    public List<AdvertFashion> loadAdvertFashionList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Gson gson = new Gson();
-        String json = prefs.getString("fashion", null);
-        Type type = new TypeToken<List<AdvertFashion>>() {
-        }.getType();
-        fashionAdverts = gson.fromJson(json, type);
-        return fashionAdverts;
-    }
+                // Clearing the previous Adverts list
+                carAdverts.clear();
 
-    public void saveAdvertCarList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(carAdverts);
-        editor.putString("car", json);
-        editor.apply();
-    }
+                for (DataSnapshot carAdsSnapshot : dataSnapshot.getChildren()) {
+                    AdvertCar cAdvert = carAdsSnapshot.getValue(AdvertCar.class);
+                    carAdverts.add(cAdvert);
+                }
+            }
 
-    public List<AdvertCar> loadAdvertCarList() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Gson gson = new Gson();
-        String json = prefs.getString("car", null);
-        Type type = new TypeToken<List<AdvertCar>>() {
-        }.getType();
-        carAdverts = gson.fromJson(json, type);
-        return carAdverts;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

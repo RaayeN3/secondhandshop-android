@@ -30,9 +30,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/reset"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:onClick="settings"
+        android:title="@string/reset"
+        android:onClick="reset"
         app:showAsAction="never" />
 </menu>

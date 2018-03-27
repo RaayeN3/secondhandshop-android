@@ -72,11 +72,7 @@ public class AdvertFashionAdapter extends ArrayAdapter<AdvertFashion> {
         v.productDescription = view.findViewById(R.id.row_details);
 
         final AdvertFashion dataSet = fashionAdverts.get(position);
-        if (dataSet.getImageUri().equals("default")) {
-            v.productImage.setImageResource(R.drawable.ic_shoes);
-        } else {
-            v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
-        }
+        v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
         v.productTitle.setText(dataSet.getProductTitle());
         String productPrice = "€" + dataSet.getProductPrice();
         v.productPrice.setText(productPrice);

@@ -59,7 +59,7 @@ public class AdvertCarActivity extends Base {
 
         priceManual = findViewById(R.id.priceManual);
         InputFilter[] priceFilter = new InputFilter[1];
-        priceFilter[0] = new InputFilter.LengthFilter(4);
+        priceFilter[0] = new InputFilter.LengthFilter(6);
         priceManual.setFilters(priceFilter);
 
         locationSpinner = findViewById(R.id.locationSpinner);
@@ -76,19 +76,22 @@ public class AdvertCarActivity extends Base {
 
         submitButton = findViewById(R.id.submitButton);
 
+        // Populate fields with values from selected position from ListView for update
+        // Passed values with Bundle from BrowseActivity
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            carMake.setText(bundle.getString("make"));
+            carModel.setText(bundle.getString("model"));
+            carYear.setValue(bundle.getInt("year"));
+            priceManual.setText(bundle.getString("price"));
+            String location = bundle.getString("location");
+            int spinnerPosition = myAdapter.getPosition(location);
+            locationSpinner.setSelection(spinnerPosition);
+            productDetails.setText(bundle.getString("description"));
+        }
+
         permissionCheck();
-
         takePhoto();
-    }
-
-
-    /**
-     * Save adverts to SharedPreferences when onPause state is triggered
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveAdvertCarList();
     }
 
 
@@ -126,13 +129,16 @@ public class AdvertCarActivity extends Base {
         }
         // If none of the field are empty
         else {
-            // Getting the position of clicked element from ListView in BrowseActivity
-            Bundle extras = getIntent().getExtras();
-
+            Bundle bundle = getIntent().getExtras();
             // Used for updating objects if Bundle has extras
-            if (extras != null) {
-                int position = extras.getInt("pos");
-                carAdverts.set(position, new AdvertCar(imageUri, make, model, year, price, location, details));
+            if (bundle != null) {
+                // Get extras from Bundle
+                int position = bundle.getInt("pos");
+                String id = bundle.getString("id");
+                AdvertCar ad = new AdvertCar(id, imageUri, make, model, year, price, location, details);
+                databaseCarAds.child(id).setValue(ad);
+                carAdverts.set(position, ad);
+
                 Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
                 Log.v("MyLogs", String.valueOf(position));
             }

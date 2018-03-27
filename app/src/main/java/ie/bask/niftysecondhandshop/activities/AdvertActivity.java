@@ -22,6 +22,7 @@ public class AdvertActivity extends Base {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         // Initialising widgets
         advertImage = findViewById(R.id.advertImage);
 
@@ -34,10 +35,10 @@ public class AdvertActivity extends Base {
         // Horizontal number picker used for price
         snp_horizontal = findViewById(R.id.snp_horizontal);
 
-        // Set the max length of price to 3
+        // Set the max length of price to 5
         priceManual = findViewById(R.id.priceManual);
         InputFilter[] priceFilter = new InputFilter[1];
-        priceFilter[0] = new InputFilter.LengthFilter(3);
+        priceFilter[0] = new InputFilter.LengthFilter(5);
         priceManual.setFilters(priceFilter);
 
         locationSpinner = findViewById(R.id.locationSpinner);
@@ -55,19 +56,20 @@ public class AdvertActivity extends Base {
 
         submitButton = findViewById(R.id.submitButton);
 
+        // Populate fields with values from selected position from ListView for update
+        // Passed values with Bundle from BrowseActivity
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            productTitle.setText(bundle.getString("title"));
+            priceManual.setText(bundle.getString("price"));
+            String location = bundle.getString("location");
+            int spinnerPosition = myAdapter.getPosition(location);
+            locationSpinner.setSelection(spinnerPosition);
+            productDetails.setText(bundle.getString("description"));
+        }
+
         permissionCheck();
-
         takePhoto();
-    }
-
-
-    /**
-     * Save adverts to SharedPreferences when onPause state is triggered
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveAdvertList();
     }
 
 
@@ -88,6 +90,7 @@ public class AdvertActivity extends Base {
 
         // Get the URI of captured image
         String imageUri = getImageUri(bitmap);
+
         Log.v("MyLogs", "Value of imageUri is " + imageUri);
 
 
@@ -101,15 +104,17 @@ public class AdvertActivity extends Base {
         }
         // if none of the fields are empty
         else {
-            // Getting the position of clicked element from ListView in BrowseActivity
-            Bundle extras = getIntent().getExtras();
-
+            Bundle bundle = getIntent().getExtras();
             // Used for updating objects if Bundle has extras
-            if (extras != null) {
-                int position = extras.getInt("pos");
-                adverts.set(position, new Advert(imageUri, title, price, location, details));
+            if (bundle != null) {
+                // Get extras from Bundle
+                int position = bundle.getInt("pos");
+                String id = bundle.getString("id");
+                Advert ad = new Advert(id, imageUri, title, price, location, details);
+                databaseAds.child(id).setValue(ad);
+                adverts.set(position, ad);
+
                 Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
-                Log.v("MyLogs", "Updated position " + String.valueOf(position));
             }
             // Create a new Advert object if Bundle has no extras in it
             else {

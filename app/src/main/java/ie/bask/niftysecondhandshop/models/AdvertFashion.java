@@ -1,13 +1,14 @@
 package ie.bask.niftysecondhandshop.models;
 
+import ie.bask.niftysecondhandshop.activities.Base;
+
 /**
  * Created by cecobask on 26-Feb-18.
  */
 
 public class AdvertFashion {
 
-    private static Long counter = (long) 1;
-    private Long productID;
+    private String productID;
     private String imageUri;
     private String productTitle;
     private double productPrice;
@@ -16,8 +17,12 @@ public class AdvertFashion {
     private String productLocation;
     private String productDescription;
 
-    public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
-        this.productID = counter++;
+    public AdvertFashion() {
+
+    }
+
+    public AdvertFashion(String productID, String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
+        this.productID = productID;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
         this.productPrice = productPrice;
@@ -27,11 +32,22 @@ public class AdvertFashion {
         this.productDescription = productDescription;
     }
 
-    public Long getProductID() {
+    public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
+        this.productID = Base.databaseFashionAds.push().getKey();
+        this.imageUri = imageUri;
+        this.productTitle = productTitle;
+        this.productPrice = productPrice;
+        this.productType = productType;
+        this.productSize = productSize;
+        this.productLocation = productLocation;
+        this.productDescription = productDescription;
+    }
+
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(Long productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 

@@ -1,13 +1,14 @@
 package ie.bask.niftysecondhandshop.models;
 
+import ie.bask.niftysecondhandshop.activities.Base;
+
 /**
  * Created by cecobask on 28-Feb-18.
  */
 
 public class AdvertCar {
 
-    private static Long counter = (long) 1;
-    private Long carID;
+    private String carID;
     private String imageUri;
     private String carMake;
     private String carModel;
@@ -16,8 +17,12 @@ public class AdvertCar {
     private String carLocation;
     private String carDescription;
 
-    public AdvertCar(String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription) {
-        this.carID = counter++;
+    public AdvertCar() {
+
+    }
+
+    public AdvertCar(String carID, String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription) {
+        this.carID = carID;
         this.imageUri = imageUri;
         this.carMake = carMake;
         this.carModel = carModel;
@@ -27,11 +32,22 @@ public class AdvertCar {
         this.carDescription = carDescription;
     }
 
-    public Long getCarID() {
+    public AdvertCar(String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription) {
+        this.carID = Base.databaseCarAds.push().getKey();
+        this.imageUri = imageUri;
+        this.carMake = carMake;
+        this.carModel = carModel;
+        this.carYear = carYear;
+        this.carPrice = carPrice;
+        this.carLocation = carLocation;
+        this.carDescription = carDescription;
+    }
+
+    public String getCarID() {
         return carID;
     }
 
-    public void setCarID(Long carID) {
+    public void setCarID(String carID) {
         this.carID = carID;
     }
 

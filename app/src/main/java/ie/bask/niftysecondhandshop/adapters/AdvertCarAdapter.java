@@ -72,11 +72,7 @@ public class AdvertCarAdapter extends ArrayAdapter<AdvertCar> {
         v.carDescription = view.findViewById(R.id.row_details);
 
         final AdvertCar dataSet = carAdverts.get(position);
-        if (dataSet.getImageUri().equals("default")) {
-            v.carImage.setImageResource(R.drawable.ic_car);
-        } else {
-            v.carImage.setImageURI(Uri.parse(dataSet.getImageUri()));
-        }
+        v.carImage.setImageURI(Uri.parse(dataSet.getImageUri()));
         v.carMake.setText(dataSet.getCarMake());
         v.carModel.setText(dataSet.getCarModel());
         v.carYear.setText(String.valueOf(dataSet.getCarYear()));

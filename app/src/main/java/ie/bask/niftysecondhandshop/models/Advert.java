@@ -1,21 +1,25 @@
 package ie.bask.niftysecondhandshop.models;
 
+import ie.bask.niftysecondhandshop.activities.Base;
+
 /**
  * Created by cecobask on 18-Feb-18.
  */
 
 public class Advert {
 
-    private static Long counter = (long) 1;
-    private Long productID;
+    private String productID;
     private String imageUri;
     private String productTitle;
     private double productPrice;
     private String productLocation;
     private String productDescription;
 
-    public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
-        this.productID = counter++;
+    public Advert() {
+    }
+
+    public Advert(String productID, String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
+        this.productID = productID;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
         this.productPrice = productPrice;
@@ -23,11 +27,20 @@ public class Advert {
         this.productDescription = productDescription;
     }
 
-    public Long getProductID() {
+    public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
+        this.productID = Base.databaseAds.push().getKey();
+        this.imageUri = imageUri;
+        this.productTitle = productTitle;
+        this.productPrice = productPrice;
+        this.productLocation = productLocation;
+        this.productDescription = productDescription;
+    }
+
+    public String getProductID() {
         return productID;
     }
 
-    public void setProductID(Long productID) {
+    public void setProductID(String productID) {
         this.productID = productID;
     }
 
