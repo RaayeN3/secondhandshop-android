@@ -45,10 +45,10 @@ public class BrowseActivity extends Base {
         // Bind adapter to ListView
         final AdvertAdapter adapter = new AdvertAdapter(this, adverts);
         productsView.setAdapter(adapter);
-        // Display AlertDialog with CRUD operations when the user clicks on any position
-        productsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Display AlertDialog with CRUD operations when the user long clicks on any position
+        productsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
                 alertDialogBuilder.setTitle("CRUD operations:");
                 String[] items = {"Update", "Delete product", "Delete all"};
@@ -73,11 +73,9 @@ public class BrowseActivity extends Base {
                         else if (i == 1) {
                             // Get advert at clicked position from database
                             DatabaseReference clickedPos = databaseAds.child(adverts.get(position).getProductID());
-
                             // Removing advert
                             clickedPos.removeValue();
                             adverts.remove(position);
-
                             // Notify adapter of changed data
                             adapter.notifyDataSetChanged();
                         }
@@ -85,11 +83,9 @@ public class BrowseActivity extends Base {
                         else {
                             // Get reference to ads table
                             databaseAds = FirebaseDatabase.getInstance().getReference("ads");
-
                             // Delete all nodes in the table
                             databaseAds.setValue(null);
                             adverts.clear();
-
                             // Notify adapter of changed data
                             adapter.notifyDataSetChanged();
                         }
@@ -97,19 +93,40 @@ public class BrowseActivity extends Base {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+
+                return true;
             }
         });
-        // Hide ListView by default
-        productsView.setVisibility(View.GONE);
+        // Open up activity to view individual advert
+        // passing the data with Bundle
+        productsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent ViewAdvertIntent = new Intent(getApplicationContext(), ViewAdvertActivity.class);
+                // Put extras into the Bundle
+                Bundle b = new Bundle();
+                b.putInt("pos", position);
+                b.putString("id", adverts.get(position).getProductID());
+                b.putString("image", adverts.get(position).getImageUri());
+                b.putString("title", adverts.get(position).getProductTitle());
+                b.putString("price", Double.toString(adverts.get(position).getProductPrice()));
+                b.putString("location", adverts.get(position).getProductLocation());
+                b.putString("description", adverts.get(position).getProductDescription());
+                ViewAdvertIntent.putExtras(b);
+                // Start ViewAdvertActivity
+                startActivityForResult(ViewAdvertIntent, 0);
+            }
+        });
+
 
         fashionProductsView = findViewById(R.id.fashionProductsView);
         // Bind adapter to ListView
         final AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
         fashionProductsView.setAdapter(adapterFashion);
         // Display AlertDialog with CRUD operations when the user clicks on any position
-        fashionProductsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        fashionProductsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
                 alertDialogBuilder.setTitle("CRUD operations:");
                 String[] items = {"Update", "Delete product", "Delete all"};
@@ -160,17 +177,43 @@ public class BrowseActivity extends Base {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+
+                return true;
             }
         });
         // Hide ListView by default
         fashionProductsView.setVisibility(View.GONE);
 
+        // Open up activity to view individual advert
+        // passing the data with Bundle
+        fashionProductsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent ViewAdvertFashionIntent = new Intent(getApplicationContext(), ViewAdvertFashionActivity.class);
+                // Put extras into the Bundle
+                Bundle b = new Bundle();
+                b.putInt("pos", position);
+                b.putString("id", fashionAdverts.get(position).getProductID());
+                b.putString("image", fashionAdverts.get(position).getImageUri());
+                b.putString("title", fashionAdverts.get(position).getProductTitle());
+                b.putString("price", Double.toString(fashionAdverts.get(position).getProductPrice()));
+                b.putString("type", fashionAdverts.get(position).getProductType());
+                b.putString("size", fashionAdverts.get(position).getProductSize());
+                b.putString("location", fashionAdverts.get(position).getProductLocation());
+                b.putString("description", fashionAdverts.get(position).getProductDescription());
+                ViewAdvertFashionIntent.putExtras(b);
+                // Start ViewAdvertActivity
+                startActivityForResult(ViewAdvertFashionIntent, 0);
+            }
+        });
+
+
         carsView = findViewById(R.id.carsView);
         final AdvertCarAdapter adapterCar = new AdvertCarAdapter(this, carAdverts);
         carsView.setAdapter(adapterCar);
-        carsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        carsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
                 alertDialogBuilder.setTitle("CRUD operations:");
                 String[] items = {"Update", "Delete car", "Delete all"};
@@ -217,12 +260,38 @@ public class BrowseActivity extends Base {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+
+                return true;
             }
         });
         carsView.setVisibility(View.GONE);
 
+        // Open up activity to view individual advert
+        // passing the data with Bundle
+        carsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent ViewAdvertCarIntent = new Intent(getApplicationContext(), ViewAdvertCarActivity.class);
+                // Put extras into the Bundle
+                Bundle b = new Bundle();
+                b.putInt("pos", position);
+                b.putString("id", carAdverts.get(position).getCarID());
+                b.putString("image", carAdverts.get(position).getImageUri());
+                b.putString("make", carAdverts.get(position).getCarMake());
+                b.putString("model", carAdverts.get(position).getCarModel());
+                b.putInt("year", carAdverts.get(position).getCarYear());
+                b.putString("price", Double.toString(carAdverts.get(position).getCarPrice()));
+                b.putString("location", carAdverts.get(position).getCarLocation());
+                b.putString("description", carAdverts.get(position).getCarDescription());
+                ViewAdvertCarIntent.putExtras(b);
+                // Start ViewAdvertActivity
+                startActivityForResult(ViewAdvertCarIntent, 0);
+            }
+        });
+
         // Manage which ListView is visible depending on selected radio button
         choice_radio_group = findViewById(R.id.choice_radio_group);
+        choice_radio_group.check(R.id.advert_radioButton);
         choice_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

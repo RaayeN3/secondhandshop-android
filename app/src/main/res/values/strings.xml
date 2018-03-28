@@ -90,6 +90,10 @@
         <item>Opel</item>
         <item>Kia</item>
     </string-array>
+    <string name="title_activity_view_advert">ViewAdvertActivity</string>
+    <string name="buttonUpdate">UPDATE</string>
+    <string name="buttonDelete">DELETE</string>
+    <string name="title_activity_view_advert_fashion">ViewAdvertFashionActivity</string>
 
 
 </resources>
