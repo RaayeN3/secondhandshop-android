@@ -36,8 +36,6 @@ public class AdvertCarAdapter extends ArrayAdapter<AdvertCar> {
         TextView carModel;
         TextView carYear;
         TextView carPrice;
-        TextView carLocation;
-        TextView carDescription;
     }
 
     @Override
@@ -68,8 +66,6 @@ public class AdvertCarAdapter extends ArrayAdapter<AdvertCar> {
         v.carModel = view.findViewById(R.id.row_model);
         v.carYear = view.findViewById(R.id.row_year);
         v.carPrice = view.findViewById(R.id.row_price);
-        v.carLocation = view.findViewById(R.id.row_location);
-        v.carDescription = view.findViewById(R.id.row_details);
 
         final AdvertCar dataSet = carAdverts.get(position);
         v.carImage.setImageURI(Uri.parse(dataSet.getImageUri()));
@@ -78,8 +74,6 @@ public class AdvertCarAdapter extends ArrayAdapter<AdvertCar> {
         v.carYear.setText(String.valueOf(dataSet.getCarYear()));
         String carPrice = "€" + dataSet.getCarPrice();
         v.carPrice.setText(carPrice);
-        v.carLocation.setText(dataSet.getCarLocation());
-        v.carDescription.setText(dataSet.getCarDescription());
 
         return view;
     }

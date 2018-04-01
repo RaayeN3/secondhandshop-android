@@ -50,12 +50,14 @@
         <activity
             android:name=".activities.ViewAdvertActivity"
             android:label="@string/title_activity_view_advert"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.ViewAdvertFashionActivity"
             android:label="@string/title_activity_view_advert_fashion"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.ViewAdvertCarActivity"></activity>
+        <activity
+            android:name=".activities.ViewAdvertCarActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

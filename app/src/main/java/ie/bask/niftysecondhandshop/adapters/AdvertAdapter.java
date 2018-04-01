@@ -31,7 +31,6 @@ public class AdvertAdapter extends ArrayAdapter<Advert> {
         TextView productTitle;
         TextView productPrice;
         TextView productLocation;
-        TextView productDescription;
     }
 
     @Override
@@ -61,7 +60,6 @@ public class AdvertAdapter extends ArrayAdapter<Advert> {
         v.productTitle = view.findViewById(R.id.row_title);
         v.productPrice = view.findViewById(R.id.row_price);
         v.productLocation = view.findViewById(R.id.row_location);
-        v.productDescription = view.findViewById(R.id.row_details);
 
         final Advert dataSet = adverts.get(position);
         v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
@@ -69,7 +67,6 @@ public class AdvertAdapter extends ArrayAdapter<Advert> {
         String productPrice = "€" + dataSet.getProductPrice();
         v.productPrice.setText(productPrice);
         v.productLocation.setText(dataSet.getProductLocation());
-        v.productDescription.setText(dataSet.getProductDescription());
 
         return view;
     }

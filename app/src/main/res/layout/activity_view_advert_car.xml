@@ -7,83 +7,107 @@
     tools:context=".activities.ViewAdvertCarActivity">
 
 
-    <TextView
-        android:id="@+id/tvPrice"
+    <EditText
+        android:id="@+id/EditTextPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:inputType="numberDecimal"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewMake"
-        app:layout_constraintTop_toBottomOf="@+id/tvYear" />
+        app:layout_constraintStart_toEndOf="@+id/textViewPrice"
+        app:layout_constraintTop_toBottomOf="@+id/textViewYear" />
 
-    <TextView
-        android:id="@+id/tvLocation"
+    <EditText
+        android:id="@+id/EditTextLocation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:inputType="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewMake"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextPrice" />
 
-    <TextView
-        android:id="@+id/tvDetails"
+    <EditText
+        android:id="@+id/EditTextDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:maxLines="2"
+        android:inputType="text|textMultiLine"
+        android:maxLines="3"
         android:scrollbars="vertical"
+        android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewMake"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextLocation" />
 
-    <TextView
-        android:id="@+id/tvYear"
+    <EditText
+        android:id="@+id/EditTextYear"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:inputType="numberSigned"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewMake"
-        app:layout_constraintTop_toBottomOf="@+id/tvModel" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextModel" />
 
-    <TextView
-        android:id="@+id/tvModel"
+    <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+        android:id="@+id/snp_carYear"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/textViewYear"
+        app:layout_constraintTop_toBottomOf="@+id/textViewModel"
+        app:snp_buttonIconLeft="@drawable/ic_left"
+        app:snp_buttonIconRight="@drawable/ic_right"
+        app:snp_maxValue="2018"
+        app:snp_minValue="1990"
+        app:snp_orientation="horizontal"
+        app:snp_stepSize="1"
+        app:snp_updateInterval="5"
+        app:snp_value="2004"
+        app:snp_value_text_color="@drawable/edit_text_selector"
+        app:snp_value_text_size="18dp" />
+
+    <EditText
+        android:id="@+id/EditTextModel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:inputType="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:maxLines="1"
-        android:scrollbars="vertical"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewMake"
-        app:layout_constraintTop_toBottomOf="@+id/tvMake" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteMake" />
 
     <TextView
         android:id="@+id/textViewPrice"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/advertPrice"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewYear" />
 
@@ -92,7 +116,8 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="22dp"
+        android:labelFor="@id/EditTextLocation"
         android:text="@string/advertLocation"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,9 +128,10 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/advertDetails"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextDetails"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
 
@@ -114,9 +140,10 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/advertYear"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextYear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewModel" />
 
@@ -125,9 +152,10 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/advertModel"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextModel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMake" />
 
@@ -146,54 +174,64 @@
         android:id="@+id/buttonUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
         android:text="@string/buttonUpdate"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDetails"
-        app:layout_constraintVertical_bias="0.529" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginTop="32dp"
         android:text="@string/buttonDelete"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDetails"
-        app:layout_constraintVertical_bias="0.529" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/buttonSave"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
 
     <TextView
         android:id="@+id/textViewMake"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:text="@string/advertMake"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/autoCompleteMake"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
 
-    <TextView
-        android:id="@+id/tvMake"
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteMake"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:maxLines="1"
-        android:scrollbars="vertical"
+        android:layout_marginTop="8dp"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textColor="@drawable/edit_text_selector"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.864"
         app:layout_constraintStart_toEndOf="@+id/textViewMake"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
 

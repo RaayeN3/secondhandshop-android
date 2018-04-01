@@ -40,8 +40,12 @@ public class BrowseActivity extends Base {
         // Initialise widgets
         emptyAdvertCategory = findViewById(R.id.emptyAdvertCategory);
         emptyAdvertCategory.setVisibility(View.GONE);
-
         productsView = findViewById(R.id.productsView);
+        fashionProductsView = findViewById(R.id.fashionProductsView);
+        carsView = findViewById(R.id.carsView);
+        choice_radio_group = findViewById(R.id.choice_radio_group);
+        browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
+
         // Bind adapter to ListView
         final AdvertAdapter adapter = new AdvertAdapter(this, adverts);
         productsView.setAdapter(adapter);
@@ -51,26 +55,12 @@ public class BrowseActivity extends Base {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
                 alertDialogBuilder.setTitle("CRUD operations:");
-                String[] items = {"Update", "Delete product", "Delete all"};
+                String[] items = {"Delete product", "Delete all"};
                 alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Update Advert at clicked position
-                        if (i == 0) {
-                            Intent AdvertIntent = new Intent(getApplicationContext(), AdvertActivity.class);
-                            // Put extras into the Bundle
-                            Bundle b = new Bundle();
-                            b.putInt("pos", position);
-                            b.putString("id", adverts.get(position).getProductID());
-                            b.putString("title", adverts.get(position).getProductTitle());
-                            b.putString("price", Double.toString(adverts.get(position).getProductPrice()));
-                            b.putString("location", adverts.get(position).getProductLocation());
-                            b.putString("description", adverts.get(position).getProductDescription());
-                            AdvertIntent.putExtras(b);
-                            startActivityForResult(AdvertIntent, 0);
-                        }
                         // Delete the Advert at clicked position
-                        else if (i == 1) {
+                        if (i == 0) {
                             // Get advert at clicked position from database
                             DatabaseReference clickedPos = databaseAds.child(adverts.get(position).getProductID());
                             // Removing advert
@@ -119,7 +109,6 @@ public class BrowseActivity extends Base {
         });
 
 
-        fashionProductsView = findViewById(R.id.fashionProductsView);
         // Bind adapter to ListView
         final AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
         fashionProductsView.setAdapter(adapterFashion);
@@ -208,7 +197,6 @@ public class BrowseActivity extends Base {
         });
 
 
-        carsView = findViewById(R.id.carsView);
         final AdvertCarAdapter adapterCar = new AdvertCarAdapter(this, carAdverts);
         carsView.setAdapter(adapterCar);
         carsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -290,7 +278,6 @@ public class BrowseActivity extends Base {
         });
 
         // Manage which ListView is visible depending on selected radio button
-        choice_radio_group = findViewById(R.id.choice_radio_group);
         choice_radio_group.check(R.id.advert_radioButton);
         choice_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -340,7 +327,6 @@ public class BrowseActivity extends Base {
             }
         });
 
-        browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
         if (!adverts.isEmpty() || !fashionAdverts.isEmpty() || !carAdverts.isEmpty()) {
             browseEmptyDefaultText.setVisibility(View.GONE);
             choice_radio_group.setVisibility(View.VISIBLE);

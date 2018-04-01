@@ -33,6 +33,7 @@ public class MainActivity extends Base implements View.OnClickListener {
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
         sellButton = findViewById(R.id.sellButton);
         githubButton = findViewById(R.id.githubButton);
+
         githubButton.setOnClickListener(this);
         sellButton.setOnClickListener(this);
 

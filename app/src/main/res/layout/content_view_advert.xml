@@ -9,47 +9,55 @@
     tools:showIn="@layout/activity_view_advert">
 
 
-    <TextView
-        android:id="@+id/tvDetails"
+    <EditText
+        android:id="@+id/EditTextDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:maxLines="2"
+        android:layout_marginTop="8dp"
+        android:inputType="text|textMultiLine"
+        android:maxLines="3"
         android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
-
-
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
-
-    <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/EditTextLocation" />
+
+
+    <EditText
+        android:id="@+id/EditTextLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:inputType="text"
+        android:textColor="@drawable/edit_text_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextPrice" />
+
+    <EditText
+        android:id="@+id/EditTextPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:inputType="numberDecimal"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@drawable/edit_text_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextTitle" />
 
     <ImageView
         android:id="@+id/imageViewProduct"
@@ -67,9 +75,10 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="29dp"
         android:text="@string/advertTitle"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
 
@@ -81,6 +90,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/advertPrice"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
@@ -92,6 +102,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/advertLocation"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextLocation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPrice" />
 
@@ -103,19 +114,23 @@
         android:layout_marginTop="28dp"
         android:text="@string/advertDetails"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:labelFor="@id/EditTextDetails"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <EditText
+        android:id="@+id/EditTextTitle"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="23dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:maxLength="25"
+        android:inputType="text"
+        android:textColor="@drawable/edit_text_selector"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
 
@@ -123,23 +138,36 @@
         android:id="@+id/buttonUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:text="@string/buttonUpdate"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="0.947"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/buttonSave"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="84dp"
+        android:layout_marginTop="32dp"
         android:text="@string/buttonDelete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTextDetails" />
 
 </android.support.constraint.ConstraintLayout>

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
@@ -31,64 +30,42 @@ public class AdvertCarActivity extends Base {
 
         // Initialising widgets
         advertImage = findViewById(R.id.advertImage);
-
         carMake = findViewById(R.id.carMake);
-        // Set max input length of carMake to 20 chars
-        InputFilter[] carMakeFilter = new InputFilter[1];
-        carMakeFilter[0] = new InputFilter.LengthFilter(20);
-        carMake.setFilters(carMakeFilter);
+        carModel = findViewById(R.id.carModel);
+        carYear = findViewById(R.id.snp_carYear);
+        snp_horizontal = findViewById(R.id.snp_horizontal);
+        priceManual = findViewById(R.id.priceManual);
+        locationSpinner = findViewById(R.id.locationSpinner);
+        productDetails = findViewById(R.id.productDetails);
+        submitButton = findViewById(R.id.submitButton);
 
         // Load string-array from resources to give suggestions
         // to the user when they start typing
-        final ArrayAdapter<String> arrayAdapterCarMakes = new ArrayAdapter<>(AdvertCarActivity.this, android.R.layout.simple_dropdown_item_1line,
+        ArrayAdapter<String> arrayAdapterCarMakes = new ArrayAdapter<>(AdvertCarActivity.this, android.R.layout.simple_dropdown_item_1line,
                 getResources().getStringArray(R.array.carMakes));
         carMake.setAdapter(arrayAdapterCarMakes);
         // Show suggestions after 1 symbol is typed
         carMake.setThreshold(1);
 
-        carModel = findViewById(R.id.carModel);
-        InputFilter[] carModelFilter = new InputFilter[1];
-        carModelFilter[0] = new InputFilter.LengthFilter(20);
-        carModel.setFilters(carModelFilter);
+        // Set max input length of carMake to 20 chars
+        InputFilter[] filter = new InputFilter[1];
+        filter[0] = new InputFilter.LengthFilter(20);
+        carMake.setFilters(filter);
 
-        // Scrollable number picker for car year
-        carYear = findViewById(R.id.snp_carYear);
+        filter[0] = new InputFilter.LengthFilter(20);
+        carModel.setFilters(filter);
 
-        // Number picker for car price
-        snp_horizontal = findViewById(R.id.snp_horizontal);
+        filter[0] = new InputFilter.LengthFilter(6);
+        priceManual.setFilters(filter);
 
-        priceManual = findViewById(R.id.priceManual);
-        InputFilter[] priceFilter = new InputFilter[1];
-        priceFilter[0] = new InputFilter.LengthFilter(6);
-        priceManual.setFilters(priceFilter);
+        filter[0] = new InputFilter.LengthFilter(50);
+        productDetails.setFilters(filter);
 
-        locationSpinner = findViewById(R.id.locationSpinner);
         // Use string-array from the res/values/strings to populate in the spinner
         ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertCarActivity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.locations));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(myAdapter);
-
-        productDetails = findViewById(R.id.productDetails);
-        InputFilter[] detailsFilter = new InputFilter[1];
-        detailsFilter[0] = new InputFilter.LengthFilter(50);
-        productDetails.setFilters(detailsFilter);
-
-        submitButton = findViewById(R.id.submitButton);
-
-        // Populate fields with values from selected position from ListView for update
-        // Passed values with Bundle from BrowseActivity
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            carMake.setText(bundle.getString("make"));
-            carModel.setText(bundle.getString("model"));
-            carYear.setValue(bundle.getInt("year"));
-            priceManual.setText(bundle.getString("price"));
-            String location = bundle.getString("location");
-            int spinnerPosition = myAdapter.getPosition(location);
-            locationSpinner.setSelection(spinnerPosition);
-            productDetails.setText(bundle.getString("description"));
-        }
 
         permissionCheck();
         takePhoto();
@@ -129,25 +106,9 @@ public class AdvertCarActivity extends Base {
         }
         // If none of the field are empty
         else {
-            Bundle bundle = getIntent().getExtras();
-            // Used for updating objects if Bundle has extras
-            if (bundle != null) {
-                // Get extras from Bundle
-                int position = bundle.getInt("pos");
-                String id = bundle.getString("id");
-                AdvertCar ad = new AdvertCar(id, imageUri, make, model, year, price, location, details);
-                databaseCarAds.child(id).setValue(ad);
-                carAdverts.set(position, ad);
-
-                Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
-                Log.v("MyLogs", String.valueOf(position));
-            }
-            // Create a new AdvertCar object if Bundle has no extras in it
-            else {
-                newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
-                Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
-                        " (5) Location: " + location + " (6) Details: " + details);
-            }
+            newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
+            Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
+                    " (5) Location: " + location + " (6) Details: " + details);
         }
     }
 

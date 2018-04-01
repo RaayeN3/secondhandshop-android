@@ -34,10 +34,7 @@ public class AdvertFashionAdapter extends ArrayAdapter<AdvertFashion> {
         ImageView productImage;
         TextView productTitle;
         TextView productPrice;
-        TextView productType;
-        TextView productSize;
         TextView productLocation;
-        TextView productDescription;
     }
 
     @Override
@@ -66,20 +63,14 @@ public class AdvertFashionAdapter extends ArrayAdapter<AdvertFashion> {
         v.productImage = view.findViewById(R.id.row_image);
         v.productTitle = view.findViewById(R.id.row_title);
         v.productPrice = view.findViewById(R.id.row_price);
-        v.productType = view.findViewById(R.id.row_type);
-        v.productSize = view.findViewById(R.id.row_size);
         v.productLocation = view.findViewById(R.id.row_location);
-        v.productDescription = view.findViewById(R.id.row_details);
 
         final AdvertFashion dataSet = fashionAdverts.get(position);
         v.productImage.setImageURI(Uri.parse(dataSet.getImageUri()));
         v.productTitle.setText(dataSet.getProductTitle());
         String productPrice = "€" + dataSet.getProductPrice();
         v.productPrice.setText(productPrice);
-        v.productType.setText(dataSet.getProductType());
-        v.productSize.setText(dataSet.getProductSize());
         v.productLocation.setText(dataSet.getProductLocation());
-        v.productDescription.setText(dataSet.getProductDescription());
 
         return view;
     }

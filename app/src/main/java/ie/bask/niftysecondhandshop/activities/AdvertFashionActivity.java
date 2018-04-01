@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
@@ -31,28 +30,32 @@ public class AdvertFashionActivity extends Base {
 
         // Initialising widgets
         advertImage = findViewById(R.id.advertImage);
-
         productTitle = findViewById(R.id.productTitle);
-        // Set the max input length of title to 25 characters
-        InputFilter[] titleFilter = new InputFilter[1];
-        titleFilter[0] = new InputFilter.LengthFilter(25);
-        productTitle.setFilters(titleFilter);
-
-        // Horizontal number picker used for price
+        clothingSizeSpinner = findViewById(R.id.clothingSizeSpinner);
         snp_horizontal = findViewById(R.id.snp_horizontal);
+        priceManual = findViewById(R.id.priceManual);
+        productType = findViewById(R.id.typeRadioGroup);
+        shoeSize = findViewById(R.id.snp_shoeSizes);
+        locationSpinner = findViewById(R.id.locationSpinner);
+        productDetails = findViewById(R.id.productDetails);
+        submitButton = findViewById(R.id.submitButton);
+
+        // Set the max input length of title to 25 characters
+        InputFilter[] filter = new InputFilter[1];
+        filter[0] = new InputFilter.LengthFilter(25);
+        productTitle.setFilters(filter);
 
         // Set the max length of price to 3
-        priceManual = findViewById(R.id.priceManual);
-        InputFilter[] priceFilter = new InputFilter[1];
-        priceFilter[0] = new InputFilter.LengthFilter(3);
-        priceManual.setFilters(priceFilter);
+        filter[0] = new InputFilter.LengthFilter(3);
+        priceManual.setFilters(filter);
 
-        productType = findViewById(R.id.typeRadioGroup);
+        filter[0] = new InputFilter.LengthFilter(50);
+        productDetails.setFilters(filter);
+
         // Check clothing by default
         productType.check(R.id.clothing_radioButton);
 
         // If shoes radio button is clicked, hide clothing sizes
-        // and vice versa
         productType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -66,51 +69,17 @@ public class AdvertFashionActivity extends Base {
             }
         });
 
-        clothingSizeSpinner = findViewById(R.id.clothingSizeSpinner);
         // Populate string-array with clothing sizes to the spinner
         ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertFashionActivity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.clothingSizes));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         clothingSizeSpinner.setAdapter(myAdapter);
 
-        shoeSize = findViewById(R.id.snp_shoeSizes);
-
-        locationSpinner = findViewById(R.id.locationSpinner);
-
         // Use string-array from the res/values/strings to populate in the spinner
         myAdapter = new ArrayAdapter<>(AdvertFashionActivity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.locations));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(myAdapter);
-
-        productDetails = findViewById(R.id.productDetails);
-        InputFilter[] detailsFilter = new InputFilter[1];
-        detailsFilter[0] = new InputFilter.LengthFilter(50);
-        productDetails.setFilters(detailsFilter);
-
-        submitButton = findViewById(R.id.submitButton);
-
-        // Populate fields with values from selected position from ListView for update
-        // Passed values with Bundle from BrowseActivity
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            productTitle.setText(bundle.getString("title"));
-            priceManual.setText(bundle.getString("price"));
-            String size = bundle.getString("size");
-            String type = bundle.getString("type");
-            if (type.equals("Clothing")) {
-                productType.check(R.id.clothing_radioButton);
-                int spinnerPosition = myAdapter.getPosition(size);
-                clothingSizeSpinner.setSelection(spinnerPosition);
-            } else {
-                productType.check(R.id.shoes_radioButton);
-                shoeSize.setValue(Integer.valueOf(size));
-            }
-            String location = bundle.getString("location");
-            int spinnerPosition = myAdapter.getPosition(location);
-            locationSpinner.setSelection(spinnerPosition);
-            productDetails.setText(bundle.getString("description"));
-        }
 
         permissionCheck();
         takePhoto();
@@ -162,27 +131,11 @@ public class AdvertFashionActivity extends Base {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();
         }
-        // if none of the fields are empty
+        // If none of the fields are empty
         else {
-            Bundle bundle = getIntent().getExtras();
-            // Used for updating objects if Bundle has extras
-            if (bundle != null) {
-                // Get extras from Bundle
-                int position = bundle.getInt("pos");
-                String id = bundle.getString("id");
-                AdvertFashion ad = new AdvertFashion(id, imageUri, title, price, type, size, location, details);
-                databaseFashionAds.child(id).setValue(ad);
-                fashionAdverts.set(position, ad);
-
-                Toast.makeText(this, "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
-                Log.v("MyLogs", "Updated position " + String.valueOf(position));
-            }
-            // Create a new AdvertFashion object if Bundle has no extras in it
-            else {
-                newAdvertFashion(new AdvertFashion(imageUri, title, price, type, size, location, details));
-                Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
-                        " (5) Location: " + location + " (6) Details: " + details);
-            }
+            newAdvertFashion(new AdvertFashion(imageUri, title, price, type, size, location, details));
+            Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
+                    " (5) Location: " + location + " (6) Details: " + details);
         }
     }
 

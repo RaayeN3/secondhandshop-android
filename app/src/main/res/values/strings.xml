@@ -14,6 +14,7 @@
     <string name="title_activity_sell">Sell</string>
     <string name="advertTitle">Title:</string>
     <string name="advertPrice">Price(€):</string>
+    <string name="productPrice">Price:</string>
     <string name="euroSign">€</string>
     <string name="priceManualHint">Or enter manually</string>
     <string name="advertLocation">Location:</string>
@@ -94,6 +95,7 @@
     <string name="buttonUpdate">UPDATE</string>
     <string name="buttonDelete">DELETE</string>
     <string name="title_activity_view_advert_fashion">ViewAdvertFashionActivity</string>
+    <string name="buttonSave">SAVE</string>
 
 
 </resources>

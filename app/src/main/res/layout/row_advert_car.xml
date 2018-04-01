@@ -3,60 +3,90 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/row_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/row_image"
-        android:contentDescription="@string/row_image_contentDesc"
-        android:layout_marginEnd="10dp" />
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/row_image_contentDesc" />
 
     <TextView
-        android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:id="@+id/row_make"
+        android:id="@+id/tv_make"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/row_image"
-        android:layout_marginTop="5dp" />
+        android:text="@string/advertMake"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_width="65dp"
-        android:layout_height="35dp"
-        android:id="@+id/row_model"
-        android:layout_toEndOf="@id/row_make"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp" />
+        android:id="@+id/row_make"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_image"
+        android:layout_alignStart="@id/tv_make"
+        android:layout_below="@id/tv_make"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="15dp" />
 
     <TextView
-        android:layout_width="140dp"
-        android:layout_height="35dp"
-        android:id="@+id/row_year"
-        android:layout_toEndOf="@id/row_model"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp" />
-
-    <TextView
+        android:id="@+id/tv_model"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_make"
+        android:text="@string/advertModel"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/row_model"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tv_model"
+        android:layout_below="@id/tv_model"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_make" />
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_model"
+        android:text="@string/advertYear"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/row_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tv_year"
+        android:layout_below="@id/tv_year"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_model" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_year"
+        android:text="@string/productPrice"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/row_price"
-        android:layout_below="@id/row_make"
-        android:layout_alignStart="@id/row_make"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
-
-    <TextView
-        android:layout_width="65dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/row_location"
-        android:layout_below="@id/row_model"
-        android:layout_alignStart="@id/row_model"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
-
-    <TextView
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/row_details"
-        android:layout_below="@id/row_year"
-        android:layout_alignStart="@id/row_year"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_alignStart="@id/tv_price"
+        android:layout_below="@id/tv_price"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/row_year" />
 
 </RelativeLayout>

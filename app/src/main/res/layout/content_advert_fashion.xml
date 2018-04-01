@@ -57,6 +57,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/advertTitle"
             android:textSize="18sp"
+            android:labelFor="@id/productTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.057"
@@ -269,6 +270,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="9dp"
+            android:visibility="gone"
             app:snp_buttonIconLeft="@drawable/ic_left"
             app:snp_buttonIconRight="@drawable/ic_right"
             app:snp_maxValue="50"
@@ -277,8 +279,7 @@
             app:snp_stepSize="1"
             app:snp_updateInterval="5"
             app:snp_value="43"
-            app:snp_value_text_size="18dp"
-            android:visibility="gone" />
+            app:snp_value_text_size="18dp" />
 
     </LinearLayout>
 
