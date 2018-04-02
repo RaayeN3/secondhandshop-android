@@ -3,22 +3,32 @@ package ie.bask.niftysecondhandshop.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.adapters.AdvertAdapter;
 import ie.bask.niftysecondhandshop.adapters.AdvertCarAdapter;
 import ie.bask.niftysecondhandshop.adapters.AdvertFashionAdapter;
+import ie.bask.niftysecondhandshop.models.Advert;
+import ie.bask.niftysecondhandshop.models.AdvertCar;
+import ie.bask.niftysecondhandshop.models.AdvertFashion;
 
 public class BrowseActivity extends Base {
 
@@ -29,6 +39,8 @@ public class BrowseActivity extends Base {
     TextView browseEmptyDefaultText;
     RadioGroup choice_radio_group;
     TextView emptyAdvertCategory;
+    ImageButton searchButton;
+    EditText EditTextSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,26 @@ public class BrowseActivity extends Base {
         carsView = findViewById(R.id.carsView);
         choice_radio_group = findViewById(R.id.choice_radio_group);
         browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
+        searchButton = findViewById(R.id.searchButton);
+        EditTextSearch = findViewById(R.id.EditTextSearch);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = EditTextSearch.getText().toString();
+                String type;
+                int radioID = choice_radio_group.getCheckedRadioButtonId();
+                if (radioID == R.id.advert_radioButton) {
+                    type = "General";
+                } else if (radioID == R.id.fashionAd_radioButton) {
+                    type = "Fashion";
+                } else {
+                    type = "Car";
+                }
+                firebaseUserSearch(searchText, type);
+            }
+        });
+
 
         // Bind adapter to ListView
         final AdvertAdapter adapter = new AdvertAdapter(this, adverts);
@@ -112,7 +144,7 @@ public class BrowseActivity extends Base {
         // Bind adapter to ListView
         final AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
         fashionProductsView.setAdapter(adapterFashion);
-        // Display AlertDialog with CRUD operations when the user clicks on any position
+        // Display AlertDialog with CRUD operations when the user long clicks on any position
         fashionProductsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -283,6 +315,9 @@ public class BrowseActivity extends Base {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.advert_radioButton) {
+                    // Clear search box
+                    EditTextSearch.setText(null);
+
                     // if there are no adverts, hide all ListViews
                     // and only show the emptyCategory TextView
                     if (adverts.isEmpty()) {
@@ -300,6 +335,8 @@ public class BrowseActivity extends Base {
                         carsView.setVisibility(View.GONE);
                     }
                 } else if (checkedId == R.id.fashionAd_radioButton) {
+                    EditTextSearch.setText(null);
+
                     if (fashionAdverts.isEmpty()) {
                         emptyAdvertCategory.setVisibility(View.VISIBLE);
                         productsView.setVisibility(View.GONE);
@@ -312,6 +349,8 @@ public class BrowseActivity extends Base {
                         carsView.setVisibility(View.GONE);
                     }
                 } else if (checkedId == R.id.carAd_radioButton) {
+                    EditTextSearch.setText(null);
+
                     if (carAdverts.isEmpty()) {
                         emptyAdvertCategory.setVisibility(View.VISIBLE);
                         productsView.setVisibility(View.GONE);
@@ -332,6 +371,100 @@ public class BrowseActivity extends Base {
             choice_radio_group.setVisibility(View.VISIBLE);
         } else {
             choice_radio_group.setVisibility(View.GONE);
+        }
+    }
+
+    private void firebaseUserSearch(String searchText, String radioSelection) {
+
+        // Firebase search query variable
+        Query firebaseSearchQuery;
+
+        switch (radioSelection) {
+            case ("General"):
+                // Search based on productTitle
+                firebaseSearchQuery = databaseAds.orderByChild("productTitle").startAt(searchText).endAt(searchText + "\uf8ff");
+
+                // Set layout and query for FirebaseListAdapter
+                FirebaseListOptions<Advert> optionsAd = new FirebaseListOptions.Builder<Advert>()
+                        .setLayout(R.layout.row_advert)
+                        .setQuery(firebaseSearchQuery, Advert.class)
+                        .build();
+
+                // Populate ListView with the search results
+                FirebaseListAdapter<Advert> firebaseListAdapterGeneral = new FirebaseListAdapter<Advert>(optionsAd) {
+                    @Override
+                    protected void populateView(View v, Advert model, int position) {
+                        ImageView productImage = v.findViewById(R.id.row_image);
+                        TextView tvTitle = v.findViewById(R.id.row_title);
+                        TextView tvPrice = v.findViewById(R.id.row_price);
+                        TextView tvLocation = v.findViewById(R.id.row_location);
+
+                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        tvTitle.setText(model.getProductTitle());
+                        String productPrice = "€" + model.getProductPrice();
+                        tvPrice.setText(productPrice);
+                        tvLocation.setText(model.getProductLocation());
+                    }
+                };
+                firebaseListAdapterGeneral.startListening();
+                // Bind adapter to ListView
+                productsView.setAdapter(firebaseListAdapterGeneral);
+                break;
+
+            case ("Fashion"):
+                firebaseSearchQuery = databaseFashionAds.orderByChild("productTitle").startAt(searchText).endAt(searchText + "\uf8ff");
+
+                FirebaseListOptions<AdvertFashion> optionsFashion = new FirebaseListOptions.Builder<AdvertFashion>()
+                        .setLayout(R.layout.row_advert_fashion)
+                        .setQuery(firebaseSearchQuery, AdvertFashion.class)
+                        .build();
+
+                FirebaseListAdapter<AdvertFashion> firebaseListAdapterFashion = new FirebaseListAdapter<AdvertFashion>(optionsFashion) {
+                    @Override
+                    protected void populateView(View v, AdvertFashion model, int position) {
+                        ImageView productImage = v.findViewById(R.id.row_image);
+                        TextView tvTitle = v.findViewById(R.id.row_title);
+                        TextView tvPrice = v.findViewById(R.id.row_price);
+                        TextView tvLocation = v.findViewById(R.id.row_location);
+
+                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        tvTitle.setText(model.getProductTitle());
+                        String productPrice = "€" + model.getProductPrice();
+                        tvPrice.setText(productPrice);
+                        tvLocation.setText(model.getProductLocation());
+                    }
+                };
+                firebaseListAdapterFashion.startListening();
+                fashionProductsView.setAdapter(firebaseListAdapterFashion);
+                break;
+
+            default:
+                firebaseSearchQuery = databaseCarAds.orderByChild("carMake").startAt(searchText).endAt(searchText + "\uf8ff");
+
+                FirebaseListOptions<AdvertCar> optionsCar = new FirebaseListOptions.Builder<AdvertCar>()
+                        .setLayout(R.layout.row_advert_car)
+                        .setQuery(firebaseSearchQuery, AdvertCar.class)
+                        .build();
+
+                FirebaseListAdapter<AdvertCar> firebaseListAdapterCar = new FirebaseListAdapter<AdvertCar>(optionsCar) {
+                    @Override
+                    protected void populateView(View v, AdvertCar model, int position) {
+                        ImageView productImage = v.findViewById(R.id.row_image);
+                        TextView tvMake = v.findViewById(R.id.row_make);
+                        TextView tvModel = v.findViewById(R.id.row_model);
+                        TextView tvYear = v.findViewById(R.id.row_year);
+                        TextView tvPrice = v.findViewById(R.id.row_price);
+
+                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        tvMake.setText(model.getCarMake());
+                        tvModel.setText(model.getCarModel());
+                        tvYear.setText(String.valueOf(model.getCarYear()));
+                        String productPrice = "€" + model.getCarPrice();
+                        tvPrice.setText(productPrice);
+                    }
+                };
+                firebaseListAdapterCar.startListening();
+                carsView.setAdapter(firebaseListAdapterCar);
         }
     }
 

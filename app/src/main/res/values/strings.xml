@@ -96,6 +96,7 @@
     <string name="buttonDelete">DELETE</string>
     <string name="title_activity_view_advert_fashion">ViewAdvertFashionActivity</string>
     <string name="buttonSave">SAVE</string>
+    <string name="searchText">Search here</string>
 
 
 </resources>
