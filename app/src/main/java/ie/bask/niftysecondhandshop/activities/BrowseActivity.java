@@ -3,7 +3,6 @@ package ie.bask.niftysecondhandshop.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,11 +15,16 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.adapters.AdvertAdapter;
@@ -127,13 +131,14 @@ public class BrowseActivity extends Base {
                 Intent ViewAdvertIntent = new Intent(getApplicationContext(), ViewAdvertActivity.class);
                 // Put extras into the Bundle
                 Bundle b = new Bundle();
+                Advert advert = (Advert) parent.getItemAtPosition(position);
                 b.putInt("pos", position);
-                b.putString("id", adverts.get(position).getProductID());
-                b.putString("image", adverts.get(position).getImageUri());
-                b.putString("title", adverts.get(position).getProductTitle());
-                b.putString("price", Double.toString(adverts.get(position).getProductPrice()));
-                b.putString("location", adverts.get(position).getProductLocation());
-                b.putString("description", adverts.get(position).getProductDescription());
+                b.putString("id", advert.getProductID());
+                b.putString("image", advert.getImageUri());
+                b.putString("title", advert.getProductTitle());
+                b.putString("price", Double.toString(advert.getProductPrice()));
+                b.putString("location", advert.getProductLocation());
+                b.putString("description", advert.getProductDescription());
                 ViewAdvertIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertIntent, 0);
@@ -213,15 +218,16 @@ public class BrowseActivity extends Base {
                 Intent ViewAdvertFashionIntent = new Intent(getApplicationContext(), ViewAdvertFashionActivity.class);
                 // Put extras into the Bundle
                 Bundle b = new Bundle();
+                AdvertFashion advertFashion = (AdvertFashion) parent.getItemAtPosition(position);
                 b.putInt("pos", position);
-                b.putString("id", fashionAdverts.get(position).getProductID());
-                b.putString("image", fashionAdverts.get(position).getImageUri());
-                b.putString("title", fashionAdverts.get(position).getProductTitle());
-                b.putString("price", Double.toString(fashionAdverts.get(position).getProductPrice()));
-                b.putString("type", fashionAdverts.get(position).getProductType());
-                b.putString("size", fashionAdverts.get(position).getProductSize());
-                b.putString("location", fashionAdverts.get(position).getProductLocation());
-                b.putString("description", fashionAdverts.get(position).getProductDescription());
+                b.putString("id", advertFashion.getProductID());
+                b.putString("image", advertFashion.getImageUri());
+                b.putString("title", advertFashion.getProductTitle());
+                b.putString("price", Double.toString(advertFashion.getProductPrice()));
+                b.putString("type", advertFashion.getProductType());
+                b.putString("size", advertFashion.getProductSize());
+                b.putString("location", advertFashion.getProductLocation());
+                b.putString("description", advertFashion.getProductDescription());
                 ViewAdvertFashionIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertFashionIntent, 0);
@@ -294,15 +300,16 @@ public class BrowseActivity extends Base {
                 Intent ViewAdvertCarIntent = new Intent(getApplicationContext(), ViewAdvertCarActivity.class);
                 // Put extras into the Bundle
                 Bundle b = new Bundle();
+                AdvertCar advertCar = (AdvertCar) parent.getItemAtPosition(position);
                 b.putInt("pos", position);
-                b.putString("id", carAdverts.get(position).getCarID());
-                b.putString("image", carAdverts.get(position).getImageUri());
-                b.putString("make", carAdverts.get(position).getCarMake());
-                b.putString("model", carAdverts.get(position).getCarModel());
-                b.putInt("year", carAdverts.get(position).getCarYear());
-                b.putString("price", Double.toString(carAdverts.get(position).getCarPrice()));
-                b.putString("location", carAdverts.get(position).getCarLocation());
-                b.putString("description", carAdverts.get(position).getCarDescription());
+                b.putString("id", advertCar.getCarID());
+                b.putString("image", advertCar.getImageUri());
+                b.putString("make", advertCar.getCarMake());
+                b.putString("model", advertCar.getCarModel());
+                b.putInt("year", advertCar.getCarYear());
+                b.putString("price", Double.toString(advertCar.getCarPrice()));
+                b.putString("location", advertCar.getCarLocation());
+                b.putString("description", advertCar.getCarDescription());
                 ViewAdvertCarIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertCarIntent, 0);
@@ -399,7 +406,22 @@ public class BrowseActivity extends Base {
                         TextView tvPrice = v.findViewById(R.id.row_price);
                         TextView tvLocation = v.findViewById(R.id.row_location);
 
-                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        try {
+                            // Download URL for image from Firebase Storage
+                            URL downloadURL = new URL(model.getImageUri());
+                            // Load image URL into ImageView
+                            Glide
+                                    .with(BrowseActivity.this)
+                                    .load(downloadURL)
+                                    .apply(new RequestOptions()
+                                            .centerCrop()
+                                            .placeholder(R.mipmap.ic_launcher_round)
+                                            .error(R.mipmap.ic_launcher_round))
+                                    .into(productImage);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+
                         tvTitle.setText(model.getProductTitle());
                         String productPrice = "€" + model.getProductPrice();
                         tvPrice.setText(productPrice);
@@ -427,7 +449,22 @@ public class BrowseActivity extends Base {
                         TextView tvPrice = v.findViewById(R.id.row_price);
                         TextView tvLocation = v.findViewById(R.id.row_location);
 
-                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        try {
+                            // Download URL for image from Firebase Storage
+                            URL downloadURL = new URL(model.getImageUri());
+                            // Load image URL into ImageView
+                            Glide
+                                    .with(BrowseActivity.this)
+                                    .load(downloadURL)
+                                    .apply(new RequestOptions()
+                                            .centerCrop()
+                                            .placeholder(R.mipmap.ic_launcher_round)
+                                            .error(R.mipmap.ic_launcher_round))
+                                    .into(productImage);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+
                         tvTitle.setText(model.getProductTitle());
                         String productPrice = "€" + model.getProductPrice();
                         tvPrice.setText(productPrice);
@@ -455,7 +492,22 @@ public class BrowseActivity extends Base {
                         TextView tvYear = v.findViewById(R.id.row_year);
                         TextView tvPrice = v.findViewById(R.id.row_price);
 
-                        productImage.setImageURI(Uri.parse(model.getImageUri()));
+                        try {
+                            // Download URL for image from Firebase Storage
+                            URL downloadURL = new URL(model.getImageUri());
+                            // Load image URL into ImageView
+                            Glide
+                                    .with(BrowseActivity.this)
+                                    .load(downloadURL)
+                                    .apply(new RequestOptions()
+                                            .centerCrop()
+                                            .placeholder(R.mipmap.ic_launcher_round)
+                                            .error(R.mipmap.ic_launcher_round))
+                                    .into(productImage);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+
                         tvMake.setText(model.getCarMake());
                         tvModel.setText(model.getCarModel());
                         tvYear.setText(String.valueOf(model.getCarYear()));

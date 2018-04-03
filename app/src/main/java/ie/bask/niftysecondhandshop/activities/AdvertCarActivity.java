@@ -1,5 +1,7 @@
 package ie.bask.niftysecondhandshop.activities;
 
+import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -10,7 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+
+import java.util.UUID;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.AdvertCar;
@@ -38,6 +46,7 @@ public class AdvertCarActivity extends Base {
         locationSpinner = findViewById(R.id.locationSpinner);
         productDetails = findViewById(R.id.productDetails);
         submitButton = findViewById(R.id.submitButton);
+        progressDialog = new ProgressDialog(this);
 
         // Load string-array from resources to give suggestions
         // to the user when they start typing
@@ -69,18 +78,22 @@ public class AdvertCarActivity extends Base {
 
         permissionCheck();
         takePhoto();
+
+        // Initialise Firebase Storage
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
 
     public void submitButtonPressed(View view) {
 
         // Get input from widgets
-        String make = carMake.getText().toString();
-        String model = carModel.getText().toString();
-        int year = carYear.getValue();
-        double price;
-        String location = locationSpinner.getSelectedItem().toString();
-        String details = productDetails.getText().toString();
+        final String make = carMake.getText().toString();
+        final String model = carModel.getText().toString();
+        final int year = carYear.getValue();
+        final double price;
+        final String location = locationSpinner.getSelectedItem().toString();
+        final String details = productDetails.getText().toString();
 
         // Use the number picker if manual price is empty, default value of np is 0
         if (priceManual.getText().toString().isEmpty()) {
@@ -90,7 +103,7 @@ public class AdvertCarActivity extends Base {
         }
 
         // Get the URI of captured image
-        String imageUri = getImageUri(bitmap);
+        final String imageUri = getImageUri(bitmap);
         Log.v("MyLogs", "Value of imageUri is " + imageUri);
 
         // Check if there are empty fields and set errors to alert the user
@@ -106,9 +119,26 @@ public class AdvertCarActivity extends Base {
         }
         // If none of the field are empty
         else {
-            newAdvertCar(new AdvertCar(imageUri, make, model, year, price, location, details));
-            Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
-                    " (5) Location: " + location + " (6) Details: " + details);
+            // Start progress dialog
+            progressDialog.setMessage("Uploading advert...");
+            progressDialog.show();
+
+            // Get reference to Firebase Storage and put photo into images folder
+            final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            ref.putFile(Uri.parse(imageUri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Close progress dialog
+                    progressDialog.dismiss();
+
+                    String downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
+                    Log.v("MyLogs", "Value of ref is " + taskSnapshot.getDownloadUrl().toString());
+                    // Create a new advert with the data
+                    newAdvertCar(new AdvertCar(downloadURL, make, model, year, price, location, details));
+                    Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +
+                            " (5) Location: " + location + " (6) Details: " + details);
+                }
+            });
         }
     }
 

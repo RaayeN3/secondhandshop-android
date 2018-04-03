@@ -1,7 +1,6 @@
 package ie.bask.niftysecondhandshop.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import ie.bask.niftysecondhandshop.R;
@@ -68,7 +72,23 @@ public class AdvertCarAdapter extends ArrayAdapter<AdvertCar> {
         v.carPrice = view.findViewById(R.id.row_price);
 
         final AdvertCar dataSet = carAdverts.get(position);
-        v.carImage.setImageURI(Uri.parse(dataSet.getImageUri()));
+
+        try {
+            // Download URL for image from Firebase Storage
+            URL downloadURL = new URL(dataSet.getImageUri());
+            // Load image URL into ImageView
+            Glide
+                    .with(getContext())
+                    .load(downloadURL)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.mipmap.ic_launcher_round)
+                            .error(R.mipmap.ic_launcher_round))
+                    .into(v.carImage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         v.carMake.setText(dataSet.getCarMake());
         v.carModel.setText(dataSet.getCarModel());
         v.carYear.setText(String.valueOf(dataSet.getCarYear()));

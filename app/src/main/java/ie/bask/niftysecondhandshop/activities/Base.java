@@ -2,6 +2,7 @@ package ie.bask.niftysecondhandshop.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import java.io.ByteArrayOutputStream;
@@ -48,6 +51,10 @@ public class Base extends AppCompatActivity {
     public static DatabaseReference databaseFashionAds;
     public static DatabaseReference databaseCarAds;
 
+    // Firebase Storage
+    public static FirebaseStorage storage;
+    public static StorageReference storageReference;
+
     // Firebase auth object
     public static FirebaseAuth firebaseAuth;
 
@@ -64,6 +71,7 @@ public class Base extends AppCompatActivity {
     public ImageView advertImage;
     public Button submitButton;
     public EditText productDetails;
+    public ProgressDialog progressDialog;
 
     // Bitmap to temporary store image captured with the camera
     public Bitmap bitmap;
@@ -194,6 +202,9 @@ public class Base extends AppCompatActivity {
         databaseFashionAds.removeValue();
         databaseCarAds.removeValue();
         Toast.makeText(this, "All adverts deleted", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, MainActivity.class));
+        // Don't allow to go back to Browse activity after all adds are deleted
+        finishAffinity();
     }
 
 

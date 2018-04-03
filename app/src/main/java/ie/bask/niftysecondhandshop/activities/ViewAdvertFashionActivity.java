@@ -1,7 +1,6 @@
 package ie.bask.niftysecondhandshop.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -16,8 +15,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.AdvertFashion;
@@ -64,7 +68,22 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         // Passed values with Bundle from BrowseActivity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            imageViewProduct.setImageURI(Uri.parse(bundle.getString("image")));
+            try {
+                // Download URL for image from Firebase Storage
+                URL downloadURL = new URL(bundle.getString("image"));
+                // Load image URL into ImageView
+                Glide
+                        .with(ViewAdvertFashionActivity.this)
+                        .load(downloadURL)
+                        .apply(new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.mipmap.ic_launcher_round)
+                                .error(R.mipmap.ic_launcher_round))
+                        .into(imageViewProduct);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
             EditTextTitle.setText(bundle.getString("title"));
             EditTextPrice.setText(bundle.getString("price"));
             EditTextType.setText(bundle.getString("type"));
@@ -229,12 +248,24 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         } else {
             Bundle bundle = getIntent().getExtras();
             // Get position
-            int position = bundle.getInt("pos");
+            String id = bundle.getString("id");
             // Get advert at clicked position from database
-            DatabaseReference clickedPos = databaseFashionAds.child(fashionAdverts.get(position).getProductID());
+            DatabaseReference clickedPos = databaseFashionAds.child(id);
             // Removing advert from database and arrayList
             clickedPos.removeValue();
-            fashionAdverts.remove(position);
+
+            // Iterate through array to find element with specific ID
+            for (int j = 0; j < fashionAdverts.size(); j++) {
+                AdvertFashion obj = fashionAdverts.get(j);
+
+                if (obj.getProductID().equals(id)) {
+                    //found, delete.
+                    fashionAdverts.remove(j);
+                    break;
+                }
+
+            }
+
             // Close all previous activities and open BrowseActivity
             finishAffinity();
             Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);

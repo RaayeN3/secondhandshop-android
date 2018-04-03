@@ -1,5 +1,7 @@
 package ie.bask.niftysecondhandshop.activities;
 
+import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -10,7 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+
+import java.util.UUID;
 
 import ie.bask.niftysecondhandshop.R;
 import ie.bask.niftysecondhandshop.models.AdvertFashion;
@@ -39,6 +47,7 @@ public class AdvertFashionActivity extends Base {
         locationSpinner = findViewById(R.id.locationSpinner);
         productDetails = findViewById(R.id.productDetails);
         submitButton = findViewById(R.id.submitButton);
+        progressDialog = new ProgressDialog(this);
 
         // Set the max input length of title to 25 characters
         InputFilter[] filter = new InputFilter[1];
@@ -83,18 +92,22 @@ public class AdvertFashionActivity extends Base {
 
         permissionCheck();
         takePhoto();
+
+        // Initialise Firebase Storage
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
 
     public void submitButtonPressed(View view) {
         // Get input from widgets
-        String title = productTitle.getText().toString();
-        double price;
-        String location = locationSpinner.getSelectedItem().toString();
-        String details = productDetails.getText().toString();
+        final String title = productTitle.getText().toString();
+        final double price;
+        final String location = locationSpinner.getSelectedItem().toString();
+        final String details = productDetails.getText().toString();
         int radioId = productType.getCheckedRadioButtonId();
-        String type;
-        String size;
+        final String type;
+        final String size;
 
         // Use the number picker if manual price is empty, default value of np is 0
         if (priceManual.getText().toString().isEmpty()) {
@@ -133,9 +146,26 @@ public class AdvertFashionActivity extends Base {
         }
         // If none of the fields are empty
         else {
-            newAdvertFashion(new AdvertFashion(imageUri, title, price, type, size, location, details));
-            Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
-                    " (5) Location: " + location + " (6) Details: " + details);
+            // Start progress dialog
+            progressDialog.setMessage("Uploading advert...");
+            progressDialog.show();
+
+            // Get reference to Firebase Storage and put photo into images folder
+            final StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            ref.putFile(Uri.parse(imageUri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Close progress dialog
+                    progressDialog.dismiss();
+
+                    String downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
+                    Log.v("MyLogs", "Value of ref is " + taskSnapshot.getDownloadUrl().toString());
+                    // Create a new advert with the data
+                    newAdvertFashion(new AdvertFashion(downloadURL, title, price, type, size, location, details));
+                    Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
+                            " (5) Location: " + location + " (6) Details: " + details);
+                }
+            });
         }
     }
 

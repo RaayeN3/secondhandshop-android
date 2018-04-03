@@ -62,6 +62,7 @@
         android:id="@+id/row_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tv_location"
         android:layout_below="@id/tv_location"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/row_price" />
