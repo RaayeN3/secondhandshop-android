@@ -1,5 +1,7 @@
 package ie.bask.niftysecondhandshop.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -161,35 +163,53 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                 }
             });
         } else {
-            Bundle bundle = getIntent().getExtras();
-            // Get position
-            String id = bundle.getString("id");
-            // Get advert at clicked position from database
-            DatabaseReference clickedPos = databaseAds.child(id);
-            // Removing advert from database and arrayList
-            clickedPos.removeValue();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ViewAdvertActivity.this);
+            alertDialogBuilder.setTitle("You are about to delete an advert!");
+            alertDialogBuilder.setMessage("Really delete this advert?");
+            alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Bundle bundle = getIntent().getExtras();
+                    // Get position
+                    String id = bundle.getString("id");
+                    // Get advert at clicked position from database
+                    DatabaseReference clickedPos = databaseAds.child(id);
+                    // Removing advert from database and arrayList
+                    clickedPos.removeValue();
 
-            // Iterate through array to find element with specific ID
-            for (int j = 0; j < adverts.size(); j++) {
-                Advert obj = adverts.get(j);
+                    // Iterate through array to find element with specific ID
+                    for (int j = 0; j < adverts.size(); j++) {
+                        Advert obj = adverts.get(j);
 
-                if (obj.getProductID().equals(id)) {
-                    //found, delete.
-                    adverts.remove(j);
-                    break;
+                        if (obj.getProductID().equals(id)) {
+                            // Found, delete.
+                            adverts.remove(j);
+                            break;
+                        }
+                    }
+
+                    // Close all previous activities and open BrowseActivity
+                    finishAffinity();
+                    Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+                    BrowseIntent.putExtra("selectRadioButton", R.id.advert_radioButton);
+                    startActivity(BrowseIntent);
                 }
-            }
-
-            // Close all previous activities and open BrowseActivity
-            finishAffinity();
-            Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
-            startActivity(BrowseIntent);
+            });
+            alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialogBuilder.show();
         }
     }
+
 
     @Override
     public void onBackPressed() {
         Intent backToBrowse = new Intent(getApplicationContext(), BrowseActivity.class);
+        backToBrowse.putExtra("selectRadioButton", R.id.advert_radioButton);
         startActivity(backToBrowse);
     }
 

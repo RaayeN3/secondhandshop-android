@@ -20,7 +20,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.net.MalformedURLException;
@@ -85,44 +84,57 @@ public class BrowseActivity extends Base {
         // Bind adapter to ListView
         final AdvertAdapter adapter = new AdvertAdapter(this, adverts);
         productsView.setAdapter(adapter);
-        // Display AlertDialog with CRUD operations when the user long clicks on any position
+
+        // Display AlertDialog with confirmation whether to delete this ad
         productsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
-                alertDialogBuilder.setTitle("CRUD operations:");
-                String[] items = {"Delete product", "Delete all"};
-                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle("You are about to delete an advert!");
+                alertDialogBuilder.setMessage("Really delete this advert?");
+                alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Delete the Advert at clicked position
-                        if (i == 0) {
-                            // Get advert at clicked position from database
-                            DatabaseReference clickedPos = databaseAds.child(adverts.get(position).getProductID());
-                            // Removing advert
-                            clickedPos.removeValue();
-                            adverts.remove(position);
-                            // Notify adapter of changed data
-                            adapter.notifyDataSetChanged();
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Get item at clicked position
+                        Advert advert = (Advert) parent.getItemAtPosition(position);
+                        DatabaseReference clickedPos = databaseAds.child(advert.getProductID());
+                        // Delete from Firebase
+                        clickedPos.removeValue();
+
+                        // Iterate through array to find element with specific ID
+                        for (int j = 0; j < adverts.size(); j++) {
+                            Advert obj = adverts.get(j);
+
+                            if (obj.getProductID().equals(advert.getProductID())) {
+                                // Found, delete.
+                                adverts.remove(j);
+                                // Notify adapter of changed data
+                                adapter.notifyDataSetChanged();
+                                break;
+                            }
                         }
-                        // Delete all Adverts
-                        else {
-                            // Get reference to ads table
-                            databaseAds = FirebaseDatabase.getInstance().getReference("ads");
-                            // Delete all nodes in the table
-                            databaseAds.setValue(null);
-                            adverts.clear();
-                            // Notify adapter of changed data
-                            adapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
+                            finishAffinity();
+                            Intent backToMain = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(backToMain);
+                        } else if (adverts.isEmpty()) {
+                            emptyAdvertCategory.setVisibility(View.VISIBLE);
                         }
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
+                alertDialogBuilder.show();
                 return true;
             }
         });
+
         // Open up activity to view individual advert
         // passing the data with Bundle
         productsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,66 +161,56 @@ public class BrowseActivity extends Base {
         // Bind adapter to ListView
         final AdvertFashionAdapter adapterFashion = new AdvertFashionAdapter(this, fashionAdverts);
         fashionProductsView.setAdapter(adapterFashion);
-        // Display AlertDialog with CRUD operations when the user long clicks on any position
+
+        // Display AlertDialog with confirmation whether to delete this ad
         fashionProductsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
-                alertDialogBuilder.setTitle("CRUD operations:");
-                String[] items = {"Update", "Delete product", "Delete all"};
-                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle("You are about to delete an advert!");
+                alertDialogBuilder.setMessage("Really delete this advert?");
+                alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Update AdvertFashion at clicked position
-                        if (i == 0) {
-                            Intent AdvertFashionIntent = new Intent(getApplicationContext(), AdvertFashionActivity.class);
-                            // Put extras into the Bundle
-                            Bundle b = new Bundle();
-                            b.putInt("pos", position);
-                            b.putString("id", fashionAdverts.get(position).getProductID());
-                            b.putString("title", fashionAdverts.get(position).getProductTitle());
-                            b.putString("price", Double.toString(fashionAdverts.get(position).getProductPrice()));
-                            b.putString("type", fashionAdverts.get(position).getProductType());
-                            b.putString("size", fashionAdverts.get(position).getProductSize());
-                            b.putString("location", fashionAdverts.get(position).getProductLocation());
-                            b.putString("description", fashionAdverts.get(position).getProductDescription());
-                            AdvertFashionIntent.putExtras(b);
-                            startActivityForResult(AdvertFashionIntent, 0);
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Get item at clicked position
+                        AdvertFashion advert = (AdvertFashion) parent.getItemAtPosition(position);
+                        DatabaseReference clickedPos = databaseFashionAds.child(advert.getProductID());
+                        // Delete from Firebase
+                        clickedPos.removeValue();
+
+                        // Iterate through array to find element with specific ID
+                        for (int j = 0; j < fashionAdverts.size(); j++) {
+                            AdvertFashion obj = fashionAdverts.get(j);
+
+                            if (obj.getProductID().equals(advert.getProductID())) {
+                                // Found, delete.
+                                fashionAdverts.remove(j);
+                                // Notify adapter of changed data
+                                adapterFashion.notifyDataSetChanged();
+                                break;
+                            }
                         }
-                        // Delete the AdvertFashion at clicked position
-                        else if (i == 1) {
-                            // Get advert at clicked position from database
-                            DatabaseReference clickedPos = databaseFashionAds.child(fashionAdverts.get(position).getProductID());
-
-                            // Removing advert
-                            clickedPos.removeValue();
-                            fashionAdverts.remove(position);
-
-                            // Notify adapter of changed data
-                            adapterFashion.notifyDataSetChanged();
-                        }
-                        // Delete all AdvertFashions
-                        else {
-                            // Get reference to fashionAds table
-                            databaseFashionAds = FirebaseDatabase.getInstance().getReference("fashionAds");
-
-                            // Delete all nodes in the table
-                            databaseFashionAds.setValue(null);
-                            fashionAdverts.clear();
-
-                            // Notify adapter of changed data
-                            adapterFashion.notifyDataSetChanged();
+                        dialog.dismiss();
+                        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
+                            finishAffinity();
+                            Intent backToMain = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(backToMain);
+                        } else if (fashionAdverts.isEmpty()) {
+                            emptyAdvertCategory.setVisibility(View.VISIBLE);
                         }
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
+                alertDialogBuilder.show();
                 return true;
             }
         });
-        // Hide ListView by default
-        fashionProductsView.setVisibility(View.GONE);
 
         // Open up activity to view individual advert
         // passing the data with Bundle
@@ -237,60 +239,56 @@ public class BrowseActivity extends Base {
 
         final AdvertCarAdapter adapterCar = new AdvertCarAdapter(this, carAdverts);
         carsView.setAdapter(adapterCar);
+
+        // Display AlertDialog with confirmation whether to delete this ad
         carsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BrowseActivity.this);
-                alertDialogBuilder.setTitle("CRUD operations:");
-                String[] items = {"Update", "Delete car", "Delete all"};
-                alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle("You are about to delete an advert!");
+                alertDialogBuilder.setMessage("Really delete this advert?");
+                alertDialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0) {
-                            Intent AdvertCarIntent = new Intent(getApplicationContext(), AdvertCarActivity.class);
-                            // Put extras into the Bundle
-                            Bundle b = new Bundle();
-                            b.putInt("pos", position);
-                            b.putString("id", carAdverts.get(position).getCarID());
-                            b.putString("make", carAdverts.get(position).getCarMake());
-                            b.putString("model", carAdverts.get(position).getCarModel());
-                            b.putInt("year", carAdverts.get(position).getCarYear());
-                            b.putString("price", Double.toString(carAdverts.get(position).getCarPrice()));
-                            b.putString("location", carAdverts.get(position).getCarLocation());
-                            b.putString("description", carAdverts.get(position).getCarDescription());
-                            AdvertCarIntent.putExtras(b);
-                            startActivityForResult(AdvertCarIntent, 0);
-                        } else if (i == 1) {
-                            // Get advert at clicked position from database
-                            DatabaseReference clickedPos = databaseCarAds.child(carAdverts.get(position).getCarID());
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Get item at clicked position
+                        AdvertCar advert = (AdvertCar) parent.getItemAtPosition(position);
+                        DatabaseReference clickedPos = databaseCarAds.child(advert.getCarID());
+                        // Delete from Firebase
+                        clickedPos.removeValue();
 
-                            // Removing advert
-                            Log.v("MyLogs", databaseCarAds.child(carAdverts.get(position).getCarID()) + "\n");
-                            clickedPos.setValue(null);
-                            carAdverts.remove(position);
+                        // Iterate through array to find element with specific ID
+                        for (int j = 0; j < carAdverts.size(); j++) {
+                            AdvertCar obj = carAdverts.get(j);
 
-                            // Notify adapter of changed data
-                            adapterCar.notifyDataSetChanged();
-                        } else {
-                            // Get reference to fashionAds table
-                            databaseCarAds = FirebaseDatabase.getInstance().getReference("carAds");
-
-                            // Delete all nodes in the table
-                            databaseCarAds.setValue(null);
-                            carAdverts.clear();
-
-                            // Notify adapter of changed data
-                            adapterCar.notifyDataSetChanged();
+                            if (obj.getCarID().equals(advert.getCarID())) {
+                                // Found, delete.
+                                carAdverts.remove(j);
+                                // Notify adapter of changed data
+                                adapterCar.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                        dialog.dismiss();
+                        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
+                            finishAffinity();
+                            Intent backToMain = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(backToMain);
+                        } else if (carAdverts.isEmpty()) {
+                            emptyAdvertCategory.setVisibility(View.VISIBLE);
                         }
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
+                alertDialogBuilder.show();
                 return true;
             }
         });
-        carsView.setVisibility(View.GONE);
 
         // Open up activity to view individual advert
         // passing the data with Bundle
@@ -316,8 +314,64 @@ public class BrowseActivity extends Base {
             }
         });
 
+        // Get intent extra with value of radio button from View activity
+        int selectedRadioButton = getIntent().getIntExtra("selectRadioButton", R.id.advert_radioButton);
+        Log.v("MyLogs", String.valueOf(selectedRadioButton));
+
+        switch (selectedRadioButton) {
+            case R.id.advert_radioButton:
+                // if there are no adverts, hide all ListViews
+                // and only show the emptyCategory TextView
+                if (adverts.isEmpty()) {
+                    emptyAdvertCategory.setVisibility(View.VISIBLE);
+                    choice_radio_group.check(R.id.advert_radioButton);
+                    productsView.setVisibility(View.GONE);
+                    fashionProductsView.setVisibility(View.GONE);
+                    carsView.setVisibility(View.GONE);
+                }
+                // if adverts is not empty, show respective ListView
+                // and hide emptyCategory TextView
+                else {
+                    emptyAdvertCategory.setVisibility(View.GONE);
+                    choice_radio_group.check(R.id.advert_radioButton);
+                    productsView.setVisibility(View.VISIBLE);
+                    fashionProductsView.setVisibility(View.GONE);
+                    carsView.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.fashionAd_radioButton:
+                if (fashionAdverts.isEmpty()) {
+                    emptyAdvertCategory.setVisibility(View.VISIBLE);
+                    choice_radio_group.check(R.id.fashionAd_radioButton);
+                    productsView.setVisibility(View.GONE);
+                    fashionProductsView.setVisibility(View.GONE);
+                    carsView.setVisibility(View.GONE);
+                } else {
+                    emptyAdvertCategory.setVisibility(View.GONE);
+                    choice_radio_group.check(R.id.fashionAd_radioButton);
+                    productsView.setVisibility(View.GONE);
+                    fashionProductsView.setVisibility(View.VISIBLE);
+                    carsView.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.carAd_radioButton:
+                if (carAdverts.isEmpty()) {
+                    emptyAdvertCategory.setVisibility(View.VISIBLE);
+                    choice_radio_group.check(R.id.carAd_radioButton);
+                    productsView.setVisibility(View.GONE);
+                    fashionProductsView.setVisibility(View.GONE);
+                    carsView.setVisibility(View.GONE);
+                } else {
+                    emptyAdvertCategory.setVisibility(View.GONE);
+                    choice_radio_group.check(R.id.carAd_radioButton);
+                    productsView.setVisibility(View.GONE);
+                    fashionProductsView.setVisibility(View.GONE);
+                    carsView.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+
         // Manage which ListView is visible depending on selected radio button
-        choice_radio_group.check(R.id.advert_radioButton);
         choice_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -377,7 +431,9 @@ public class BrowseActivity extends Base {
             browseEmptyDefaultText.setVisibility(View.GONE);
             choice_radio_group.setVisibility(View.VISIBLE);
         } else {
-            choice_radio_group.setVisibility(View.GONE);
+            finishAffinity();
+            Intent backToMain = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(backToMain);
         }
     }
 
