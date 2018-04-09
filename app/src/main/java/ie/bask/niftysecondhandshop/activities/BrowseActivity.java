@@ -45,6 +45,7 @@ public class BrowseActivity extends Base {
     ImageButton searchButton;
     EditText EditTextSearch;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,9 @@ public class BrowseActivity extends Base {
         browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
         searchButton = findViewById(R.id.searchButton);
         EditTextSearch = findViewById(R.id.EditTextSearch);
+
+        // Initialising Google API client
+        mGoogleSignInClient = createGoogleClient();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

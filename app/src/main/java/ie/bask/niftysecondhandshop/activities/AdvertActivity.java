@@ -1,6 +1,8 @@
 package ie.bask.niftysecondhandshop.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -64,6 +66,9 @@ public class AdvertActivity extends Base {
         // Initialise Firebase Storage
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        // Initialising Google API client
+        mGoogleSignInClient = createGoogleClient();
     }
 
 
@@ -114,6 +119,21 @@ public class AdvertActivity extends Base {
 
                 }
             });
+        }
+    }
+
+
+    /**
+     * Receive captured image from camera and store it as Bitmap
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+            advertImage.setImageBitmap(bitmap);
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 

@@ -40,6 +40,9 @@ public class MainActivity extends Base implements View.OnClickListener {
         // Initialising Firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // Initialising Google API client
+        mGoogleSignInClient = createGoogleClient();
+
         // Getting current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
 

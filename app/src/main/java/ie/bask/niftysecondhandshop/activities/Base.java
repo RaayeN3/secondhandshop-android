@@ -7,9 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +23,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,6 +67,7 @@ public class Base extends AppCompatActivity {
 
     // Firebase auth object
     public static FirebaseAuth firebaseAuth;
+    public static GoogleApiClient mGoogleSignInClient;
 
     // ArrayLists storing objects of type Advert, AdvertFashion and AdvertCar
     public static List<Advert> adverts = new ArrayList<>();
@@ -150,8 +161,34 @@ public class Base extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
-            //logging out the user
-            firebaseAuth.signOut();
+            mGoogleSignInClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(@Nullable Bundle bundle) {
+
+                    FirebaseAuth.getInstance().signOut();
+                    if (mGoogleSignInClient.isConnected()) {
+                        Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                if (status.isSuccess()) {
+                                    Log.v("MyLogs", "User Logged out");
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    finishAffinity();
+                                }
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onConnectionSuspended(int i) {
+                    Log.v("MyLogs", "Google API Client Connection Suspended");
+                }
+            });
+//            //logging out the user
+//            firebaseAuth.signOut();
+//            Auth.GoogleSignInApi.signOut(mGoogleSignInClient);
             //closing activity
             finishAffinity();
             Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
@@ -287,20 +324,6 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Receive captured image from camera and store it as Bitmap
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            advertImage.setImageBitmap(bitmap);
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-        }
-    }
-
-
     /**
      * Firebase Database loading methods
      */
@@ -377,6 +400,26 @@ public class Base extends AppCompatActivity {
 
             }
         });
+    }
+
+    public GoogleApiClient createGoogleClient() {
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(getApplicationContext(), "Error with Google API client!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        return mGoogleSignInClient;
     }
 
 }
