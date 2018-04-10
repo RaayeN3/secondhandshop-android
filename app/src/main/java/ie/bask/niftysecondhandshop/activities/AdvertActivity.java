@@ -37,7 +37,7 @@ public class AdvertActivity extends Base {
         productTitle = findViewById(R.id.productTitle);
         snp_horizontal = findViewById(R.id.snp_horizontal);
         priceManual = findViewById(R.id.priceManual);
-        locationSpinner = findViewById(R.id.locationSpinner);
+        autoCompleteCounty = findViewById(R.id.autoCompleteCounty);
         productDetails = findViewById(R.id.productDetails);
         submitButton = findViewById(R.id.submitButton);
         progressDialog = new ProgressDialog(this);
@@ -51,14 +51,20 @@ public class AdvertActivity extends Base {
         filter[0] = new InputFilter.LengthFilter(5);
         priceManual.setFilters(filter);
 
+        // Set max input length of autoCompleteCounty to 9 chars
+        filter[0] = new InputFilter.LengthFilter(9);
+        autoCompleteCounty.setFilters(filter);
+
         filter[0] = new InputFilter.LengthFilter(50);
         productDetails.setFilters(filter);
 
-        // Use string-array from the res/values/strings to populate in the spinner
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<>(AdvertActivity.this,
-                R.layout.spinner_item, getResources().getStringArray(R.array.locations));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(myAdapter);
+        // Load string-array from resources to give suggestions
+        // to the user when they start typing
+        ArrayAdapter<String> arrayAdapterCounties = new ArrayAdapter<>(AdvertActivity.this, android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.counties));
+        autoCompleteCounty.setAdapter(arrayAdapterCounties);
+        // Show suggestions after 1 symbol is typed
+        autoCompleteCounty.setThreshold(1);
 
         permissionCheck();
         takePhoto();
@@ -74,16 +80,16 @@ public class AdvertActivity extends Base {
 
     public void submitButtonPressed(View view) {
         // Get input from widgets
-        final String title = productTitle.getText().toString();
+        final String title = productTitle.getText().toString().trim();
         final double price;
-        final String location = locationSpinner.getSelectedItem().toString();
-        final String details = productDetails.getText().toString();
+        final String location = autoCompleteCounty.getText().toString().trim();
+        final String details = productDetails.getText().toString().trim();
 
         // Use the number picker if manual price is empty, default value of np is 0
         if (priceManual.getText().toString().isEmpty()) {
             price = (double) snp_horizontal.getValue();
         } else {
-            price = Double.parseDouble(priceManual.getText().toString());
+            price = Double.parseDouble(priceManual.getText().toString().trim());
         }
 
         // Get the URI of captured image
@@ -93,6 +99,9 @@ public class AdvertActivity extends Base {
         if (TextUtils.isEmpty(productTitle.getText())) {
             productTitle.setError("Product title is required!");
             productTitle.requestFocus();
+        } else if (TextUtils.isEmpty(autoCompleteCounty.getText())) {
+            autoCompleteCounty.setError("County is required!");
+            autoCompleteCounty.requestFocus();
         } else if (TextUtils.isEmpty(productDetails.getText())) {
             productDetails.setError("Product details is required!");
             productDetails.requestFocus();

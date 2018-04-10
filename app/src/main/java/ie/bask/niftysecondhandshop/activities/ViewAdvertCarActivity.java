@@ -31,8 +31,8 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
 
     ImageView imageViewProduct;
     TextView textViewMake, textViewModel, textViewYear, textViewPrice, textViewLocation, textViewDetails;
-    EditText EditTextModel, EditTextYear, EditTextPrice, EditTextLocation, EditTextDetails;
-    AutoCompleteTextView autoCompleteMake;
+    EditText EditTextModel, EditTextYear, EditTextPrice, EditTextDetails;
+    AutoCompleteTextView autoCompleteMake, autoCompleteCounty;
     ScrollableNumberPicker snp_carYear;
     Button buttonUpdate, buttonDelete, buttonSave;
 
@@ -52,7 +52,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
         EditTextModel = findViewById(R.id.EditTextModel);
         EditTextYear = findViewById(R.id.EditTextYear);
         EditTextPrice = findViewById(R.id.EditTextPrice);
-        EditTextLocation = findViewById(R.id.EditTextLocation);
+        autoCompleteCounty = findViewById(R.id.autoCompleteCounty);
         EditTextDetails = findViewById(R.id.EditTextDetails);
         buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonDelete = findViewById(R.id.buttonDelete);
@@ -86,7 +86,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
             EditTextModel.setText(bundle.getString("model"));
             EditTextYear.setText(String.valueOf(bundle.getInt("year")));
             EditTextPrice.setText(bundle.getString("price"));
-            EditTextLocation.setText(bundle.getString("location"));
+            autoCompleteCounty.setText(bundle.getString("location"));
             EditTextDetails.setText(bundle.getString("description"));
         }
 
@@ -95,7 +95,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
         EditTextModel.setEnabled(false);
         EditTextYear.setEnabled(false);
         EditTextPrice.setEnabled(false);
-        EditTextLocation.setEnabled(false);
+        autoCompleteCounty.setEnabled(false);
         EditTextDetails.setEnabled(false);
 
         // Set onClickListeners for buttons
@@ -119,13 +119,21 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
         filter[0] = new InputFilter.LengthFilter(6);
         EditTextPrice.setFilters(filter);
 
-        // Set the max length of location to 20
-        filter[0] = new InputFilter.LengthFilter(20);
-        EditTextLocation.setFilters(filter);
+        // Set the max length of location to 9
+        filter[0] = new InputFilter.LengthFilter(9);
+        autoCompleteCounty.setFilters(filter);
 
         // Set the max length of details to 50
         filter[0] = new InputFilter.LengthFilter(50);
         EditTextDetails.setFilters(filter);
+
+        // Load string-array from resources to give suggestions
+        // to the user when they start typing
+        ArrayAdapter<String> arrayAdapterCounties = new ArrayAdapter<>(ViewAdvertCarActivity.this, android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.counties));
+        autoCompleteCounty.setAdapter(arrayAdapterCounties);
+        // Show suggestions after 1 symbol is typed
+        autoCompleteCounty.setThreshold(1);
     }
 
     /**
@@ -155,7 +163,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
             autoCompleteMake.setEnabled(true);
             EditTextModel.setEnabled(true);
             EditTextPrice.setEnabled(true);
-            EditTextLocation.setEnabled(true);
+            autoCompleteCounty.setEnabled(true);
             EditTextDetails.setEnabled(true);
 
             // Set onClickListener for save button
@@ -172,9 +180,9 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                     } else if (TextUtils.isEmpty(EditTextDetails.getText())) {
                         EditTextDetails.setError("Details is required!");
                         EditTextDetails.requestFocus();
-                    } else if (TextUtils.isEmpty(EditTextLocation.getText())) {
-                        EditTextLocation.setError("Location is required!");
-                        EditTextLocation.requestFocus();
+                    } else if (TextUtils.isEmpty(autoCompleteCounty.getText())) {
+                        autoCompleteCounty.setError("Location is required!");
+                        autoCompleteCounty.requestFocus();
                     } else if (TextUtils.isEmpty(EditTextPrice.getText())) {
                         EditTextPrice.setError("Details is required!");
                         EditTextPrice.requestFocus();
@@ -189,7 +197,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                         int year = snp_carYear.getValue();
                         String priceStr = EditTextPrice.getText().toString();
                         double price = Double.valueOf(priceStr);
-                        String location = EditTextLocation.getText().toString();
+                        String location = autoCompleteCounty.getText().toString();
                         String description = EditTextDetails.getText().toString();
 
 
@@ -208,7 +216,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                         autoCompleteMake.setEnabled(false);
                         EditTextModel.setEnabled(false);
                         EditTextPrice.setEnabled(false);
-                        EditTextLocation.setEnabled(false);
+                        autoCompleteCounty.setEnabled(false);
                         EditTextDetails.setEnabled(false);
 
                         // Hide/show widgets

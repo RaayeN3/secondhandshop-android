@@ -8,6 +8,8 @@ import android.text.InputFilter;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,7 +31,8 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
     // Widgets
     ImageView imageViewProduct;
     TextView textViewTitle, textViewPrice, textViewLocation, textViewDetails;
-    EditText EditTextTitle, EditTextPrice, EditTextLocation, EditTextDetails;
+    EditText EditTextTitle, EditTextPrice, EditTextDetails;
+    AutoCompleteTextView autoCompleteCounty;
     Button buttonUpdate, buttonDelete, buttonSave;
 
     @Override
@@ -45,7 +48,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
         textViewDetails = findViewById(R.id.textViewDetails);
         EditTextTitle = findViewById(R.id.EditTextTitle);
         EditTextPrice = findViewById(R.id.EditTextPrice);
-        EditTextLocation = findViewById(R.id.EditTextLocation);
+        autoCompleteCounty = findViewById(R.id.autoCompleteCounty);
         EditTextDetails = findViewById(R.id.EditTextDetails);
         buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonDelete = findViewById(R.id.buttonDelete);
@@ -76,7 +79,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
 
             EditTextTitle.setText(bundle.getString("title"));
             EditTextPrice.setText(bundle.getString("price"));
-            EditTextLocation.setText(bundle.getString("location"));
+            autoCompleteCounty.setText(bundle.getString("location"));
             EditTextDetails.setText(bundle.getString("description"));
         }
 
@@ -93,7 +96,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
         // Make EditTexts disabled by default
         EditTextTitle.setEnabled(false);
         EditTextPrice.setEnabled(false);
-        EditTextLocation.setEnabled(false);
+        autoCompleteCounty.setEnabled(false);
         EditTextDetails.setEnabled(false);
 
         // Set the max input length of title to 25 characters
@@ -105,13 +108,21 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
         filter[0] = new InputFilter.LengthFilter(5);
         EditTextPrice.setFilters(filter);
 
-        // Set the max length of location to 20
-        filter[0] = new InputFilter.LengthFilter(20);
-        EditTextLocation.setFilters(filter);
+        // Set the max length of location to 9
+        filter[0] = new InputFilter.LengthFilter(9);
+        autoCompleteCounty.setFilters(filter);
 
         // Set the max length of details to 50
         filter[0] = new InputFilter.LengthFilter(50);
         EditTextDetails.setFilters(filter);
+
+        // Load string-array from resources to give suggestions
+        // to the user when they start typing
+        ArrayAdapter<String> arrayAdapterCounties = new ArrayAdapter<>(ViewAdvertActivity.this, android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.counties));
+        autoCompleteCounty.setAdapter(arrayAdapterCounties);
+        // Show suggestions after 1 symbol is typed
+        autoCompleteCounty.setThreshold(1);
     }
 
     /**
@@ -127,7 +138,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
             // Enable editing text
             EditTextTitle.setEnabled(true);
             EditTextPrice.setEnabled(true);
-            EditTextLocation.setEnabled(true);
+            autoCompleteCounty.setEnabled(true);
             EditTextDetails.setEnabled(true);
 
             // Set onClickListener for save button
@@ -139,11 +150,11 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                     String id = bundle.getString("id");
                     int position = bundle.getInt("pos");
                     String image = bundle.getString("image");
-                    String title = EditTextTitle.getText().toString();
-                    String priceStr = EditTextPrice.getText().toString();
+                    String title = EditTextTitle.getText().toString().trim();
+                    String priceStr = EditTextPrice.getText().toString().trim();
                     double price = Double.valueOf(priceStr);
-                    String location = EditTextLocation.getText().toString();
-                    String description = EditTextDetails.getText().toString();
+                    String location = autoCompleteCounty.getText().toString().trim();
+                    String description = EditTextDetails.getText().toString().trim();
 
                     // Create the updated Advert
                     Advert ad = new Advert(id, image, title, price, location, description);
@@ -158,7 +169,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                     // Disable editing text
                     EditTextTitle.setEnabled(false);
                     EditTextPrice.setEnabled(false);
-                    EditTextLocation.setEnabled(false);
+                    autoCompleteCounty.setEnabled(false);
                     EditTextDetails.setEnabled(false);
                 }
             });

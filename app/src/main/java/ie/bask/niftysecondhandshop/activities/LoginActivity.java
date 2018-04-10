@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +14,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -25,7 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import ie.bask.niftysecondhandshop.R;
 
 
-public class LoginActivity extends Base implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Widgets
     private Button buttonLogin;
@@ -34,8 +38,15 @@ public class LoginActivity extends Base implements View.OnClickListener {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private ProgressDialog progressDialog;
+
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "MyLogs";
+
+    // Firebase Auth object
+    private FirebaseAuth firebaseAuth;
+
+    // Google API client object
+    private GoogleApiClient mGoogleSignInClient;
 
 
     @Override
@@ -48,14 +59,29 @@ public class LoginActivity extends Base implements View.OnClickListener {
         // Getting firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Initialising Google API client
-        mGoogleSignInClient = createGoogleClient();
-
         if (firebaseAuth.getCurrentUser() != null) {
             // Means user is already logged in
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        // Initialising Google API client
+        mGoogleSignInClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Toast.makeText(getApplicationContext(), "Error with Google API client!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
 
         // Initialising widgets
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -140,11 +166,10 @@ public class LoginActivity extends Base implements View.OnClickListener {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            progressDialog.setMessage("Loading, please wait...");
-            progressDialog.show();
-
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
+                progressDialog.setMessage("Loading, please wait...");
+                progressDialog.show();
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);

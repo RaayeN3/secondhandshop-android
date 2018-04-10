@@ -53,10 +53,11 @@
     <string name="emptyAdvertsCategory">No adverts in this category.</string>
     <string name="user_registration">User Registration</string>
     <string name="enter_email">Enter email</string>
-    <string name="enter_password">Enter password</string>
+    <string name="enter_username">Create a username</string>
+    <string name="enter_password">Choose a password</string>
     <string name="user_login">User Login</string>
     <string name="button_login">Log in</string>
-    <string name="button_register">Register</string>
+    <string name="button_register">Sign me up!</string>
     <string name="logout">Log out</string>
     <string name="githubTextView">Visit my GitHub page:</string>
     <string name="reset">Delete all ads</string>
@@ -91,6 +92,39 @@
         <item>Opel</item>
         <item>Kia</item>
     </string-array>
+    <string-array name="counties">
+        <item>Antrim</item>
+        <item>Armagh</item>
+        <item>Cavan</item>
+        <item>Clare</item>
+        <item>Cork</item>
+        <item>Derry</item>
+        <item>Donegal</item>
+        <item>Down</item>
+        <item>Dublin</item>
+        <item>Fermanagh</item>
+        <item>Galway</item>
+        <item>Kerry</item>
+        <item>Kildare</item>
+        <item>Kilkenny</item>
+        <item>Laois</item>
+        <item>Leitrim</item>
+        <item>Limerick</item>
+        <item>Longford</item>
+        <item>Louth</item>
+        <item>Mayo</item>
+        <item>Meath</item>
+        <item>Monaghan</item>
+        <item>Offaly</item>
+        <item>Roscommon</item>
+        <item>Sligo</item>
+        <item>Tipperary</item>
+        <item>Tyrone</item>
+        <item>Waterford</item>
+        <item>Westmeath</item>
+        <item>Wexford</item>
+        <item>Wicklow</item>
+    </string-array>
     <string name="title_activity_view_advert">ViewAdvertActivity</string>
     <string name="buttonUpdate">UPDATE</string>
     <string name="buttonDelete">DELETE</string>
@@ -98,6 +132,8 @@
     <string name="buttonSave">SAVE</string>
     <string name="searchText">Search here</string>
     <string name="googleButton">Log in with Google</string>
+    <string name="enter_county">Enter county</string>
+    <string name="advertCounty">County:</string>
 
 
 </resources>

@@ -17,10 +17,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -78,7 +78,7 @@ public class Base extends AppCompatActivity {
     public EditText productTitle;
     public ScrollableNumberPicker snp_horizontal;
     public EditText priceManual;
-    public Spinner locationSpinner;
+    public AutoCompleteTextView autoCompleteCounty;
     public ImageView advertImage;
     public Button submitButton;
     public EditText productDetails;
@@ -186,15 +186,14 @@ public class Base extends AppCompatActivity {
                     Log.v("MyLogs", "Google API Client Connection Suspended");
                 }
             });
-//            //logging out the user
-//            firebaseAuth.signOut();
-//            Auth.GoogleSignInApi.signOut(mGoogleSignInClient);
+
             //closing activity
             finishAffinity();
             Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
             backToLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(backToLogin);
         }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,7 +33,8 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
 
     ImageView imageViewProduct;
     TextView textViewTitle, textViewPrice, textViewType, textViewSize, textViewLocation, textViewDetails;
-    EditText EditTextTitle, EditTextPrice, EditTextType, EditTextSize, EditTextLocation, EditTextDetails;
+    EditText EditTextTitle, EditTextPrice, EditTextType, EditTextSize, EditTextDetails;
+    AutoCompleteTextView autoCompleteCounty;
     RadioGroup RadioGroupType;
     Spinner spinnerClothingSizes;
     ScrollableNumberPicker snp_shoesSizes;
@@ -55,7 +57,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         EditTextType = findViewById(R.id.EditTextType);
         RadioGroupType = findViewById(R.id.typeRadioGroup);
         EditTextSize = findViewById(R.id.EditTextSize);
-        EditTextLocation = findViewById(R.id.EditTextLocation);
+        autoCompleteCounty = findViewById(R.id.autoCompleteCounty);
         EditTextDetails = findViewById(R.id.EditTextDetails);
         buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonDelete = findViewById(R.id.buttonDelete);
@@ -90,7 +92,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
             EditTextPrice.setText(bundle.getString("price"));
             EditTextType.setText(bundle.getString("type"));
             EditTextSize.setText(bundle.getString("size"));
-            EditTextLocation.setText(bundle.getString("location"));
+            autoCompleteCounty.setText(bundle.getString("location"));
             EditTextDetails.setText(bundle.getString("description"));
         }
 
@@ -103,7 +105,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         EditTextPrice.setEnabled(false);
         EditTextType.setEnabled(false);
         EditTextSize.setEnabled(false);
-        EditTextLocation.setEnabled(false);
+        autoCompleteCounty.setEnabled(false);
         EditTextDetails.setEnabled(false);
 
         // Set the max input length of title to 25 characters
@@ -115,13 +117,21 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         filter[0] = new InputFilter.LengthFilter(3);
         EditTextPrice.setFilters(filter);
 
-        // Set the max length of location to 20
-        filter[0] = new InputFilter.LengthFilter(20);
-        EditTextLocation.setFilters(filter);
+        // Set the max length of location to 9
+        filter[0] = new InputFilter.LengthFilter(9);
+        autoCompleteCounty.setFilters(filter);
 
         // Set the max length of details to 50
         filter[0] = new InputFilter.LengthFilter(50);
         EditTextDetails.setFilters(filter);
+
+        // Load string-array from resources to give suggestions
+        // to the user when they start typing
+        ArrayAdapter<String> arrayAdapterCounties = new ArrayAdapter<>(ViewAdvertFashionActivity.this, android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.counties));
+        autoCompleteCounty.setAdapter(arrayAdapterCounties);
+        // Show suggestions after 1 symbol is typed
+        autoCompleteCounty.setThreshold(1);
     }
 
     /**
@@ -163,7 +173,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
             EditTextTitle.setEnabled(true);
             EditTextPrice.setEnabled(true);
             RadioGroupType.setEnabled(true);
-            EditTextLocation.setEnabled(true);
+            autoCompleteCounty.setEnabled(true);
             EditTextDetails.setEnabled(true);
 
             // Determine which widget will be needed
@@ -186,9 +196,9 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                     } else if (TextUtils.isEmpty(EditTextDetails.getText())) {
                         EditTextDetails.setError("Details is required!");
                         EditTextDetails.requestFocus();
-                    } else if (TextUtils.isEmpty(EditTextLocation.getText())) {
-                        EditTextLocation.setError("Location is required!");
-                        EditTextLocation.requestFocus();
+                    } else if (TextUtils.isEmpty(autoCompleteCounty.getText())) {
+                        autoCompleteCounty.setError("Location is required!");
+                        autoCompleteCounty.requestFocus();
                     } else if (TextUtils.isEmpty(EditTextPrice.getText())) {
                         EditTextPrice.setError("Details is required!");
                         EditTextPrice.requestFocus();
@@ -215,7 +225,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                         } else {
                             size = String.valueOf(snp_shoesSizes.getValue());
                         }
-                        String location = EditTextLocation.getText().toString();
+                        String location = autoCompleteCounty.getText().toString();
                         String description = EditTextDetails.getText().toString();
 
                         // Create the updated Advert
@@ -232,7 +242,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                         // Disable editing text
                         EditTextTitle.setEnabled(false);
                         EditTextPrice.setEnabled(false);
-                        EditTextLocation.setEnabled(false);
+                        autoCompleteCounty.setEnabled(false);
                         EditTextDetails.setEnabled(false);
 
                         // Hide/show widgets
