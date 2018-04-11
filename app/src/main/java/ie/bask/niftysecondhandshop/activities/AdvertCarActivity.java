@@ -15,6 +15,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -83,6 +87,33 @@ public class AdvertCarActivity extends Base {
         // Show suggestions after 1 symbol is typed
         autoCompleteCounty.setThreshold(1);
 
+        // Getting the reference of Users node
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+
+        // Store current user id
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
+
+        // Get value of county for current user from databaseUsers
+        databaseUsers.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                try {
+                    String county = (String) dataSnapshot.child("county").getValue();
+                    autoCompleteCounty.setText(county);
+                }
+                // Catch NullPointerException if the user is logged in with Google
+                // therefore meaning there will be no value for county
+                catch (NullPointerException nullPointer) {
+                    autoCompleteCounty.setText(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.v("MyLogs", "Error reading data");
+            }
+        });
+
         permissionCheck();
         takePhoto();
 
@@ -114,19 +145,39 @@ public class AdvertCarActivity extends Base {
 
         // Get the URI of captured image
         final String imageUri = getImageUri(bitmap);
-        Log.v("MyLogs", "Value of imageUri is " + imageUri);
+
+        // Check if the user entered an existing county
+        autoCompleteCounty.setValidator(new AutoCompleteTextView.Validator() {
+            @Override
+            public boolean isValid(CharSequence text) {
+                for (int j = 0; j < getResources().getStringArray(R.array.counties).length; j++) {
+                    String currentElement = getResources().getStringArray(R.array.counties)[j];
+                    if (location.equals(currentElement)) {
+                        Log.v("MyLogs", "FOUND COUNTY IN ARRAY!");
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public CharSequence fixText(CharSequence invalidText) {
+                return null;
+            }
+        });
+        autoCompleteCounty.performValidation();
 
         // Check if there are empty fields and set errors to alert the user
-        if (TextUtils.isEmpty(carMake.getText())) {
+        if (TextUtils.isEmpty(make)) {
             carMake.setError("Car make is required!");
             carMake.requestFocus();
-        } else if (TextUtils.isEmpty(carModel.getText())) {
+        } else if (TextUtils.isEmpty(model)) {
             carModel.setError("Car model is required");
             carModel.requestFocus();
-        } else if (TextUtils.isEmpty(autoCompleteCounty.getText())) {
-            autoCompleteCounty.setError("County field is required!");
+        } else if (TextUtils.isEmpty(location) || !autoCompleteCounty.getValidator().isValid(location)) {
+            autoCompleteCounty.setError("Empty or invalid county!");
             autoCompleteCounty.requestFocus();
-        } else if (TextUtils.isEmpty(productDetails.getText())) {
+        } else if (TextUtils.isEmpty(details)) {
             productDetails.setError("Details field is required!");
             productDetails.requestFocus();
         }
@@ -145,7 +196,6 @@ public class AdvertCarActivity extends Base {
                     progressDialog.dismiss();
 
                     String downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
-                    Log.v("MyLogs", "Value of ref is " + taskSnapshot.getDownloadUrl().toString());
                     // Create a new advert with the data
                     newAdvertCar(new AdvertCar(downloadURL, make, model, year, price, location, details));
                     Log.v("MyLogs", "Submit pressed! Data: 1) Make: " + model + " (2) Model: " + model + " (3) Year: " + year + " (4) Price: " + price +

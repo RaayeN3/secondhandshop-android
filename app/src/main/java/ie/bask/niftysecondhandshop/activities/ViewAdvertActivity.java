@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -145,32 +147,68 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
             buttonSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = getIntent().getExtras();
-                    // Get values from fields
-                    String id = bundle.getString("id");
-                    int position = bundle.getInt("pos");
-                    String image = bundle.getString("image");
-                    String title = EditTextTitle.getText().toString().trim();
-                    String priceStr = EditTextPrice.getText().toString().trim();
-                    double price = Double.valueOf(priceStr);
-                    String location = autoCompleteCounty.getText().toString().trim();
-                    String description = EditTextDetails.getText().toString().trim();
+                    // Check if the user entered an existing county
+                    autoCompleteCounty.setValidator(new AutoCompleteTextView.Validator() {
+                        @Override
+                        public boolean isValid(CharSequence text) {
+                            for (int j = 0; j < getResources().getStringArray(R.array.counties).length; j++) {
+                                String currentElement = getResources().getStringArray(R.array.counties)[j];
+                                if (autoCompleteCounty.getText().toString().trim().equals(currentElement)) {
+                                    Log.v("MyLogs", "FOUND COUNTY IN ARRAY!");
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
 
-                    // Create the updated Advert
-                    Advert ad = new Advert(id, image, title, price, location, description);
-                    // Update database and arrayList
-                    databaseAds.child(id).setValue(ad);
-                    adverts.set(position, ad);
-                    Toast.makeText(getApplicationContext(), "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                        @Override
+                        public CharSequence fixText(CharSequence invalidText) {
+                            return null;
+                        }
+                    });
+                    autoCompleteCounty.performValidation();
 
-                    // Hide save and show update button
-                    buttonSave.setVisibility(View.GONE);
-                    buttonUpdate.setVisibility(View.VISIBLE);
-                    // Disable editing text
-                    EditTextTitle.setEnabled(false);
-                    EditTextPrice.setEnabled(false);
-                    autoCompleteCounty.setEnabled(false);
-                    EditTextDetails.setEnabled(false);
+                    // Check if there are empty fields and set errors to alert the user
+                    if (TextUtils.isEmpty(EditTextTitle.getText())) {
+                        EditTextTitle.setError("Title is required!");
+                        EditTextTitle.requestFocus();
+                    } else if (TextUtils.isEmpty(EditTextPrice.getText())) {
+                        EditTextPrice.setError("Price is required!");
+                        EditTextPrice.requestFocus();
+                    } else if (TextUtils.isEmpty(autoCompleteCounty.getText()) || !autoCompleteCounty.getValidator().isValid(autoCompleteCounty.getText())) {
+                        autoCompleteCounty.setError("Empty or invalid county!");
+                        autoCompleteCounty.requestFocus();
+                    } else if (TextUtils.isEmpty(EditTextDetails.getText())) {
+                        EditTextDetails.setError("Details field is required!");
+                        EditTextDetails.requestFocus();
+                    } else {
+                        Bundle bundle = getIntent().getExtras();
+                        // Get values from fields
+                        String id = bundle.getString("id");
+                        int position = bundle.getInt("pos");
+                        String image = bundle.getString("image");
+                        String title = EditTextTitle.getText().toString().trim();
+                        String priceStr = EditTextPrice.getText().toString().trim();
+                        double price = Double.valueOf(priceStr);
+                        String location = autoCompleteCounty.getText().toString().trim();
+                        String description = EditTextDetails.getText().toString().trim();
+
+                        // Create the updated Advert
+                        Advert ad = new Advert(id, image, title, price, location, description);
+                        // Update database and arrayList
+                        databaseAds.child(id).setValue(ad);
+                        adverts.set(position, ad);
+                        Toast.makeText(getApplicationContext(), "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+
+                        // Hide save and show update button
+                        buttonSave.setVisibility(View.GONE);
+                        buttonUpdate.setVisibility(View.VISIBLE);
+                        // Disable editing text
+                        EditTextTitle.setEnabled(false);
+                        EditTextPrice.setEnabled(false);
+                        autoCompleteCounty.setEnabled(false);
+                        EditTextDetails.setEnabled(false);
+                    }
                 }
             });
         } else {

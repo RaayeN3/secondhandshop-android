@@ -60,6 +60,7 @@ public class Base extends AppCompatActivity {
     public static DatabaseReference databaseAds;
     public static DatabaseReference databaseFashionAds;
     public static DatabaseReference databaseCarAds;
+    public static DatabaseReference databaseUsers;
 
     // Firebase Storage
     public static FirebaseStorage storage;

@@ -17,7 +17,7 @@
     <string name="productPrice">Price:</string>
     <string name="euroSign">€</string>
     <string name="priceManualHint">Or enter manually</string>
-    <string name="advertLocation">Location:</string>
+    <string name="advertLocation">County:</string>
     <string name="advertDetails">Details:</string>
     <string name="advertImage">productImage</string>
     <string name="submitButton">Submit</string>
@@ -38,7 +38,7 @@
         <item>X-Large</item>
     </string-array>
     <string name="title_activity_advert_clothing">Sell clothes</string>
-    <string name="title_activity_advert_fashion">AdvertFashionActivity</string>
+    <string name="title_activity_advert_fashion">Sell fashion</string>
     <string name="advertType">Type:</string>
     <string name="advertSize">Size:</string>
     <string name="clothing_radioButton">Clothing</string>
@@ -125,15 +125,16 @@
         <item>Wexford</item>
         <item>Wicklow</item>
     </string-array>
-    <string name="title_activity_view_advert">ViewAdvertActivity</string>
+    <string name="title_activity_view_advert">Advert View</string>
     <string name="buttonUpdate">UPDATE</string>
     <string name="buttonDelete">DELETE</string>
-    <string name="title_activity_view_advert_fashion">ViewAdvertFashionActivity</string>
+    <string name="title_activity_view_advert_fashion">Fashion Advert View</string>
     <string name="buttonSave">SAVE</string>
     <string name="searchText">Search here</string>
     <string name="googleButton">Log in with Google</string>
     <string name="enter_county">Enter county</string>
     <string name="advertCounty">County:</string>
+    <string name="title_activity_view_advert_car">Car Advert View</string>
 
 
 </resources>

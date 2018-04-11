@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -189,19 +190,40 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
             buttonSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Check if the user entered an existing county
+                    autoCompleteCounty.setValidator(new AutoCompleteTextView.Validator() {
+                        @Override
+                        public boolean isValid(CharSequence text) {
+                            for (int j = 0; j < getResources().getStringArray(R.array.counties).length; j++) {
+                                String currentElement = getResources().getStringArray(R.array.counties)[j];
+                                if (autoCompleteCounty.getText().toString().trim().equals(currentElement)) {
+                                    Log.v("MyLogs", "FOUND COUNTY IN ARRAY!");
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public CharSequence fixText(CharSequence invalidText) {
+                            return null;
+                        }
+                    });
+                    autoCompleteCounty.performValidation();
+
                     // Check if there are empty fields and set errors to alert the user
                     if (TextUtils.isEmpty(EditTextTitle.getText())) {
                         EditTextTitle.setError("Title is required!");
                         EditTextTitle.requestFocus();
-                    } else if (TextUtils.isEmpty(EditTextDetails.getText())) {
-                        EditTextDetails.setError("Details is required!");
-                        EditTextDetails.requestFocus();
-                    } else if (TextUtils.isEmpty(autoCompleteCounty.getText())) {
-                        autoCompleteCounty.setError("Location is required!");
-                        autoCompleteCounty.requestFocus();
                     } else if (TextUtils.isEmpty(EditTextPrice.getText())) {
-                        EditTextPrice.setError("Details is required!");
+                        EditTextPrice.setError("Price is required!");
                         EditTextPrice.requestFocus();
+                    } else if (TextUtils.isEmpty(autoCompleteCounty.getText()) || !autoCompleteCounty.getValidator().isValid(autoCompleteCounty.getText())) {
+                        autoCompleteCounty.setError("Empty or invalid county!");
+                        autoCompleteCounty.requestFocus();
+                    } else if (TextUtils.isEmpty(EditTextDetails.getText())) {
+                        EditTextDetails.setError("Details field is required!");
+                        EditTextDetails.requestFocus();
                     } else {
                         Bundle bundle = getIntent().getExtras();
                         // Get values from fields

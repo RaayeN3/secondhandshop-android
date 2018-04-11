@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -91,56 +92,74 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String username = editTextUsername.getText().toString().trim();
         final String county = autoCompleteCounty.getText().toString().trim();
 
+        // Check if the user entered an existing county
+        autoCompleteCounty.setValidator(new AutoCompleteTextView.Validator() {
+            @Override
+            public boolean isValid(CharSequence text) {
+                for (int j = 0; j < getResources().getStringArray(R.array.counties).length; j++) {
+                    String currentElement = getResources().getStringArray(R.array.counties)[j];
+                    if (county.equals(currentElement)) {
+                        Log.v("MyLogs", "FOUND COUNTY IN ARRAY!");
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public CharSequence fixText(CharSequence invalidText) {
+                return null;
+            }
+        });
+        autoCompleteCounty.performValidation();
+
         // Checking if email and passwords are empty
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email is required!");
             editTextEmail.requestFocus();
-            return;
         } else if (TextUtils.isEmpty(username)) {
             editTextUsername.setError("Username is required!");
             editTextUsername.requestFocus();
-            return;
         } else if (TextUtils.isEmpty(password)) {
             editTextPassword.setError("Password is required!");
             editTextPassword.requestFocus();
-            return;
-        } else if (TextUtils.isEmpty(county)) {
-            autoCompleteCounty.setError("County is required!");
+        } else if (TextUtils.isEmpty(county) || !autoCompleteCounty.getValidator().isValid(county)) {
+            autoCompleteCounty.setError("Empty or invalid county!");
             autoCompleteCounty.requestFocus();
-            return;
-        }
+        } else {
 
-        // If the email and password are not empty
-        // display a progress dialog
-        progressDialog.setMessage("Registering, please wait...");
-        progressDialog.show();
+            // If the email and password are not empty
+            // display a progress dialog
+            progressDialog.setMessage("Registering, please wait...");
+            progressDialog.show();
 
-        // Creating a new user
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // Checking if successful
-                        if (task.isSuccessful()) {
-                            // Getting the created user
-                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                            String id = firebaseUser.getUid();
+            // Creating a new user
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // Checking if successful
+                            if (task.isSuccessful()) {
+                                // Getting the created user
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                String id = firebaseUser.getUid();
 
-                            // Create new User object to store extra data about user
-                            User user = new User(id, email, username, password, county);
+                                // Create new User object to store extra data about user
+                                User user = new User(id, email, username, password, county);
 
-                            // Store in Firebase database
-                            databaseUsers.child(id).setValue(user);
+                                // Store in Firebase database
+                                databaseUsers.child(id).setValue(user);
 
-                            // Close activity
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Registration error", Toast.LENGTH_LONG).show();
+                                // Close activity
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Registration error", Toast.LENGTH_LONG).show();
+                            }
+                            progressDialog.dismiss();
                         }
-                        progressDialog.dismiss();
-                    }
-                });
+                    });
+        }
     }
 
 

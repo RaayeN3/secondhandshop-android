@@ -7,6 +7,10 @@ public class User {
     private String password;
     private String county;
 
+    public User() {
+
+    }
+
     public User(String id, String email, String username, String password, String county) {
         this.id = id;
         this.email = email;
