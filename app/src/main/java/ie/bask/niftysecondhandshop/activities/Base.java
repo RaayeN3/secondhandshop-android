@@ -352,8 +352,13 @@ public class Base extends AppCompatActivity {
                 }
 
                 String generalButtonStr = "GENERAL ITEMS: " + adverts.size();
-
                 buttonGeneral.setText(generalButtonStr);
+
+                if (!adverts.isEmpty()) {
+                    buttonGeneral.setEnabled(true);
+                } else {
+                    buttonGeneral.setEnabled(false);
+                }
             }
 
             @Override
@@ -378,9 +383,15 @@ public class Base extends AppCompatActivity {
                     AdvertFashion fAdvert = fashionAdsSnapshot.getValue(AdvertFashion.class);
                     fashionAdverts.add(fAdvert);
                 }
-                String fashionButtonStr = "FASHION ITEMS: " + fashionAdverts.size();
 
+                String fashionButtonStr = "FASHION ITEMS: " + fashionAdverts.size();
                 buttonFashion.setText(fashionButtonStr);
+
+                if (!fashionAdverts.isEmpty()) {
+                    buttonFashion.setEnabled(true);
+                } else {
+                    buttonFashion.setEnabled(false);
+                }
             }
 
             @Override
@@ -405,8 +416,15 @@ public class Base extends AppCompatActivity {
                     AdvertCar cAdvert = carAdsSnapshot.getValue(AdvertCar.class);
                     carAdverts.add(cAdvert);
                 }
+
                 String carButtonStr = "CARS ON SALE: " + carAdverts.size();
                 buttonCar.setText(carButtonStr);
+
+                if (!carAdverts.isEmpty()) {
+                    buttonCar.setEnabled(true);
+                } else {
+                    buttonCar.setEnabled(false);
+                }
             }
 
             @Override

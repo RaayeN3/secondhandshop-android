@@ -2,7 +2,6 @@ package ie.bask.niftysecondhandshop.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,8 +22,6 @@ public class MainActivity extends Base implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Initialising widgets
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
@@ -38,15 +35,6 @@ public class MainActivity extends Base implements View.OnClickListener {
         buttonGeneral.setOnClickListener(this);
         buttonFashion.setOnClickListener(this);
         buttonCar.setOnClickListener(this);
-
-        // Control the enabled status of buttons
-        if (adverts.isEmpty()) {
-            buttonGeneral.setEnabled(false);
-        } else if (fashionAdverts.isEmpty()) {
-            buttonFashion.setEnabled(false);
-        } else if (carAdverts.isEmpty()) {
-            buttonCar.setEnabled(false);
-        }
 
         // Initialising Firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();

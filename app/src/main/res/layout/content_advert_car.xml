@@ -363,7 +363,7 @@
 
     <Button
         android:id="@+id/submitButton"
-        style="@style/Widget.AppCompat.Button"
+        style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
