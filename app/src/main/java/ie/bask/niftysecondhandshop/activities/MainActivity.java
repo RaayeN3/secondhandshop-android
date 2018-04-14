@@ -1,12 +1,10 @@
 package ie.bask.niftysecondhandshop.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +17,6 @@ public class MainActivity extends Base implements View.OnClickListener {
     // Widgets
     private TextView textViewUserEmail;
     private Button sellButton;
-    private ImageButton githubButton;
 
 
     @Override
@@ -32,10 +29,24 @@ public class MainActivity extends Base implements View.OnClickListener {
         // Initialising widgets
         textViewUserEmail = findViewById(R.id.textViewUserEmail);
         sellButton = findViewById(R.id.sellButton);
-        githubButton = findViewById(R.id.githubButton);
+        buttonGeneral = findViewById(R.id.buttonGeneral);
+        buttonFashion = findViewById(R.id.buttonFashion);
+        buttonCar = findViewById(R.id.buttonCar);
 
-        githubButton.setOnClickListener(this);
+        // Set listeners for buttons
         sellButton.setOnClickListener(this);
+        buttonGeneral.setOnClickListener(this);
+        buttonFashion.setOnClickListener(this);
+        buttonCar.setOnClickListener(this);
+
+        // Control the enabled status of buttons
+        if (adverts.isEmpty()) {
+            buttonGeneral.setEnabled(false);
+        } else if (fashionAdverts.isEmpty()) {
+            buttonFashion.setEnabled(false);
+        } else if (carAdverts.isEmpty()) {
+            buttonCar.setEnabled(false);
+        }
 
         // Initialising Firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -65,6 +76,7 @@ public class MainActivity extends Base implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
+
         loadAdverts();
         loadFashionAdverts();
         loadCarAdverts();
@@ -78,9 +90,18 @@ public class MainActivity extends Base implements View.OnClickListener {
     public void onClick(View v) {
         if (v == sellButton) {
             sellButtonPressed(v);
+        } else if (v == buttonGeneral) {
+            Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+            BrowseIntent.putExtra("selectRadioButton", R.id.advert_radioButton);
+            startActivity(BrowseIntent);
+        } else if (v == buttonFashion) {
+            Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+            BrowseIntent.putExtra("selectRadioButton", R.id.fashionAd_radioButton);
+            startActivity(BrowseIntent);
         } else {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/cecobask"));
-            startActivity(browserIntent);
+            Intent BrowseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+            BrowseIntent.putExtra("selectRadioButton", R.id.carAd_radioButton);
+            startActivity(BrowseIntent);
         }
     }
 

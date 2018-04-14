@@ -10,13 +10,14 @@
 
     <Button
         android:id="@+id/sellButton"
+        style="@android:style/Widget.Material.Light.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:drawableStart="@drawable/ic_camera_enhance_black_24dp"
-        android:padding="5dp"
+        android:padding="10dp"
         android:text="@string/sellButton"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/include"
@@ -59,38 +60,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/include" />
 
-    <ImageButton
-        android:id="@+id/githubButton"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/buttonGeneral"
+        style="@android:style/Widget.Material.Light.Button.Inset"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/row_image_contentDesc"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
+        android:layout_marginTop="60dp"
+        android:drawableEnd="@drawable/ic_right"
+        android:text="@string/loading_advert_data"
+        android:textAlignment="viewStart"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sellButton"
-        app:layout_constraintVertical_bias="0.348"
-        app:srcCompat="@drawable/ic_github"
-        android:background="@drawable/roundcorners" />
+        app:layout_constraintTop_toBottomOf="@+id/sellButton" />
 
-    <TextView
-        android:id="@+id/githubTextView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/buttonCar"
+        style="@android:style/Widget.Material.Light.Button.Inset"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/githubTextView"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/githubButton"
+        android:drawableEnd="@drawable/ic_right"
+        android:text="@string/loading_advert_data"
+        android:textAlignment="viewStart"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonFashion" />
+
+    <Button
+        android:id="@+id/buttonFashion"
+        style="@android:style/Widget.Material.Light.Button.Inset"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:drawableEnd="@drawable/ic_right"
+        android:text="@string/loading_advert_data"
+        android:textAlignment="viewStart"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeneral" />
 
 </android.support.constraint.ConstraintLayout>

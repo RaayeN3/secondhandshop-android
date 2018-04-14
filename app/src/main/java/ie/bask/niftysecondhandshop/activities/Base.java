@@ -81,7 +81,7 @@ public class Base extends AppCompatActivity {
     public EditText priceManual;
     public AutoCompleteTextView autoCompleteCounty;
     public ImageView advertImage;
-    public Button submitButton;
+    public Button submitButton, buttonGeneral, buttonFashion, buttonCar;
     public EditText productDetails;
     public ProgressDialog progressDialog;
 
@@ -199,7 +199,8 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Methods used by side menu
+    /**
+     * Methods used by side menu
      */
     public void home(MenuItem item) {
         startActivity(new Intent(this, MainActivity.class));
@@ -245,7 +246,8 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Methods used by bottom_menu onClick
+    /**
+     * Methods used by bottom_menu onClick
      */
     public void sellButtonPressed(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -286,7 +288,8 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Request permission for writing on External Storage of device
+    /**
+     * Request permission for writing on External Storage of device
      */
     public void permissionCheck() {
         int permissionCheckExtStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -306,7 +309,8 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Start the camera
+    /**
+     * Start the camera
      */
     public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -314,7 +318,8 @@ public class Base extends AppCompatActivity {
     }
 
 
-    /** Get the URI path of passed Bitmap image
+    /**
+     * Get the URI path of passed Bitmap image
      */
     public String getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -345,6 +350,10 @@ public class Base extends AppCompatActivity {
                     // Adding Advert to the list
                     adverts.add(advert);
                 }
+
+                String generalButtonStr = "GENERAL ITEMS: " + adverts.size();
+
+                buttonGeneral.setText(generalButtonStr);
             }
 
             @Override
@@ -369,6 +378,9 @@ public class Base extends AppCompatActivity {
                     AdvertFashion fAdvert = fashionAdsSnapshot.getValue(AdvertFashion.class);
                     fashionAdverts.add(fAdvert);
                 }
+                String fashionButtonStr = "FASHION ITEMS: " + fashionAdverts.size();
+
+                buttonFashion.setText(fashionButtonStr);
             }
 
             @Override
@@ -393,6 +405,8 @@ public class Base extends AppCompatActivity {
                     AdvertCar cAdvert = carAdsSnapshot.getValue(AdvertCar.class);
                     carAdverts.add(cAdvert);
                 }
+                String carButtonStr = "CARS ON SALE: " + carAdverts.size();
+                buttonCar.setText(carButtonStr);
             }
 
             @Override

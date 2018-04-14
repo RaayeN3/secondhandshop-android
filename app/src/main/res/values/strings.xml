@@ -135,6 +135,7 @@
     <string name="enter_county">Enter county</string>
     <string name="advertCounty">County:</string>
     <string name="title_activity_view_advert_car">Car Advert View</string>
+    <string name="loading_advert_data">Loading data for adverts&#8230;</string>
 
 
 </resources>
