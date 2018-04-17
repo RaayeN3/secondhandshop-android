@@ -14,6 +14,7 @@ public class Advert {
     private double productPrice;
     private String productLocation;
     private String productDescription;
+    private String userEmail;
 
     public Advert() {
     }
@@ -27,13 +28,14 @@ public class Advert {
         this.productDescription = productDescription;
     }
 
-    public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
+    public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription, String userEmail) {
         this.productID = Base.databaseAds.push().getKey();
         this.imageUri = imageUri;
         this.productTitle = productTitle;
         this.productPrice = productPrice;
         this.productLocation = productLocation;
         this.productDescription = productDescription;
+        this.userEmail = userEmail;
     }
 
     public String getProductID() {
@@ -84,6 +86,14 @@ public class Advert {
         this.imageUri = imageUri;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
 
     @Override
     public String toString() {
@@ -96,4 +106,5 @@ public class Advert {
                 ", productDescription='" + productDescription + '\'' +
                 '}';
     }
+
 }

@@ -16,6 +16,7 @@ public class AdvertCar {
     private double carPrice;
     private String carLocation;
     private String carDescription;
+    private String userEmail;
 
     public AdvertCar() {
 
@@ -32,7 +33,7 @@ public class AdvertCar {
         this.carDescription = carDescription;
     }
 
-    public AdvertCar(String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription) {
+    public AdvertCar(String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription, String userEmail) {
         this.carID = Base.databaseCarAds.push().getKey();
         this.imageUri = imageUri;
         this.carMake = carMake;
@@ -41,6 +42,7 @@ public class AdvertCar {
         this.carPrice = carPrice;
         this.carLocation = carLocation;
         this.carDescription = carDescription;
+        this.userEmail = userEmail;
     }
 
     public String getCarID() {
@@ -105,6 +107,14 @@ public class AdvertCar {
 
     public void setCarDescription(String carDescription) {
         this.carDescription = carDescription;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override

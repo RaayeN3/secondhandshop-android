@@ -152,6 +152,7 @@ public class BrowseActivity extends Base {
                 b.putString("price", Double.toString(advert.getProductPrice()));
                 b.putString("location", advert.getProductLocation());
                 b.putString("description", advert.getProductDescription());
+                b.putString("userEmail", advert.getUserEmail());
                 ViewAdvertIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertIntent, 0);
@@ -231,6 +232,7 @@ public class BrowseActivity extends Base {
                 b.putString("size", advertFashion.getProductSize());
                 b.putString("location", advertFashion.getProductLocation());
                 b.putString("description", advertFashion.getProductDescription());
+                b.putString("userEmail", advertFashion.getUserEmail());
                 ViewAdvertFashionIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertFashionIntent, 0);
@@ -309,6 +311,7 @@ public class BrowseActivity extends Base {
                 b.putString("price", Double.toString(advertCar.getCarPrice()));
                 b.putString("location", advertCar.getCarLocation());
                 b.putString("description", advertCar.getCarDescription());
+                b.putString("userEmail", advertCar.getUserEmail());
                 ViewAdvertCarIntent.putExtras(b);
                 // Start ViewAdvertActivity
                 startActivityForResult(ViewAdvertCarIntent, 0);

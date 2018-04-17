@@ -113,6 +113,7 @@ public class AdvertActivity extends Base {
         final double price;
         final String location = autoCompleteCounty.getText().toString().trim();
         final String details = productDetails.getText().toString().trim();
+        final String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
         // Use the number picker if manual price is empty, default value of np is 0
         if (priceManual.getText().toString().isEmpty()) {
@@ -172,7 +173,7 @@ public class AdvertActivity extends Base {
 
                     String downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
                     // Create a new advert with the data
-                    newAdvert(new Advert(downloadURL, title, price, location, details));
+                    newAdvert(new Advert(downloadURL, title, price, location, details, userEmail));
                     Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Location: " + location + " (4) Details: " + details);
 
                 }

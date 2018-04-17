@@ -148,6 +148,7 @@ public class AdvertFashionActivity extends Base {
         int radioId = productType.getCheckedRadioButtonId();
         final String type;
         final String size;
+        final String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
         // Use the number picker if manual price is empty, default value of np is 0
         if (priceManual.getText().toString().isEmpty()) {
@@ -225,7 +226,7 @@ public class AdvertFashionActivity extends Base {
                     String downloadURL = String.valueOf(taskSnapshot.getDownloadUrl());
 
                     // Create a new advert with the data
-                    newAdvertFashion(new AdvertFashion(downloadURL, title, price, type, size, location, details));
+                    newAdvertFashion(new AdvertFashion(downloadURL, title, price, type, size, location, details, userEmail));
                     Log.v("MyLogs", "Submit pressed! Data: 1) Title: " + title + " (2) Price: " + price + " (3) Type: " + type + " (4) Size: " + size +
                             " (5) Location: " + location + " (6) Details: " + details);
                 }

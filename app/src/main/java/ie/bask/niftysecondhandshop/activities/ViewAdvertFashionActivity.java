@@ -33,7 +33,7 @@ import ie.bask.niftysecondhandshop.models.AdvertFashion;
 public class ViewAdvertFashionActivity extends Base implements View.OnClickListener {
 
     ImageView imageViewProduct;
-    TextView textViewTitle, textViewPrice, textViewType, textViewSize, textViewLocation, textViewDetails;
+    TextView textViewTitle, textViewPrice, textViewType, textViewSize, textViewLocation, textViewDetails, textViewUser;
     EditText EditTextTitle, EditTextPrice, EditTextType, EditTextSize, EditTextDetails;
     AutoCompleteTextView autoCompleteCounty;
     RadioGroup RadioGroupType;
@@ -65,6 +65,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
         buttonSave = findViewById(R.id.buttonSave);
         spinnerClothingSizes = findViewById(R.id.clothingSizeSpinner);
         snp_shoesSizes = findViewById(R.id.snp_shoeSizes);
+        textViewUser = findViewById(R.id.textViewUser);
 
         // Prevent keyboard from automatically popping up
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -89,6 +90,8 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                 e.printStackTrace();
             }
 
+            String postedByStr = "Posted by: " + bundle.getString("userEmail");
+            textViewUser.setText(postedByStr);
             EditTextTitle.setText(bundle.getString("title"));
             EditTextPrice.setText(bundle.getString("price"));
             EditTextType.setText(bundle.getString("type"));

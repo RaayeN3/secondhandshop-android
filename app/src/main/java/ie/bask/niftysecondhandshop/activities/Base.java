@@ -173,9 +173,10 @@ public class Base extends AppCompatActivity {
                             public void onResult(@NonNull Status status) {
                                 if (status.isSuccess()) {
                                     Log.v("MyLogs", "User Logged out");
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
                                     finishAffinity();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
                                 }
                             }
                         });

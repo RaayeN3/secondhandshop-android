@@ -31,7 +31,7 @@ import ie.bask.niftysecondhandshop.models.AdvertCar;
 public class ViewAdvertCarActivity extends Base implements View.OnClickListener {
 
     ImageView imageViewProduct;
-    TextView textViewMake, textViewModel, textViewYear, textViewPrice, textViewLocation, textViewDetails;
+    TextView textViewMake, textViewModel, textViewYear, textViewPrice, textViewLocation, textViewDetails, textViewUser;
     EditText EditTextModel, EditTextYear, EditTextPrice, EditTextDetails;
     AutoCompleteTextView autoCompleteMake, autoCompleteCounty;
     ScrollableNumberPicker snp_carYear;
@@ -59,6 +59,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
         buttonDelete = findViewById(R.id.buttonDelete);
         buttonSave = findViewById(R.id.buttonSave);
         snp_carYear = findViewById(R.id.snp_carYear);
+        textViewUser = findViewById(R.id.textViewUser);
 
         // Prevent keyboard from automatically popping up
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -83,6 +84,8 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                 e.printStackTrace();
             }
 
+            String postedByStr = "Posted by: " + bundle.getString("userEmail");
+            textViewUser.setText(postedByStr);
             autoCompleteMake.setText(bundle.getString("make"));
             EditTextModel.setText(bundle.getString("model"));
             EditTextYear.setText(String.valueOf(bundle.getInt("year")));

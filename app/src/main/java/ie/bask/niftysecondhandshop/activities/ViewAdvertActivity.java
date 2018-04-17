@@ -32,7 +32,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
 
     // Widgets
     ImageView imageViewProduct;
-    TextView textViewTitle, textViewPrice, textViewLocation, textViewDetails;
+    TextView textViewTitle, textViewPrice, textViewLocation, textViewDetails, textViewUser;
     EditText EditTextTitle, EditTextPrice, EditTextDetails;
     AutoCompleteTextView autoCompleteCounty;
     Button buttonUpdate, buttonDelete, buttonSave;
@@ -55,6 +55,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
         buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonDelete = findViewById(R.id.buttonDelete);
         buttonSave = findViewById(R.id.buttonSave);
+        textViewUser = findViewById(R.id.textViewUser);
 
         // Prevent keyboard from automatically popping up
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -79,6 +80,8 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                 e.printStackTrace();
             }
 
+            String postedByStr = "Posted by: " + bundle.getString("userEmail");
+            textViewUser.setText(postedByStr);
             EditTextTitle.setText(bundle.getString("title"));
             EditTextPrice.setText(bundle.getString("price"));
             autoCompleteCounty.setText(bundle.getString("location"));

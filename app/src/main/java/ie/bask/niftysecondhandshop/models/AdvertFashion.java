@@ -16,12 +16,14 @@ public class AdvertFashion {
     private String productSize;
     private String productLocation;
     private String productDescription;
+    private String userEmail;
 
     public AdvertFashion() {
 
     }
 
-    public AdvertFashion(String productID, String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
+    public AdvertFashion(String productID, String imageUri, String productTitle, double productPrice, String productType, String productSize,
+                         String productLocation, String productDescription) {
         this.productID = productID;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
@@ -32,7 +34,8 @@ public class AdvertFashion {
         this.productDescription = productDescription;
     }
 
-    public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation, String productDescription) {
+    public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation,
+                         String productDescription, String userEmail) {
         this.productID = Base.databaseFashionAds.push().getKey();
         this.imageUri = imageUri;
         this.productTitle = productTitle;
@@ -41,6 +44,7 @@ public class AdvertFashion {
         this.productSize = productSize;
         this.productLocation = productLocation;
         this.productDescription = productDescription;
+        this.userEmail = userEmail;
     }
 
     public String getProductID() {
@@ -105,6 +109,14 @@ public class AdvertFashion {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override

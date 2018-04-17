@@ -82,7 +82,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:labelFor="@id/EditTextTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUser" />
 
     <TextView
         android:id="@+id/textViewPrice"
@@ -134,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewTitle"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewProduct" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUser" />
 
     <Button
         android:id="@+id/buttonUpdate"
@@ -184,5 +184,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTextDetails"
         app:layout_constraintVertical_bias="0.449" />
+
+    <TextView
+        android:id="@+id/textViewUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/darker_gray2"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewProduct" />
 
 </android.support.constraint.ConstraintLayout>
