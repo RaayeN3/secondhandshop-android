@@ -252,9 +252,10 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                         }
                         String location = autoCompleteCounty.getText().toString();
                         String description = EditTextDetails.getText().toString();
+                        String email = bundle.getString("userEmail");
 
                         // Create the updated Advert
-                        AdvertFashion fashionAd = new AdvertFashion(id, image, title, price, type, size, location, description);
+                        AdvertFashion fashionAd = new AdvertFashion(id, image, title, price, type, size, location, description, email);
                         // Update database and arrayList
                         databaseFashionAds.child(id).setValue(fashionAd);
                         fashionAdverts.set(position, fashionAd);

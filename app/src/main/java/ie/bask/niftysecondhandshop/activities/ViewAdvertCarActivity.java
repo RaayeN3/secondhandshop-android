@@ -224,10 +224,11 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                         double price = Double.valueOf(priceStr);
                         String location = autoCompleteCounty.getText().toString();
                         String description = EditTextDetails.getText().toString();
+                        String email = bundle.getString("userEmail");
 
 
                         // Create the updated Advert
-                        AdvertCar carAd = new AdvertCar(id, image, make, model, year, price, location, description);
+                        AdvertCar carAd = new AdvertCar(id, image, make, model, year, price, location, description, email);
                         // Update database and arrayList
                         databaseCarAds.child(id).setValue(carAd);
                         carAdverts.set(position, carAd);

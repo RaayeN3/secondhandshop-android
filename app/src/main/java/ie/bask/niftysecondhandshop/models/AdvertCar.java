@@ -22,7 +22,8 @@ public class AdvertCar {
 
     }
 
-    public AdvertCar(String carID, String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription) {
+    public AdvertCar(String carID, String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation,
+                     String carDescription, String userEmail) {
         this.carID = carID;
         this.imageUri = imageUri;
         this.carMake = carMake;
@@ -31,6 +32,7 @@ public class AdvertCar {
         this.carPrice = carPrice;
         this.carLocation = carLocation;
         this.carDescription = carDescription;
+        this.userEmail = userEmail;
     }
 
     public AdvertCar(String imageUri, String carMake, String carModel, int carYear, double carPrice, String carLocation, String carDescription, String userEmail) {

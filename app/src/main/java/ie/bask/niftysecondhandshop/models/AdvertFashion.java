@@ -23,7 +23,7 @@ public class AdvertFashion {
     }
 
     public AdvertFashion(String productID, String imageUri, String productTitle, double productPrice, String productType, String productSize,
-                         String productLocation, String productDescription) {
+                         String productLocation, String productDescription, String userEmail) {
         this.productID = productID;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
@@ -32,6 +32,7 @@ public class AdvertFashion {
         this.productSize = productSize;
         this.productLocation = productLocation;
         this.productDescription = productDescription;
+        this.userEmail = userEmail;
     }
 
     public AdvertFashion(String imageUri, String productTitle, double productPrice, String productType, String productSize, String productLocation,

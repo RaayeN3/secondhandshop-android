@@ -195,9 +195,10 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                         double price = Double.valueOf(priceStr);
                         String location = autoCompleteCounty.getText().toString().trim();
                         String description = EditTextDetails.getText().toString().trim();
+                        String email = bundle.getString("userEmail");
 
                         // Create the updated Advert
-                        Advert ad = new Advert(id, image, title, price, location, description);
+                        Advert ad = new Advert(id, image, title, price, location, description, email);
                         // Update database and arrayList
                         databaseAds.child(id).setValue(ad);
                         adverts.set(position, ad);

@@ -19,13 +19,14 @@ public class Advert {
     public Advert() {
     }
 
-    public Advert(String productID, String imageUri, String productTitle, double productPrice, String productLocation, String productDescription) {
+    public Advert(String productID, String imageUri, String productTitle, double productPrice, String productLocation, String productDescription, String userEmail) {
         this.productID = productID;
         this.imageUri = imageUri;
         this.productTitle = productTitle;
         this.productPrice = productPrice;
         this.productLocation = productLocation;
         this.productDescription = productDescription;
+        this.userEmail = userEmail;
     }
 
     public Advert(String imageUri, String productTitle, double productPrice, String productLocation, String productDescription, String userEmail) {
