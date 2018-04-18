@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNotEquals;
 
 public class AdvertFashionTest {
 
-    private AdvertFashion adidas = new AdvertFashion("content://media/external/images/media/39", "Adidas Superstar", 90.0, "Shoes", "43", "Fenor", "Got them as a present, but they didn't fit me...");
-    private AdvertFashion nike = new AdvertFashion("content://media/external/images/media/96", "Nike AirMax", 130.0, "Shoes", "45", "Dunmore East", "I got sick of them, want new ones.");
+    private AdvertFashion adidas = new AdvertFashion("1", "content://media/external/images/media/39", "Adidas Superstar", 90.0, "Shoes", "43", "Fenor", "Got them as a present, but they didn't fit me...", "cecobask@abv.bg");
+    private AdvertFashion nike = new AdvertFashion("2", "content://media/external/images/media/96", "Nike AirMax", 130.0, "Shoes", "45", "Dunmore East", "I got sick of them, want new ones.", "baskski@gmail.com");
 
     @Test
     public void testCreate() {
@@ -27,6 +27,7 @@ public class AdvertFashionTest {
         assertEquals("43", adidas.getProductSize());
         assertEquals("Fenor", adidas.getProductLocation());
         assertEquals("Got them as a present, but they didn't fit me...", adidas.getProductDescription());
+        assertEquals("cecobask@abv.bg", adidas.getUserEmail());
 
         assertEquals("content://media/external/images/media/96", nike.getImageUri());
         assertEquals("Nike AirMax", nike.getProductTitle());
@@ -35,14 +36,15 @@ public class AdvertFashionTest {
         assertEquals("45", nike.getProductSize());
         assertEquals("Dunmore East", nike.getProductLocation());
         assertEquals("I got sick of them, want new ones.", nike.getProductDescription());
+        assertEquals("baskski@gmail.com", nike.getUserEmail());
     }
 
     @Test
     public void testToString() {
-        assertEquals("AdvertFashion{productID=1, imageUri='content://media/external/images/media/39', productTitle='Adidas Superstar', productPrice=90.0, productType='Shoes', productSize='43', productLocation='Fenor', productDescription='Got them as a present, but they didn't fit me...'}",
+        assertEquals("AdvertFashion{productID='1', imageUri='content://media/external/images/media/39', productTitle='Adidas Superstar', productPrice=90.0, productType='Shoes', productSize='43', productLocation='Fenor', productDescription='Got them as a present, but they didn't fit me...', userEmail='cecobask@abv.bg'}",
                 adidas.toString());
 
-        assertEquals("AdvertFashion{productID=2, imageUri='content://media/external/images/media/96', productTitle='Nike AirMax', productPrice=130.0, productType='Shoes', productSize='45', productLocation='Dunmore East', productDescription='I got sick of them, want new ones.'}",
+        assertEquals("AdvertFashion{productID='2', imageUri='content://media/external/images/media/96', productTitle='Nike AirMax', productPrice=130.0, productType='Shoes', productSize='45', productLocation='Dunmore East', productDescription='I got sick of them, want new ones.', userEmail='baskski@gmail.com'}",
                 nike.toString());
     }
 

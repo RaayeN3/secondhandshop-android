@@ -15,46 +15,51 @@ import static org.junit.Assert.assertNotEquals;
 
 public class AdvertTest {
 
-    private Advert iphone = new Advert("content://media/external/images/media/11", "iPhone 7", 600.0, "Tramore", "Perfect condition. Looks like new! :)");
-    private Advert samsung = new Advert("content://media/external/images/media/13", "Samsung Galaxy S9", 999.9, "Waterford", "Bought as a present. They didn't like it, so that's why I'm selling it.");
+
+    private Advert tv = new Advert("1", "https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F29e1a1bd-a97a-4483-a3cb-083f2e186b0b?alt=media&token=feea21ab-f443-4ab6-9b05-c7b5374ba9db",
+            "Television", 1500.0, "Waterford", "No details.", "cecobask@abv.bg");
+    private Advert samsung = new Advert("2", "https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F4c4e8da5-c9f1-4a27-8496-fe6ec9914cdc?alt=media&token=c20d5b14-3448-4f85-aded-0d37d2bbe865",
+            "Samsung Galaxy S9", 999.9, "Waterford", "No details", "baskski@gmail.com");
 
     @Test
     public void testCreate() {
-        assertEquals("content://media/external/images/media/11", iphone.getImageUri());
-        assertEquals("iPhone 7", iphone.getProductTitle());
-        assertEquals(600.0, iphone.getProductPrice());
-        assertEquals("Tramore", iphone.getProductLocation());
-        assertEquals("Perfect condition. Looks like new! :)", iphone.getProductDescription());
+        assertEquals("https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F29e1a1bd-a97a-4483-a3cb-083f2e186b0b?alt=media&token=feea21ab-f443-4ab6-9b05-c7b5374ba9db", tv.getImageUri());
+        assertEquals("Television", tv.getProductTitle());
+        assertEquals(1500.0, tv.getProductPrice());
+        assertEquals("Waterford", tv.getProductLocation());
+        assertEquals("No details.", tv.getProductDescription());
+        assertEquals("cecobask@abv.bg", tv.getUserEmail());
 
-        assertEquals("content://media/external/images/media/13", samsung.getImageUri());
+        assertEquals("https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F4c4e8da5-c9f1-4a27-8496-fe6ec9914cdc?alt=media&token=c20d5b14-3448-4f85-aded-0d37d2bbe865", samsung.getImageUri());
         assertEquals("Samsung Galaxy S9", samsung.getProductTitle());
         assertEquals(999.9, samsung.getProductPrice());
         assertEquals("Waterford", samsung.getProductLocation());
-        assertEquals("Bought as a present. They didn't like it, so that's why I'm selling it.", samsung.getProductDescription());
+        assertEquals("No details", samsung.getProductDescription());
+        assertEquals("baskski@gmail.com", samsung.getUserEmail());
     }
 
     @Test
     public void testToString() {
-        assertEquals("Advert{productID=1, imageUri='content://media/external/images/media/11', productTitle='iPhone 7', productPrice=600.0, productLocation='Tramore', productDescription='Perfect condition. Looks like new! :)'}",
-                iphone.toString());
+        assertEquals("Advert{productID='1', imageUri='https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F29e1a1bd-a97a-4483-a3cb-083f2e186b0b?alt=media&token=feea21ab-f443-4ab6-9b05-c7b5374ba9db', productTitle='Television', productPrice=1500.0, productLocation='Waterford', productDescription='No details.', userEmail='cecobask@abv.bg'}",
+                tv.toString());
 
-        assertEquals("Advert{productID=2, imageUri='content://media/external/images/media/13', productTitle='Samsung Galaxy S9', productPrice=999.9, productLocation='Waterford', productDescription='Bought as a present. They didn't like it, so that's why I'm selling it.'}",
+        assertEquals("Advert{productID='2', imageUri='https://firebasestorage.googleapis.com/v0/b/niftysecondhandshop.appspot.com/o/images%2F4c4e8da5-c9f1-4a27-8496-fe6ec9914cdc?alt=media&token=c20d5b14-3448-4f85-aded-0d37d2bbe865', productTitle='Samsung Galaxy S9', productPrice=999.9, productLocation='Waterford', productDescription='No details', userEmail='baskski@gmail.com'}",
                 samsung.toString());
     }
 
     @Test
     public void testNotSame() {
-        assertNotSame("Samsung Galaxy S9", iphone.getProductTitle());
-        assertNotSame(iphone, samsung);
-        assertNotSame(600, iphone.getProductPrice());
-        assertNotSame("Waterford", iphone.getProductLocation(), samsung.getProductLocation());
+        assertNotSame("Samsung Galaxy S9", tv.getProductTitle());
+        assertNotSame(tv, samsung);
+        assertNotSame(600, tv.getProductPrice());
+        assertNotSame("Wexford", tv.getProductLocation());
     }
 
     @Test
     public void testEquals() {
-        assertEquals(iphone, iphone);
-        assertFalse(iphone.equals(samsung));
-        assertNotEquals(iphone, samsung);
+        assertEquals(tv, tv);
+        assertFalse(tv.equals(samsung));
+        assertNotEquals(tv, samsung);
         assertEquals(samsung, samsung);
     }
 }

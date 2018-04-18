@@ -122,7 +122,7 @@ public class AdvertCar {
     @Override
     public String toString() {
         return "AdvertCar{" +
-                "carID=" + carID +
+                "carID='" + carID + '\'' +
                 ", imageUri='" + imageUri + '\'' +
                 ", carMake='" + carMake + '\'' +
                 ", carModel='" + carModel + '\'' +
@@ -130,6 +130,7 @@ public class AdvertCar {
                 ", carPrice=" + carPrice +
                 ", carLocation='" + carLocation + '\'' +
                 ", carDescription='" + carDescription + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

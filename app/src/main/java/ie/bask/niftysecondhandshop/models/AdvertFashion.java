@@ -123,7 +123,7 @@ public class AdvertFashion {
     @Override
     public String toString() {
         return "AdvertFashion{" +
-                "productID=" + productID +
+                "productID='" + productID + '\'' +
                 ", imageUri='" + imageUri + '\'' +
                 ", productTitle='" + productTitle + '\'' +
                 ", productPrice=" + productPrice +
@@ -131,6 +131,7 @@ public class AdvertFashion {
                 ", productSize='" + productSize + '\'' +
                 ", productLocation='" + productLocation + '\'' +
                 ", productDescription='" + productDescription + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

@@ -97,18 +97,21 @@ public class Base extends AppCompatActivity {
     public void newAdvert(Advert advert) {
         // Adding the advert to Firebase Database
         databaseAds.child(advert.getProductID()).setValue(advert);
+        Log.v("MyLogs", advert.toString());
         Toast.makeText(this, "You added a new Advert object!", Toast.LENGTH_SHORT).show();
     }
 
     public void newAdvertFashion(AdvertFashion fashionAdvert) {
         // Adding the advert to Firebase Database
         databaseFashionAds.child(fashionAdvert.getProductID()).setValue(fashionAdvert);
+        Log.v("MyLogs", fashionAdvert.toString());
         Toast.makeText(this, "You added a new Fashion Advert object!", Toast.LENGTH_SHORT).show();
     }
 
     public void newAdvertCar(AdvertCar carAdvert) {
         // Adding the advert to Firebase Database
         databaseCarAds.child(carAdvert.getCarID()).setValue(carAdvert);
+        Log.v("MyLogs", carAdvert.toString());
         Toast.makeText(this, "You added a new Car Advert object!", Toast.LENGTH_SHORT).show();
     }
 

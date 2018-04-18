@@ -99,13 +99,13 @@ public class Advert {
     @Override
     public String toString() {
         return "Advert{" +
-                "productID=" + productID +
+                "productID='" + productID + '\'' +
                 ", imageUri='" + imageUri + '\'' +
                 ", productTitle='" + productTitle + '\'' +
                 ", productPrice=" + productPrice +
                 ", productLocation='" + productLocation + '\'' +
                 ", productDescription='" + productDescription + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
-
 }
