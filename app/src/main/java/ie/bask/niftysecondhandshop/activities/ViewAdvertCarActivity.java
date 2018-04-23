@@ -8,7 +8,6 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -60,9 +59,6 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
         buttonSave = findViewById(R.id.buttonSave);
         snp_carYear = findViewById(R.id.snp_carYear);
         textViewUser = findViewById(R.id.textViewUser);
-
-        // Prevent keyboard from automatically popping up
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Populate fields with values from selected position from ListView
         // Passed values with Bundle from BrowseActivity

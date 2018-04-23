@@ -138,11 +138,11 @@ public class Base extends AppCompatActivity {
         MenuItem reset = menu.findItem(R.id.reset);
 
         if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
-            browse.setEnabled(false);
-            reset.setEnabled(false);
+            browse.setVisible(false);
+            reset.setVisible(false);
         } else {
-            browse.setEnabled(true);
-            reset.setEnabled(true);
+            browse.setVisible(true);
+            reset.setVisible(true);
         }
 
 
@@ -276,6 +276,7 @@ public class Base extends AppCompatActivity {
     public void homeButtonPressed(View view) {
         if (this instanceof MainActivity) {
             view.setEnabled(false);
+            view.setAlpha(.5f);
         } else {
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -283,9 +284,10 @@ public class Base extends AppCompatActivity {
 
     public void browseButtonPressed(View view) {
         // Check if ArrayLists are empty
-        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty()) {
-            // if empty disable browse button
+        if (adverts.isEmpty() && fashionAdverts.isEmpty() && carAdverts.isEmpty() || this instanceof BrowseActivity) {
+            // if no adverts or activity is instance of BrowseActivity disable browse button
             view.setEnabled(false);
+            view.setAlpha(.5f);
         } else {
             startActivity(new Intent(this, BrowseActivity.class));
         }
@@ -362,6 +364,7 @@ public class Base extends AppCompatActivity {
                     buttonGeneral.setEnabled(true);
                 } else {
                     buttonGeneral.setEnabled(false);
+                    buttonGeneral.setAlpha(.5f);
                 }
             }
 
@@ -395,6 +398,7 @@ public class Base extends AppCompatActivity {
                     buttonFashion.setEnabled(true);
                 } else {
                     buttonFashion.setEnabled(false);
+                    buttonFashion.setAlpha(.5f);
                 }
             }
 
@@ -428,6 +432,7 @@ public class Base extends AppCompatActivity {
                     buttonCar.setEnabled(true);
                 } else {
                     buttonCar.setEnabled(false);
+                    buttonCar.setAlpha(.5f);
                 }
             }
 
