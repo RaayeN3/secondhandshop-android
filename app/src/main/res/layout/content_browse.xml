@@ -51,6 +51,84 @@
         app:layout_constraintStart_toEndOf="@+id/EditTextSearch"
         app:layout_constraintTop_toTopOf="@+id/EditTextSearch" />
 
+    <TextView
+        android:id="@+id/filler"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvTitle"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="@string/advertTitle"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/filler"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvPrice"
+        android:layout_width="84dp"
+        android:layout_height="wrap_content"
+        android:text="@string/productPrice"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/lvTitle"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/advertLocation"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/lvPrice"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvMake"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:text="@string/advertMake"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/filler"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvModel"
+        android:layout_width="83dp"
+        android:layout_height="wrap_content"
+        android:text="@string/advertModel"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/lvMake"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvYear"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/advertYear"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/lvModel"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+    <TextView
+        android:id="@+id/lvCarPrice"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="@string/productPrice"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/lvYear"
+        app:layout_constraintTop_toBottomOf="@id/choice_radio_group" />
+
+
     <ListView
         android:id="@+id/productsView"
         android:layout_width="0dp"
@@ -58,14 +136,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:choiceMode="singleChoice"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choice_radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/filler" />
 
     <ListView
         android:id="@+id/fashionProductsView"
@@ -74,13 +152,13 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choice_radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/filler" />
 
     <ListView
         android:id="@+id/carsView"
@@ -89,13 +167,13 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choice_radio_group" />
+        app:layout_constraintTop_toBottomOf="@+id/filler" />
 
     <TextView
         android:id="@+id/browseEmptyDefaultText"
@@ -149,20 +227,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/generalAd_radioB" />
+            android:text="@string/generalAd_radioB"
+            android:layout_marginBottom="10dp" />
 
         <RadioButton
             android:id="@+id/fashionAd_radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fashionAd_radioB" />
+            android:text="@string/fashionAd_radioB"
+            android:layout_marginBottom="10dp" />
 
         <RadioButton
             android:id="@+id/carAd_radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/carAd_radioB" />
+            android:text="@string/carAd_radioB"
+            android:layout_marginBottom="10dp" />
     </RadioGroup>
 </android.support.constraint.ConstraintLayout>

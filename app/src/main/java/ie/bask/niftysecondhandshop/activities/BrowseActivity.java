@@ -40,7 +40,7 @@ public class BrowseActivity extends Base {
     ListView carsView;
     TextView browseEmptyDefaultText;
     RadioGroup choice_radio_group;
-    TextView emptyAdvertCategory;
+    TextView emptyAdvertCategory, lvTitle, lvPrice, lvLocation, filler, lvMake, lvModel, lvYear, lvCarPrice;
     ImageButton searchButton;
     EditText EditTextSearch;
 
@@ -60,6 +60,14 @@ public class BrowseActivity extends Base {
         browseEmptyDefaultText = findViewById(R.id.browseEmptyDefaultText);
         searchButton = findViewById(R.id.searchButton);
         EditTextSearch = findViewById(R.id.EditTextSearch);
+        lvTitle = findViewById(R.id.lvTitle);
+        lvPrice = findViewById(R.id.lvPrice);
+        lvLocation = findViewById(R.id.lvLocation);
+        filler = findViewById(R.id.filler);
+        lvMake = findViewById(R.id.lvMake);
+        lvModel = findViewById(R.id.lvModel);
+        lvCarPrice = findViewById(R.id.lvCarPrice);
+        lvYear = findViewById(R.id.lvYear);
 
         // Initialising Google API client
         mGoogleSignInClient = createGoogleClient();
@@ -332,6 +340,14 @@ public class BrowseActivity extends Base {
                     productsView.setVisibility(View.GONE);
                     fashionProductsView.setVisibility(View.GONE);
                     carsView.setVisibility(View.GONE);
+                    filler.setVisibility(View.GONE);
+                    lvTitle.setVisibility(View.GONE);
+                    lvLocation.setVisibility(View.GONE);
+                    lvPrice.setVisibility(View.GONE);
+                    lvMake.setVisibility(View.GONE);
+                    lvModel.setVisibility(View.GONE);
+                    lvCarPrice.setVisibility(View.GONE);
+                    lvYear.setVisibility(View.GONE);
                 }
                 // if adverts is not empty, show respective ListView
                 // and hide emptyCategory TextView
@@ -341,6 +357,14 @@ public class BrowseActivity extends Base {
                     productsView.setVisibility(View.VISIBLE);
                     fashionProductsView.setVisibility(View.GONE);
                     carsView.setVisibility(View.GONE);
+                    filler.setVisibility(View.VISIBLE);
+                    lvTitle.setVisibility(View.VISIBLE);
+                    lvLocation.setVisibility(View.VISIBLE);
+                    lvPrice.setVisibility(View.VISIBLE);
+                    lvMake.setVisibility(View.GONE);
+                    lvModel.setVisibility(View.GONE);
+                    lvCarPrice.setVisibility(View.GONE);
+                    lvYear.setVisibility(View.GONE);
                 }
                 break;
             case R.id.fashionAd_radioButton:
@@ -350,12 +374,28 @@ public class BrowseActivity extends Base {
                     productsView.setVisibility(View.GONE);
                     fashionProductsView.setVisibility(View.GONE);
                     carsView.setVisibility(View.GONE);
+                    filler.setVisibility(View.GONE);
+                    lvTitle.setVisibility(View.GONE);
+                    lvLocation.setVisibility(View.GONE);
+                    lvPrice.setVisibility(View.GONE);
+                    lvMake.setVisibility(View.GONE);
+                    lvModel.setVisibility(View.GONE);
+                    lvCarPrice.setVisibility(View.GONE);
+                    lvYear.setVisibility(View.GONE);
                 } else {
                     emptyAdvertCategory.setVisibility(View.GONE);
                     choice_radio_group.check(R.id.fashionAd_radioButton);
                     productsView.setVisibility(View.GONE);
                     fashionProductsView.setVisibility(View.VISIBLE);
                     carsView.setVisibility(View.GONE);
+                    filler.setVisibility(View.VISIBLE);
+                    lvTitle.setVisibility(View.VISIBLE);
+                    lvLocation.setVisibility(View.VISIBLE);
+                    lvPrice.setVisibility(View.VISIBLE);
+                    lvMake.setVisibility(View.GONE);
+                    lvModel.setVisibility(View.GONE);
+                    lvCarPrice.setVisibility(View.GONE);
+                    lvYear.setVisibility(View.GONE);
                 }
                 break;
             case R.id.carAd_radioButton:
@@ -365,12 +405,28 @@ public class BrowseActivity extends Base {
                     productsView.setVisibility(View.GONE);
                     fashionProductsView.setVisibility(View.GONE);
                     carsView.setVisibility(View.GONE);
+                    filler.setVisibility(View.GONE);
+                    lvTitle.setVisibility(View.GONE);
+                    lvLocation.setVisibility(View.GONE);
+                    lvPrice.setVisibility(View.GONE);
+                    lvMake.setVisibility(View.GONE);
+                    lvModel.setVisibility(View.GONE);
+                    lvCarPrice.setVisibility(View.GONE);
+                    lvYear.setVisibility(View.GONE);
                 } else {
                     emptyAdvertCategory.setVisibility(View.GONE);
                     choice_radio_group.check(R.id.carAd_radioButton);
                     productsView.setVisibility(View.GONE);
                     fashionProductsView.setVisibility(View.GONE);
                     carsView.setVisibility(View.VISIBLE);
+                    filler.setVisibility(View.VISIBLE);
+                    lvTitle.setVisibility(View.GONE);
+                    lvLocation.setVisibility(View.GONE);
+                    lvPrice.setVisibility(View.GONE);
+                    lvMake.setVisibility(View.VISIBLE);
+                    lvModel.setVisibility(View.VISIBLE);
+                    lvCarPrice.setVisibility(View.VISIBLE);
+                    lvYear.setVisibility(View.VISIBLE);
                 }
                 break;
         }
@@ -390,6 +446,14 @@ public class BrowseActivity extends Base {
                         productsView.setVisibility(View.GONE);
                         fashionProductsView.setVisibility(View.GONE);
                         carsView.setVisibility(View.GONE);
+                        filler.setVisibility(View.GONE);
+                        lvTitle.setVisibility(View.GONE);
+                        lvLocation.setVisibility(View.GONE);
+                        lvPrice.setVisibility(View.GONE);
+                        lvMake.setVisibility(View.GONE);
+                        lvModel.setVisibility(View.GONE);
+                        lvCarPrice.setVisibility(View.GONE);
+                        lvYear.setVisibility(View.GONE);
                     }
                     // if adverts is not empty, show respective ListView
                     // and hide emptyCategory TextView
@@ -398,6 +462,14 @@ public class BrowseActivity extends Base {
                         productsView.setVisibility(View.VISIBLE);
                         fashionProductsView.setVisibility(View.GONE);
                         carsView.setVisibility(View.GONE);
+                        filler.setVisibility(View.VISIBLE);
+                        lvTitle.setVisibility(View.VISIBLE);
+                        lvLocation.setVisibility(View.VISIBLE);
+                        lvPrice.setVisibility(View.VISIBLE);
+                        lvMake.setVisibility(View.GONE);
+                        lvModel.setVisibility(View.GONE);
+                        lvCarPrice.setVisibility(View.GONE);
+                        lvYear.setVisibility(View.GONE);
                     }
                 } else if (checkedId == R.id.fashionAd_radioButton) {
                     EditTextSearch.setText(null);
@@ -407,11 +479,27 @@ public class BrowseActivity extends Base {
                         productsView.setVisibility(View.GONE);
                         fashionProductsView.setVisibility(View.GONE);
                         carsView.setVisibility(View.GONE);
+                        filler.setVisibility(View.GONE);
+                        lvTitle.setVisibility(View.GONE);
+                        lvLocation.setVisibility(View.GONE);
+                        lvPrice.setVisibility(View.GONE);
+                        lvMake.setVisibility(View.GONE);
+                        lvModel.setVisibility(View.GONE);
+                        lvCarPrice.setVisibility(View.GONE);
+                        lvYear.setVisibility(View.GONE);
                     } else {
                         emptyAdvertCategory.setVisibility(View.GONE);
                         productsView.setVisibility(View.GONE);
                         fashionProductsView.setVisibility(View.VISIBLE);
                         carsView.setVisibility(View.GONE);
+                        filler.setVisibility(View.VISIBLE);
+                        lvTitle.setVisibility(View.VISIBLE);
+                        lvLocation.setVisibility(View.VISIBLE);
+                        lvPrice.setVisibility(View.VISIBLE);
+                        lvMake.setVisibility(View.GONE);
+                        lvModel.setVisibility(View.GONE);
+                        lvCarPrice.setVisibility(View.GONE);
+                        lvYear.setVisibility(View.GONE);
                     }
                 } else if (checkedId == R.id.carAd_radioButton) {
                     EditTextSearch.setText(null);
@@ -421,11 +509,27 @@ public class BrowseActivity extends Base {
                         productsView.setVisibility(View.GONE);
                         fashionProductsView.setVisibility(View.GONE);
                         carsView.setVisibility(View.GONE);
+                        filler.setVisibility(View.VISIBLE);
+                        lvTitle.setVisibility(View.GONE);
+                        lvLocation.setVisibility(View.GONE);
+                        lvPrice.setVisibility(View.GONE);
+                        lvMake.setVisibility(View.GONE);
+                        lvModel.setVisibility(View.GONE);
+                        lvCarPrice.setVisibility(View.GONE);
+                        lvYear.setVisibility(View.GONE);
                     } else {
                         emptyAdvertCategory.setVisibility(View.GONE);
                         productsView.setVisibility(View.GONE);
                         fashionProductsView.setVisibility(View.GONE);
                         carsView.setVisibility(View.VISIBLE);
+                        filler.setVisibility(View.VISIBLE);
+                        lvTitle.setVisibility(View.GONE);
+                        lvLocation.setVisibility(View.GONE);
+                        lvPrice.setVisibility(View.GONE);
+                        lvMake.setVisibility(View.VISIBLE);
+                        lvModel.setVisibility(View.VISIBLE);
+                        lvCarPrice.setVisibility(View.VISIBLE);
+                        lvYear.setVisibility(View.VISIBLE);
                     }
                 }
             }
