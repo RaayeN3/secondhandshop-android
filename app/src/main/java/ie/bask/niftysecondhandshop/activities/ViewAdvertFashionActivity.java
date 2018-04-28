@@ -255,7 +255,7 @@ public class ViewAdvertFashionActivity extends Base implements View.OnClickListe
                         // Update database and arrayList
                         databaseFashionAds.child(id).setValue(fashionAd);
                         fashionAdverts.set(position, fashionAd);
-                        Toast.makeText(getApplicationContext(), "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully updated advert!", Toast.LENGTH_SHORT).show();
 
                         // Hide save and show update button
                         buttonSave.setVisibility(View.GONE);

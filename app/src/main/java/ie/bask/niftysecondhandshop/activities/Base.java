@@ -176,10 +176,11 @@ public class Base extends AppCompatActivity {
                             public void onResult(@NonNull Status status) {
                                 if (status.isSuccess()) {
                                     Log.v("MyLogs", "User Logged out");
+                                    //closing activity
                                     finishAffinity();
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
+                                    Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                                    backToLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(backToLogin);
                                 }
                             }
                         });
@@ -191,12 +192,6 @@ public class Base extends AppCompatActivity {
                     Log.v("MyLogs", "Google API Client Connection Suspended");
                 }
             });
-
-            //closing activity
-            finishAffinity();
-            Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
-            backToLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(backToLogin);
         }
 
         return super.onOptionsItemSelected(item);

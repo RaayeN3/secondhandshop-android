@@ -198,7 +198,7 @@ public class ViewAdvertActivity extends Base implements View.OnClickListener {
                         // Update database and arrayList
                         databaseAds.child(id).setValue(ad);
                         adverts.set(position, ad);
-                        Toast.makeText(getApplicationContext(), "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully updated advert!", Toast.LENGTH_SHORT).show();
 
                         // Hide save and show update button
                         buttonSave.setVisibility(View.GONE);

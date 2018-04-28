@@ -228,7 +228,7 @@ public class ViewAdvertCarActivity extends Base implements View.OnClickListener 
                         // Update database and arrayList
                         databaseCarAds.child(id).setValue(carAd);
                         carAdverts.set(position, carAd);
-                        Toast.makeText(getApplicationContext(), "Successfully updated position " + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully updated advert!", Toast.LENGTH_SHORT).show();
 
                         // Hide save and show update button
                         buttonSave.setVisibility(View.GONE);
