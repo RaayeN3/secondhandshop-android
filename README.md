@@ -8,8 +8,8 @@ There are three types of Adverts - General, Fashion and Car. Each of them has un
 if there are no Adverts in the database, the user won't be able to access the Browse page.
 
 ## Persistence approach
-All the adverts' data is persisted in a cloud database - Firebase. They are retrieved in real-time. Authentication is made with Firebase Authentication.
-The device has to be connected to the internet in order to Login/Reg and go beyond the Login/Register activities.
+All the adverts' data is persisted in a cloud database - Firebase. They are retrieved in real-time. Authentication is made with Firebase Authentication
+and Google Sign-in. The device has to be connected to the internet in order to Login/Reg and go beyond the Login/Register activities.
 
 ## Libraries used
 - [ScrollableNumberPicker](https://github.com/michaelmuenzer/ScrollableNumberPicker)
